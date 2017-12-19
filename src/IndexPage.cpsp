@@ -1,0 +1,133 @@
+<!DOCTYPE HTML>
+<%@ page class="IndexPage" namespace="MyDevices::Gateway" contentType="text/html;charset=utf-8" compressed="true" context="DeviceManager::Ptr" precondition="U::authenticate(request, response)" %>
+
+<%@ header include="DeviceManager.h" %>
+<%@ impl include="IndexPageController.h" %>
+<%@ include file="../html/template.inc" %>
+
+<%%
+IndexPageController pageController(context(), request, form);
+
+if (response.sent()) return;
+
+pageTemplate.set("title", "Gateway");
+%>
+
+<%@ include file="../html/header.inc" %>
+
+<script language="JavaScript">
+function addDevice()
+{
+  document.actionForm.action.value = "add";
+  document.actionForm.submit();
+}
+
+function removeDevice(id, name)
+{
+  if (confirm('Delete device "' + name + '" (' + id + ')?\\n\\nThis action cannot be undone.'))
+  {
+    document.actionForm.target.value = id;
+    document.actionForm.action.value = "remove";
+    document.actionForm.submit();
+  }
+}
+</script>
+
+<% if (!pageController.message().empty()) { %>
+  <div class="error">
+    <%= U::htmlize(pageController.message()) %>
+  </div>
+<% } %>
+
+<form name="actionForm" method="post">
+  <input type="hidden" name="action" value="">
+  <input type="hidden" name="target" value="">
+</form>
+
+<div class="groupbox">
+  <h2>System Settings</h2>
+
+  <table class="list">
+    <tbody>
+      <tr>
+        <td>Reflector Server</td>
+        <td>
+          <a href="<%= pageController.deviceManager()->config()->getString("webtunnel.reflectorURI", "") %>">
+            <%= U::htmlize(pageController.deviceManager()->config()->getString("webtunnel.reflectorURI", "")) %>
+          </a>
+        </td>
+      </tr>
+      <tr>
+        <td>Domain</td>
+        <td>
+          <%= U::htmlize(pageController.deviceManager()->config()->getString("webtunnel.domain", "")) %>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="groupbox">
+  <h2>Devices</h2>
+
+  <table class="list">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>ID</th>
+        <th>Host</th>
+        <th>Ports</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <%
+      bool even = false;
+      %>
+      <% for (std::vector<std::string>::const_iterator it = pageController.devices().begin(); it != pageController.devices().end(); ++it) { %>
+        <%
+        Poco::AutoPtr<Poco::Util::AbstractConfiguration> pDeviceConfig = pageController.deviceManager()->deviceConfiguration(*it);	
+        %>
+        <tr class="<%= even ? "even" : "odd" %>">
+          <td>
+            <a href="/device/<%= *it %>">
+              <%= U::htmlize(pDeviceConfig->getString("webtunnel.deviceName", "")) %>
+            </a>
+          </td>
+          <td>
+            <%= U::htmlize(pDeviceConfig->getString("webtunnel.deviceId", "")) %>
+          </td>
+          <td>
+            <%= U::htmlize(pDeviceConfig->getString("webtunnel.host", "")) %>
+          </td>
+          <td>
+            <%= U::htmlize(pDeviceConfig->getString("webtunnel.ports", "")) %>
+          </td>
+          <td class="deviceListButton">
+            <a href="#" onclick="removeDevice('<%= U::escape(*it) %>', '<%= U::escape(pDeviceConfig->getString("webtunnel.deviceName", "")) %>')">
+              <img class="button" 
+                   src="/images/minusicon.png" 
+                   srcset="/images/minusicon-x2.png 2x" 
+                   title="Remove Device">
+            </a>
+          </td>
+        </tr>
+        <%
+        even = !even; 
+        %>
+      <% } %> <%-- for --%>
+      <tr class="<%= even ? "even" : "odd" %>">
+        <td colspan="5">
+          <a href="#" onclick="addDevice()">
+            <img class="button" 
+                 src="/images/plusicon.png" 
+                 srcset="/images/plusicon-x2.png 2x"
+                 title="Add Device">
+          </a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<%@ include file="../html/footer.inc" %>
