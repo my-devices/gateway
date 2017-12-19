@@ -43,6 +43,9 @@ public:
 		/// Username and password are validated using the system's user database
 		/// (/etc/passwd, etc.).
 
+	static std::string hashPassword(const std::string& password);
+		/// Creates a hash for the password.
+
 	static std::string versionString();
 		/// Returns the software version number as string.
 

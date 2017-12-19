@@ -12,6 +12,9 @@
 #include "Version.h"
 #include "Poco/Net/HTTPBasicCredentials.h"
 #include "Poco/Util/Application.h"
+#include "Poco/PBKDF2Engine.h"
+#include "Poco/HMACEngine.h"
+#include "Poco/SHA1Engine.h"
 #include "Poco/Format.h"
 #include "Poco/Mutex.h"
 #include <set>
@@ -86,7 +89,7 @@ bool Utility::authenticate(Poco::Net::HTTPServerRequest& request, Poco::Net::HTT
 			{
 				std::string username = app.config().getString("gateway.username");
 				std::string password = app.config().getString("gateway.password", "");
-				if (creds.getUsername() == username && creds.getPassword() == password)
+				if (creds.getUsername() == username && Utility::hashPassword(creds.getPassword()) == password)
 				{
 					return true;
 				}
@@ -160,6 +163,14 @@ bool Utility::authenticate(const std::string& username, const std::string& passw
 #else
 	return false;
 #endif
+}
+
+
+std::string Utility::hashPassword(const std::string& password)
+{
+	Poco::PBKDF2Engine<Poco::HMACEngine<Poco::SHA1Engine> > pbkdf2("my-devices.net", 8192, 32);
+	pbkdf2.update(password);
+	return Poco::DigestEngine::digestToHex(pbkdf2.digest());
 }
 
 

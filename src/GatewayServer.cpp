@@ -40,6 +40,7 @@
 #include "Poco/SharedPtr.h"
 #include "WebTunnelAgent.h"
 #include "DeviceManager.h"
+#include "Utility.h"
 #include "IndexPage.h"
 #include "DevicePage.h"
 #include "Stylesheet.h"
@@ -143,7 +144,7 @@ private:
 class GatewayServer: public Poco::Util::ServerApplication
 {
 public:
-	GatewayServer(): _showHelp(false)
+	GatewayServer(): _dontRun(false)
 	{
 	}
 
@@ -200,11 +201,18 @@ protected:
 				.repeatable(true)
 				.argument("name=value")
 				.callback(OptionCallback<GatewayServer>(this, &GatewayServer::handleDefine)));
+
+		options.addOption(
+			Option("hash-password", "H", "Compute password hash for configuration file.")
+				.required(false)
+				.repeatable(true)
+				.argument("password")
+				.callback(OptionCallback<GatewayServer>(this, &GatewayServer::handleHash)));
 	}
 
 	void handleHelp(const std::string& name, const std::string& value)
 	{
-		_showHelp = true;
+		_dontRun = true;
 		displayHelp();
 		stopOptionsProcessing();
 	}
@@ -217,6 +225,12 @@ protected:
 	void handleDefine(const std::string& name, const std::string& value)
 	{
 		defineProperty(value);
+	}
+
+	void handleHash(const std::string& name, const std::string& value)
+	{
+		_dontRun = true;
+		std::cout << Utility::hashPassword(value) << std::endl;
 	}
 
 	void displayHelp()
@@ -256,7 +270,7 @@ protected:
 
 	int main(const std::vector<std::string>& args)
 	{
-		if (_showHelp) return Application::EXIT_OK;
+		if (_dontRun) return Application::EXIT_OK;
 
 #if defined(WEBTUNNEL_ENABLE_TLS)
 		bool acceptUnknownCert = config().getBool("tls.acceptUnknownCertificate", true);
@@ -284,7 +298,6 @@ protected:
 		waitForTerminationRequest();
 		srv.stop();
 
-		_pTimer->cancel(false);
 		pDeviceManager->stopAgents();
 		_pTimer->cancel(true);
 
@@ -292,7 +305,7 @@ protected:
 	}
 
 private:
-	bool _showHelp;
+	bool _dontRun;
 	SSLInitializer _sslInitializer;
 	Poco::SharedPtr<Poco::Util::Timer> _pTimer;
 };
