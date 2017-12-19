@@ -72,7 +72,7 @@ and my-devices.net domain.
 To change the password, run
 
 ```
-gateway/bin/Linux/x86_64/mygateway -H<password>
+$ gateway/bin/Linux/x86_64/mygateway -H<password>
 ```
 
 to compute the password hash. Change the value of the `gateway.password` property
@@ -84,7 +84,13 @@ my-devices.net reflector server account.
 Optionally, you can also change other configuration properties, such as the
 port of the internal web server (defaults to 8080).
 
-Finally, run `mygateway` and open its configuration web interface at
+Finally, run `mygateway`:
+
+```
+$ gateway/bin/Linux/x86_64/mygateway
+```
+
+and open its configuration web interface at
 [http://localhost:8080](http://localhost:8080).
 
 Click the `[+]` button to create a new device connection. Your first device
