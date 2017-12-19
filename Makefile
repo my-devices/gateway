@@ -1,10 +1,11 @@
 #
 # Makefile
 #
-# $Id: //my-devices.net/Main/gateway/Makefile#3 $
-#
 # Makefile for my-devices Gateway
 #
+
+POCO_BASE ?= $(shell dirname `pwd`)/sdk
+PROJECT_BASE ?= $(shell dirname `pwd`)
 
 include $(POCO_BASE)/build/rules/global
 
@@ -44,7 +45,7 @@ src/%.cpp: src/%.cpsp html/header.inc html/footer.inc html/template.inc
 
 src/%.cpsp: res/%.js
 	@echo "** Compiling Resource" $<
-	$(FILE2PAGE) --namespace=MyDevices::Gateway $< -o$@ 
+	$(FILE2PAGE) --namespace=MyDevices::Gateway $< -o$@
 
 src/%.cpsp: res/%.css
 	@echo "** Compiling Resource" $<
