@@ -66,7 +66,7 @@ $ make -C agent shared_release
 
 ## Running the Gateway
 
-Edit the configuration file `mygateway.properties` and change the default password
+Edit the configuration file [mygateway.properties](mygateway.properties) and change the default password
 and my-devices.net domain.
 
 To change the password, run
