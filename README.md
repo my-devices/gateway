@@ -128,19 +128,17 @@ via my-devices.net:
 
 ![Gateway Web User Interface - Add Device][browser2]
 
-Click *Save* to save your first Gateway connection.
+Click `Save` to save your first Gateway connection.
 
 You will now see it in the overview:
 
 ![Gateway Web User Interface - Device Added][browser3]
 
-Your Gateway should now also be visible in your [my-devices.net dashboard](https://reflector.my-devices.net).
+The Gateway should now be visible in your [my-devices.net Dashboard](https://reflector.my-devices.net).
 
-You can now start adding other devices.
+You can now start adding other devices as well.
+
 
 [browser1]: doc/images/browser1.png "Gateway Web User Interface - First Start"
 [browser2]: doc/images/browser2.png "Gateway Web User Interface - Add Device"
 [browser3]: doc/images/browser3.png "Gateway Web User Interface - Device Added"
-
-
-
