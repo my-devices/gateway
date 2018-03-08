@@ -46,7 +46,7 @@ provided later.
 $ mkdir my-devices
 $ cd my-devices
 $ git clone https://github.com/my-devices/sdk.git
-$ git clone https://github.com/my-devices/agent.git
+$ git clone https://github.com/my-devices/gateway.git
 ```
 
 ### 2. Build the SDK.
@@ -61,7 +61,7 @@ more options, specifically cross-compilation.
 ### 3. Build the Agent
 
 ```
-$ make -C agent shared_release
+$ make -s -C gateway shared_release
 ```
 
 ## Running the Gateway
@@ -78,7 +78,20 @@ $ gateway/bin/Linux/x86_64/mygateway -H<password>
 to compute the password hash. Change the value of the `gateway.password` property
 to the hash value for your password.
 
-Change the value of the `webtunnel.domain` property to the domain UUID of your
+Example: if your password is `sup3rS3cr3t`:
+
+```
+gateway/bin/Linux/x86_64/mygateway -Hsup3rS3cr3t
+61cba3bd7cc5bc6f3441a58c290e10a40f3cbcf6d1f538071d45a77e823273b0
+```
+
+Change the `gateway.password` property in `mygateway.properties` to:
+
+```
+gateway.password = 61cba3bd7cc5bc6f3441a58c290e10a40f3cbcf6d1f538071d45a77e823273b0
+```
+
+Next, change the value of the `webtunnel.domain` property to the domain UUID of your
 my-devices.net reflector server account.
 
 Optionally, you can also change other configuration properties, such as the

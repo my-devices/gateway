@@ -1,7 +1,7 @@
 //
 // Stylesheet.cpp
 //
-// This file has been generated from Stylesheet.cpsp.
+// This file has been generated from Stylesheet.cpsp on 2018-03-08 20:22:33.
 //
 
 
@@ -15,7 +15,7 @@
 #include "Poco/DateTimeParser.h"
 #include "Poco/DateTimeFormatter.h"
 #include "Poco/DateTimeFormat.h"
-#line 9 "/ws/my-devices.net/gateway/src/Stylesheet.cpsp"
+#line 9 "/Users/guenter/ws/git/my-devices/gateway/src/Stylesheet.cpsp"
 
 
 // res/Stylesheet.css
@@ -800,7 +800,7 @@ static const unsigned char data[] = {
 
 static bool checkModified(Poco::Net::HTTPServerRequest& request)
 {
-	Poco::DateTime modified(2017, 10, 23, 11, 15, 41);
+	Poco::DateTime modified(2017, 12, 19, 14, 57, 19);
 	request.response().setChunkedTransferEncoding(false);
 	request.response().set("Last-Modified", Poco::DateTimeFormatter::format(modified, Poco::DateTimeFormat::HTTP_FORMAT));
 	if (request.has("If-Modified-Since"))
@@ -833,7 +833,7 @@ void Stylesheet::handleRequest(Poco::Net::HTTPServerRequest& request, Poco::Net:
 	if (!(checkModified(request))) return;
 
 	std::ostream& responseStream = response.send();
-#line 812 "/ws/my-devices.net/gateway/src/Stylesheet.cpsp"
+#line 812 "/Users/guenter/ws/git/my-devices/gateway/src/Stylesheet.cpsp"
 
 	responseStream.write(reinterpret_cast<const char*>(data), sizeof(data));
 }

@@ -1,7 +1,7 @@
 //
 // MinusIcon.h
 //
-// This file has been generated from MinusIcon.cpsp.
+// This file has been generated from MinusIcon.cpsp on 2018-03-08 20:22:30.
 //
 
 

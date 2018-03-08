@@ -1,7 +1,7 @@
 //
 // DevicePage.cpp
 //
-// This file has been generated from DevicePage.cpsp.
+// This file has been generated from DevicePage.cpsp on 2018-03-08 20:22:33.
 //
 
 
@@ -37,11 +37,11 @@ void DevicePage::handleRequest(Poco::Net::HTTPServerRequest& request, Poco::Net:
 	if (!(U::authenticate(request, response))) return;
 
 	Poco::Net::HTMLForm form(request, request.stream());
-#line 4 "/ws/my-devices.net/gateway/html/template.inc"
+#line 4 "/Users/guenter/ws/git/my-devices/gateway/html/template.inc"
 
 	Poco::Net::NameValueCollection pageTemplate;
 	pageTemplate.set("softwareVersion", Utility::versionString());
-#line 8 "/ws/my-devices.net/gateway/src/DevicePage.cpsp"
+#line 8 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
 
 	DevicePageController pageController(context(), request, form);
 	
@@ -68,7 +68,7 @@ void DevicePage::handleRequest(Poco::Net::HTTPServerRequest& request, Poco::Net:
 	responseStream << "    <meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\">\n";
 	responseStream << "    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge,chrome=1\">\n";
 	responseStream << "    <title>";
-#line 5 "/ws/my-devices.net/gateway/html/header.inc"
+#line 5 "/Users/guenter/ws/git/my-devices/gateway/html/header.inc"
 	responseStream << ( U::htmlize(pageTemplate["title"]) );
 	responseStream << "</title>\n";
 	responseStream << "    <link rel=\"stylesheet\" href=\"/css/styles.css\" type=\"text/css\"/>\n";
@@ -79,7 +79,7 @@ void DevicePage::handleRequest(Poco::Net::HTTPServerRequest& request, Poco::Net:
 	responseStream << "      <div class=\"headercontainer\">\n";
 	responseStream << "        <div class=\"header\">  \n";
 	responseStream << "\t\t  <h1>";
-#line 13 "/ws/my-devices.net/gateway/html/header.inc"
+#line 13 "/Users/guenter/ws/git/my-devices/gateway/html/header.inc"
 	responseStream << ( U::htmlize(pageTemplate["title"]) );
 	responseStream << "</h1>\n";
 	responseStream << "        </div>\n";
@@ -97,17 +97,17 @@ void DevicePage::handleRequest(Poco::Net::HTTPServerRequest& request, Poco::Net:
 	responseStream << "}\n";
 	responseStream << "</script>\n";
 	responseStream << "\n";
-#line 31 "/ws/my-devices.net/gateway/src/DevicePage.cpsp"
+#line 31 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
  if (!pageController.message().empty()) { 	responseStream << "\n";
 	responseStream << "  <div class=\"error\">\n";
 	responseStream << "    ";
-#line 33 "/ws/my-devices.net/gateway/src/DevicePage.cpsp"
+#line 33 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
 	responseStream << ( U::htmlize(pageController.message()) );
 	responseStream << "\n";
 	responseStream << "  </div>\n";
-#line 35 "/ws/my-devices.net/gateway/src/DevicePage.cpsp"
+#line 35 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
  } 	responseStream << "\n";
-#line 37 "/ws/my-devices.net/gateway/src/DevicePage.cpsp"
+#line 37 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
  if (pageController.deviceConfig()) { 	responseStream << "\n";
 	responseStream << "  <div class=\"groupbox\">\n";
 	responseStream << "    <h2>Device Settings</h2>\n";
@@ -115,7 +115,7 @@ void DevicePage::handleRequest(Poco::Net::HTTPServerRequest& request, Poco::Net:
 	responseStream << "    <form name=\"actionForm\" method=\"post\" action=\"/\">\n";
 	responseStream << "      <input type=\"hidden\" name=\"action\" value=\"update\">\n";
 	responseStream << "      <input type=\"hidden\" name=\"target\" value=\"";
-#line 43 "/ws/my-devices.net/gateway/src/DevicePage.cpsp"
+#line 43 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
 	responseStream << ( pageController.deviceConfig()->getString("webtunnel.deviceId") );
 	responseStream << "\">\n";
 	responseStream << "      <table class=\"list\">\n";
@@ -123,7 +123,7 @@ void DevicePage::handleRequest(Poco::Net::HTTPServerRequest& request, Poco::Net:
 	responseStream << "          <tr class=\"even\">\n";
 	responseStream << "            <td class=\"basicProperty\">ID</td>\n";
 	responseStream << "            <td>";
-#line 48 "/ws/my-devices.net/gateway/src/DevicePage.cpsp"
+#line 48 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
 	responseStream << ( U::htmlize(pageController.deviceConfig()->getString("webtunnel.deviceId")) );
 	responseStream << "</td>\n";
 	responseStream << "          </tr>\n";
@@ -132,7 +132,7 @@ void DevicePage::handleRequest(Poco::Net::HTTPServerRequest& request, Poco::Net:
 	responseStream << "            <td>\n";
 	responseStream << "              <input name=\"deviceName\" \n";
 	responseStream << "                     value=\"";
-#line 54 "/ws/my-devices.net/gateway/src/DevicePage.cpsp"
+#line 54 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
 	responseStream << ( U::htmlize(pageController.deviceConfig()->getString("webtunnel.deviceName")) );
 	responseStream << "\" \n";
 	responseStream << "                     size=\"64\" \n";
@@ -144,7 +144,7 @@ void DevicePage::handleRequest(Poco::Net::HTTPServerRequest& request, Poco::Net:
 	responseStream << "            <td>\n";
 	responseStream << "              <input name=\"host\" \n";
 	responseStream << "                     value=\"";
-#line 63 "/ws/my-devices.net/gateway/src/DevicePage.cpsp"
+#line 63 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
 	responseStream << ( U::htmlize(pageController.deviceConfig()->getString("webtunnel.host")) );
 	responseStream << "\" \n";
 	responseStream << "                     size=\"64\" \n";
@@ -156,7 +156,7 @@ void DevicePage::handleRequest(Poco::Net::HTTPServerRequest& request, Poco::Net:
 	responseStream << "            <td>\n";
 	responseStream << "              <input name=\"ports\" \n";
 	responseStream << "                     value=\"";
-#line 72 "/ws/my-devices.net/gateway/src/DevicePage.cpsp"
+#line 72 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
 	responseStream << ( U::htmlize(pageController.deviceConfig()->getString("webtunnel.ports")) );
 	responseStream << "\" \n";
 	responseStream << "                     size=\"40\" \n";
@@ -168,7 +168,7 @@ void DevicePage::handleRequest(Poco::Net::HTTPServerRequest& request, Poco::Net:
 	responseStream << "            <td>\n";
 	responseStream << "              <input name=\"httpPort\" \n";
 	responseStream << "                     value=\"";
-#line 81 "/ws/my-devices.net/gateway/src/DevicePage.cpsp"
+#line 81 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
 	responseStream << ( U::htmlize(pageController.deviceConfig()->getString("webtunnel.httpPort")) );
 	responseStream << "\" \n";
 	responseStream << "                     size=\"5\" \n";
@@ -181,7 +181,7 @@ void DevicePage::handleRequest(Poco::Net::HTTPServerRequest& request, Poco::Net:
 	responseStream << "              <input type=\"password\" \n";
 	responseStream << "                     name=\"password\" \n";
 	responseStream << "                     value=\"";
-#line 91 "/ws/my-devices.net/gateway/src/DevicePage.cpsp"
+#line 91 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
 	responseStream << ( U::htmlize(pageController.deviceConfig()->getString("webtunnel.password")) );
 	responseStream << "\" \n";
 	responseStream << "                     size=\"32\" \n";
@@ -199,7 +199,7 @@ void DevicePage::handleRequest(Poco::Net::HTTPServerRequest& request, Poco::Net:
 	responseStream << "      </table>\n";
 	responseStream << "    </div>\n";
 	responseStream << "  </form>\n";
-#line 107 "/ws/my-devices.net/gateway/src/DevicePage.cpsp"
+#line 107 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
  } 	responseStream << " ";
 	responseStream << "\n";
 	// begin include html/footer.inc
@@ -209,9 +209,9 @@ void DevicePage::handleRequest(Poco::Net::HTTPServerRequest& request, Poco::Net:
 	responseStream << "      <div class=\"footercontainer\">\n";
 	responseStream << "        <div class=\"footer\">\n";
 	responseStream << "          ";
-#line 6 "/ws/my-devices.net/gateway/html/footer.inc"
+#line 6 "/Users/guenter/ws/git/my-devices/gateway/html/footer.inc"
 	responseStream << ( pageTemplate["softwareVersion"] );
-	responseStream << " | &copy; 2015-2017 by <a href=\"https://www.appinf.com\">Applied Informatics</a>.\n";
+	responseStream << " | &copy; 2015-2018 by <a href=\"https://www.appinf.com\">Applied Informatics</a>.\n";
 	responseStream << "        </div>\n";
 	responseStream << "      </div>\n";
 	responseStream << "    </footer>\n";

@@ -4,8 +4,8 @@
 # Makefile for my-devices Gateway
 #
 
-POCO_BASE ?= $(shell dirname `pwd`)/sdk
-PROJECT_BASE ?= $(shell dirname `pwd`)
+POCO_BASE = $(shell dirname `pwd`)/sdk
+PROJECT_BASE = $(shell dirname `pwd`)
 
 include $(POCO_BASE)/build/rules/global
 

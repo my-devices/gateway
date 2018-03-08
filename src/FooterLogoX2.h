@@ -1,7 +1,7 @@
 //
 // FooterLogoX2.h
 //
-// This file has been generated from FooterLogoX2.cpsp.
+// This file has been generated from FooterLogoX2.cpsp on 2018-03-08 20:22:31.
 //
 
 
