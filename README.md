@@ -84,7 +84,7 @@ to the hash value for your password.
 Example: if your password is `sup3rS3cr3t`:
 
 ```
-gateway/bin/Linux/x86_64/mygateway -Hsup3rS3cr3t
+$ gateway/bin/Linux/x86_64/mygateway -Hsup3rS3cr3t
 61cba3bd7cc5bc6f3441a58c290e10a40f3cbcf6d1f538071d45a77e823273b0
 ```
 
