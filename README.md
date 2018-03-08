@@ -42,6 +42,9 @@ provided later.
 
 ### 1. Clone the SDK and Gatway repositories.
 
+Note: If you've already cloned the SDK repository, you do not need to clone it again. Just make sure
+that the `gateway` repository is in the same directory, alongside the `sdk` repository.
+
 ```
 $ mkdir my-devices
 $ cd my-devices
@@ -69,7 +72,7 @@ $ make -s -C gateway shared_release
 Edit the configuration file [mygateway.properties](mygateway.properties) and change the default password
 and my-devices.net domain.
 
-To change the password, run
+To change the password, run:
 
 ```
 $ gateway/bin/Linux/x86_64/mygateway -H<password>
@@ -106,7 +109,38 @@ $ gateway/bin/Linux/x86_64/mygateway
 and open its configuration web interface at
 [http://localhost:8080](http://localhost:8080).
 
+You should see this:
+
+![Gateway Web User Interface - First Start][browser1]
+
 Click the `[+]` button to create a new device connection. Your first device
 can be to the built-in web interface of the Gateway, so that you will be able
 to manage it remotely.
+
+Enter the following information to make the Gateway's web user interface accessible remotely
+via my-devices.net:
+
+  - Name: Gateway
+  - Device IP Address or Domain Name: 127.0.0.1
+  - Forwarded TCP Ports: 8080
+  - Device HTTP Server Port: 8080
+  - Device Password: (leave empty)
+
+![Gateway Web User Interface - Add Device][browser2]
+
+Click *Save* to save your first Gateway connection.
+
+You will now see it in the overview:
+
+![Gateway Web User Interface - Device Added][browser3]
+
+Your Gateway should now also be visible in your [my-devices.net dashboard](https://reflector.my-devices.net).
+
+You can now start adding other devices.
+
+[browser1]: doc/images/browser1.png "Gateway Web User Interface - First Start"
+[browser2]: doc/images/browser2.png "Gateway Web User Interface - Add Device"
+[browser3]: doc/images/browser3.png "Gateway Web User Interface - Device Added"
+
+
 
