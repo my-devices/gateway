@@ -120,11 +120,11 @@ to manage it remotely.
 Enter the following information to make the Gateway's web user interface accessible remotely
 via my-devices.net:
 
-  - Name: Gateway
-  - Device IP Address or Domain Name: 127.0.0.1
-  - Forwarded TCP Ports: 8080
-  - Device HTTP Server Port: 8080
-  - Device Password: (leave empty)
+  - **Name:** `Gateway`
+  - **Device IP Address or Domain Name:** `127.0.0.1`
+  - **Forwarded TCP Ports:** `8080`
+  - **Device HTTP Server Port:** `8080`
+  - **Device Password:** *(leave empty)*
 
 ![Gateway Web User Interface - Add Device][browser2]
 
