@@ -21,6 +21,10 @@ tlslibs = PocoNetSSL PocoCrypto
 SYSLIBS += -lssl -lcrypto -lz -ldl
 endif
 
+ifeq ($(OSNAME),Linux)
+SYSLIBS += -lcrypt
+endif
+
 objects = GatewayServer WebTunnelAgent DeviceManager Utility PageController \
 	IndexPage IndexPageController \
 	DevicePage DevicePageController \
