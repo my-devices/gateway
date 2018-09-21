@@ -10,8 +10,8 @@ internet from browsers, mobile apps, desktop, server or cloud applications.
 
 This even works if the device is behind a NAT router, firewall or proxy server.
 The device becomes just another host on the internet, addressable via its own URL and
-protected by the my-devices.net server against unauthorized or malicious access.
-my-devices.net is a great solution for secure remote support and maintenance,
+protected by the Remote Manager server against unauthorized or malicious access.
+Remote Manager is a great solution for secure remote support and maintenance,
 as well as for providing secure remote access to devices for end-users via web or
 mobile apps.
 
@@ -70,7 +70,7 @@ $ make -s -C gateway shared_release
 ## Running the Gateway
 
 Edit the configuration file [mygateway.properties](mygateway.properties) and change the default password
-and my-devices.net domain.
+and Remote Manager domain.
 
 To change the password, run:
 
@@ -95,7 +95,7 @@ gateway.password = 61cba3bd7cc5bc6f3441a58c290e10a40f3cbcf6d1f538071d45a77e82327
 ```
 
 Next, change the value of the `webtunnel.domain` property to the domain UUID of your
-my-devices.net reflector server account.
+Remote Manager server account.
 
 Optionally, you can also change other configuration properties, such as the
 port of the internal web server (defaults to 8080).
@@ -118,7 +118,7 @@ can be to the built-in web interface of the Gateway, so that you will be able
 to manage it remotely.
 
 Enter the following information to make the Gateway's web user interface accessible remotely
-via my-devices.net:
+via Remote Manager:
 
   - **Name:** `Gateway`
   - **Device IP Address or Domain Name:** `127.0.0.1`
@@ -134,7 +134,7 @@ You will now see it in the overview:
 
 ![Gateway Web User Interface - Device Added][browser3]
 
-The Gateway should now be visible in your [my-devices.net Dashboard](https://reflector.my-devices.net).
+The Gateway should now be visible in your [Remote Manager Dashboard](https://reflector.my-devices.net).
 
 You can now start adding other devices as well.
 
