@@ -74,8 +74,8 @@ void DeviceManager::restartAgents()
 		try
 		{
 			Poco::AutoPtr<Poco::Util::LayeredConfiguration> pLayeredConfig = new Poco::Util::LayeredConfiguration;
-			pLayeredConfig->add(_pConfig);
-			pLayeredConfig->add(deviceConfiguration(*it));
+			pLayeredConfig->add(_pConfig, 1);
+			pLayeredConfig->add(deviceConfiguration(*it), 0);
 			if (pLayeredConfig->getBool("webtunnel.enable", true))
 			{
 				_agents.push_back(new WebTunnelAgent(_pTimer, _pDispatcher, pLayeredConfig));
