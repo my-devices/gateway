@@ -12,8 +12,8 @@ include $(POCO_BASE)/build/rules/global
 WEBTUNNEL_ENABLE_TLS = 1
 
 # Where to find the PageCompiler executable
-PAGECOMPILER = $(POCO_BASE)/PageCompiler/bin/$(POCO_HOST_OSNAME)/$(POCO_HOST_OSARCH)/cpspc
-FILE2PAGE = $(POCO_BASE)/PageCompiler/File2Page/bin/$(POCO_HOST_OSNAME)/$(POCO_HOST_OSARCH)/f2cpsp
+PAGECOMPILER = $(POCO_BASE)/PageCompiler/bin/$(POCO_HOST_OSNAME)/$(POCO_HOST_OSARCH)/static/cpspc
+FILE2PAGE = $(POCO_BASE)/PageCompiler/File2Page/bin/$(POCO_HOST_OSNAME)/$(POCO_HOST_OSARCH)/static/f2cpsp
 
 ifdef WEBTUNNEL_ENABLE_TLS
 CXXFLAGS += -DWEBTUNNEL_ENABLE_TLS
@@ -36,7 +36,7 @@ objects = GatewayServer WebTunnelAgent DeviceManager Utility PageController \
 	PlusIcon PlusIconX2 \
 	MinusIcon MinusIconX2
 
-target         = mygateway
+target         = rmgateway
 target_version = 1
 target_libs    = PocoWebTunnel PocoNetSSL PocoNet PocoCrypto PocoUtil PocoXML PocoFoundation
 

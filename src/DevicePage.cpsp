@@ -7,7 +7,7 @@
 
 <%%
 	DevicePageController pageController(context(), request, form);
-	
+
 	if (pageController.deviceConfig())
 	{
 		pageTemplate.set("title", "Gateway > " + pageController.deviceConfig()->getString("webtunnel.deviceName"));
@@ -37,7 +37,7 @@ function cancelUpdateDevice(id)
 <% if (pageController.deviceConfig()) { %>
   <div class="groupbox">
     <h2>Device Settings</h2>
-  
+
     <form name="actionForm" method="post" action="/">
       <input type="hidden" name="action" value="update">
       <input type="hidden" name="target" value="<%= pageController.deviceConfig()->getString("webtunnel.deviceId") %>">
@@ -50,50 +50,62 @@ function cancelUpdateDevice(id)
           <tr class="odd">
             <td class="basicProperty">Name</td>
             <td>
-              <input name="deviceName" 
-                     value="<%= U::htmlize(pageController.deviceConfig()->getString("webtunnel.deviceName")) %>" 
-                     size="64" 
+              <input name="deviceName"
+                     value="<%= U::htmlize(pageController.deviceConfig()->getString("webtunnel.deviceName")) %>"
+                     size="64"
                      maxLength="64">
             </td>
           </tr>
           <tr class="even">
             <td class="basicProperty">Device IP Address or Domain Name</td>
             <td>
-              <input name="host" 
-                     value="<%= U::htmlize(pageController.deviceConfig()->getString("webtunnel.host")) %>" 
-                     size="64" 
+              <input name="host"
+                     value="<%= U::htmlize(pageController.deviceConfig()->getString("webtunnel.host")) %>"
+                     size="64"
                      maxLength="64">
             </td>
           </tr>
           <tr class="odd">
             <td class="basicProperty">Forwarded TCP Ports</td>
             <td>
-              <input name="ports" 
-                     value="<%= U::htmlize(pageController.deviceConfig()->getString("webtunnel.ports")) %>" 
-                     size="40" 
+              <input name="ports"
+                     value="<%= U::htmlize(pageController.deviceConfig()->getString("webtunnel.ports")) %>"
+                     size="40"
                      maxLength="40">
+              (comma-separated)
             </td>
           </tr>
           <tr class="even">
             <td class="basicProperty">Device HTTP Server Port</td>
             <td>
-              <input name="httpPort" 
-                     value="<%= U::htmlize(pageController.deviceConfig()->getString("webtunnel.httpPort")) %>" 
-                     size="5" 
+              <input name="httpPort"
+                     value="<%= U::htmlize(pageController.deviceConfig()->getString("webtunnel.httpPort")) %>"
+                     size="5"
                      maxLength="5">
             </td>
           </tr>
           <tr class="odd">
-            <td>Device Password</td>
+            <td>Device VNC Server Port</td>
             <td>
-              <input type="password" 
-                     name="password" 
-                     value="<%= U::htmlize(pageController.deviceConfig()->getString("webtunnel.password")) %>" 
-                     size="32" 
-                     maxLength="32">
+              <input name="vncPort"
+                     value="<%= U::htmlize(pageController.deviceConfig()->getString("webtunnel.vncPort", "")) %>"
+                     size="5"
+                     maxLength="5">
+              (optional)
             </td>
           </tr>
           <tr class="even">
+            <td>Device Password</td>
+            <td>
+              <input type="password"
+                     name="password"
+                     value="<%= U::htmlize(pageController.deviceConfig()->getString("webtunnel.password")) %>"
+                     size="32"
+                     maxLength="32">
+              (optional)
+            </td>
+          </tr>
+          <tr class="odd">
             <td colspan="2" style="text-align: right">
               <a href="#" onclick="cancelUpdateDevice()">Cancel</a>
               &nbsp;

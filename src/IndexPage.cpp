@@ -1,7 +1,7 @@
 //
 // IndexPage.cpp
 //
-// This file has been generated from IndexPage.cpsp on 2018-03-08 20:22:34.
+// This file has been generated from IndexPage.cpsp on 2018-09-21 07:59:31.
 //
 
 
@@ -37,11 +37,11 @@ void IndexPage::handleRequest(Poco::Net::HTTPServerRequest& request, Poco::Net::
 	if (!(U::authenticate(request, response))) return;
 
 	Poco::Net::HTMLForm form(request, request.stream());
-#line 4 "/Users/guenter/ws/git/my-devices/gateway/html/template.inc"
+#line 4 "/ws/git/my-devices/gateway/html/template.inc"
 
 	Poco::Net::NameValueCollection pageTemplate;
 	pageTemplate.set("softwareVersion", Utility::versionString());
-#line 8 "/Users/guenter/ws/git/my-devices/gateway/src/IndexPage.cpsp"
+#line 8 "/ws/git/my-devices/gateway/src/IndexPage.cpsp"
 
 IndexPageController pageController(context(), request, form);
 
@@ -63,7 +63,7 @@ pageTemplate.set("title", "Gateway");
 	responseStream << "    <meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\">\n";
 	responseStream << "    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge,chrome=1\">\n";
 	responseStream << "    <title>";
-#line 5 "/Users/guenter/ws/git/my-devices/gateway/html/header.inc"
+#line 5 "/ws/git/my-devices/gateway/html/header.inc"
 	responseStream << ( U::htmlize(pageTemplate["title"]) );
 	responseStream << "</title>\n";
 	responseStream << "    <link rel=\"stylesheet\" href=\"/css/styles.css\" type=\"text/css\"/>\n";
@@ -72,9 +72,9 @@ pageTemplate.set("title", "Gateway");
 	responseStream << "  <body lang=\"en\">\n";
 	responseStream << "    <header>\n";
 	responseStream << "      <div class=\"headercontainer\">\n";
-	responseStream << "        <div class=\"header\">  \n";
-	responseStream << "\t\t  <h1>";
-#line 13 "/Users/guenter/ws/git/my-devices/gateway/html/header.inc"
+	responseStream << "        <div class=\"header\">\n";
+	responseStream << "\t\t  <h1>Remote Manager ";
+#line 13 "/ws/git/my-devices/gateway/html/header.inc"
 	responseStream << ( U::htmlize(pageTemplate["title"]) );
 	responseStream << "</h1>\n";
 	responseStream << "        </div>\n";
@@ -102,15 +102,15 @@ pageTemplate.set("title", "Gateway");
 	responseStream << "}\n";
 	responseStream << "</script>\n";
 	responseStream << "\n";
-#line 36 "/Users/guenter/ws/git/my-devices/gateway/src/IndexPage.cpsp"
+#line 36 "/ws/git/my-devices/gateway/src/IndexPage.cpsp"
  if (!pageController.message().empty()) { 	responseStream << "\n";
 	responseStream << "  <div class=\"error\">\n";
 	responseStream << "    ";
-#line 38 "/Users/guenter/ws/git/my-devices/gateway/src/IndexPage.cpsp"
+#line 38 "/ws/git/my-devices/gateway/src/IndexPage.cpsp"
 	responseStream << ( U::htmlize(pageController.message()) );
 	responseStream << "\n";
 	responseStream << "  </div>\n";
-#line 40 "/Users/guenter/ws/git/my-devices/gateway/src/IndexPage.cpsp"
+#line 40 "/ws/git/my-devices/gateway/src/IndexPage.cpsp"
  } 	responseStream << "\n";
 	responseStream << "<form name=\"actionForm\" method=\"post\">\n";
 	responseStream << "  <input type=\"hidden\" name=\"action\" value=\"\">\n";
@@ -126,11 +126,11 @@ pageTemplate.set("title", "Gateway");
 	responseStream << "        <td>Reflector Server</td>\n";
 	responseStream << "        <td>\n";
 	responseStream << "          <a href=\"";
-#line 55 "/Users/guenter/ws/git/my-devices/gateway/src/IndexPage.cpsp"
+#line 55 "/ws/git/my-devices/gateway/src/IndexPage.cpsp"
 	responseStream << ( pageController.deviceManager()->config()->getString("webtunnel.reflectorURI", "") );
 	responseStream << "\">\n";
 	responseStream << "            ";
-#line 56 "/Users/guenter/ws/git/my-devices/gateway/src/IndexPage.cpsp"
+#line 56 "/ws/git/my-devices/gateway/src/IndexPage.cpsp"
 	responseStream << ( U::htmlize(pageController.deviceManager()->config()->getString("webtunnel.reflectorURI", "")) );
 	responseStream << "\n";
 	responseStream << "          </a>\n";
@@ -140,7 +140,7 @@ pageTemplate.set("title", "Gateway");
 	responseStream << "        <td>Domain</td>\n";
 	responseStream << "        <td>\n";
 	responseStream << "          ";
-#line 63 "/Users/guenter/ws/git/my-devices/gateway/src/IndexPage.cpsp"
+#line 63 "/ws/git/my-devices/gateway/src/IndexPage.cpsp"
 	responseStream << ( U::htmlize(pageController.deviceManager()->config()->getString("webtunnel.domain", "")) );
 	responseStream << "\n";
 	responseStream << "        </td>\n";
@@ -164,57 +164,57 @@ pageTemplate.set("title", "Gateway");
 	responseStream << "    </thead>\n";
 	responseStream << "    <tbody>\n";
 	responseStream << "      ";
-#line 84 "/Users/guenter/ws/git/my-devices/gateway/src/IndexPage.cpsp"
+#line 84 "/ws/git/my-devices/gateway/src/IndexPage.cpsp"
 
       bool even = false;
       	responseStream << "\n";
 	responseStream << "      ";
-#line 87 "/Users/guenter/ws/git/my-devices/gateway/src/IndexPage.cpsp"
+#line 87 "/ws/git/my-devices/gateway/src/IndexPage.cpsp"
  for (std::vector<std::string>::const_iterator it = pageController.devices().begin(); it != pageController.devices().end(); ++it) { 	responseStream << "\n";
 	responseStream << "        ";
-#line 88 "/Users/guenter/ws/git/my-devices/gateway/src/IndexPage.cpsp"
+#line 88 "/ws/git/my-devices/gateway/src/IndexPage.cpsp"
 
         Poco::AutoPtr<Poco::Util::AbstractConfiguration> pDeviceConfig = pageController.deviceManager()->deviceConfiguration(*it);	
         	responseStream << "\n";
 	responseStream << "        <tr class=\"";
-#line 91 "/Users/guenter/ws/git/my-devices/gateway/src/IndexPage.cpsp"
+#line 91 "/ws/git/my-devices/gateway/src/IndexPage.cpsp"
 	responseStream << ( even ? "even" : "odd" );
 	responseStream << "\">\n";
 	responseStream << "          <td>\n";
 	responseStream << "            <a href=\"/device/";
-#line 93 "/Users/guenter/ws/git/my-devices/gateway/src/IndexPage.cpsp"
+#line 93 "/ws/git/my-devices/gateway/src/IndexPage.cpsp"
 	responseStream << ( *it );
 	responseStream << "\">\n";
 	responseStream << "              ";
-#line 94 "/Users/guenter/ws/git/my-devices/gateway/src/IndexPage.cpsp"
+#line 94 "/ws/git/my-devices/gateway/src/IndexPage.cpsp"
 	responseStream << ( U::htmlize(pDeviceConfig->getString("webtunnel.deviceName", "")) );
 	responseStream << "\n";
 	responseStream << "            </a>\n";
 	responseStream << "          </td>\n";
 	responseStream << "          <td>\n";
 	responseStream << "            ";
-#line 98 "/Users/guenter/ws/git/my-devices/gateway/src/IndexPage.cpsp"
+#line 98 "/ws/git/my-devices/gateway/src/IndexPage.cpsp"
 	responseStream << ( U::htmlize(pDeviceConfig->getString("webtunnel.deviceId", "")) );
 	responseStream << "\n";
 	responseStream << "          </td>\n";
 	responseStream << "          <td>\n";
 	responseStream << "            ";
-#line 101 "/Users/guenter/ws/git/my-devices/gateway/src/IndexPage.cpsp"
+#line 101 "/ws/git/my-devices/gateway/src/IndexPage.cpsp"
 	responseStream << ( U::htmlize(pDeviceConfig->getString("webtunnel.host", "")) );
 	responseStream << "\n";
 	responseStream << "          </td>\n";
 	responseStream << "          <td>\n";
 	responseStream << "            ";
-#line 104 "/Users/guenter/ws/git/my-devices/gateway/src/IndexPage.cpsp"
+#line 104 "/ws/git/my-devices/gateway/src/IndexPage.cpsp"
 	responseStream << ( U::htmlize(pDeviceConfig->getString("webtunnel.ports", "")) );
 	responseStream << "\n";
 	responseStream << "          </td>\n";
 	responseStream << "          <td class=\"deviceListButton\">\n";
 	responseStream << "            <a href=\"#\" onclick=\"removeDevice('";
-#line 107 "/Users/guenter/ws/git/my-devices/gateway/src/IndexPage.cpsp"
+#line 107 "/ws/git/my-devices/gateway/src/IndexPage.cpsp"
 	responseStream << ( U::escape(*it) );
 	responseStream << "', '";
-#line 107 "/Users/guenter/ws/git/my-devices/gateway/src/IndexPage.cpsp"
+#line 107 "/ws/git/my-devices/gateway/src/IndexPage.cpsp"
 	responseStream << ( U::escape(pDeviceConfig->getString("webtunnel.deviceName", "")) );
 	responseStream << "')\">\n";
 	responseStream << "              <img class=\"button\" \n";
@@ -225,16 +225,16 @@ pageTemplate.set("title", "Gateway");
 	responseStream << "          </td>\n";
 	responseStream << "        </tr>\n";
 	responseStream << "        ";
-#line 115 "/Users/guenter/ws/git/my-devices/gateway/src/IndexPage.cpsp"
+#line 115 "/ws/git/my-devices/gateway/src/IndexPage.cpsp"
 
         even = !even; 
         	responseStream << "\n";
 	responseStream << "      ";
-#line 118 "/Users/guenter/ws/git/my-devices/gateway/src/IndexPage.cpsp"
+#line 118 "/ws/git/my-devices/gateway/src/IndexPage.cpsp"
  } 	responseStream << " ";
 	responseStream << "\n";
 	responseStream << "      <tr class=\"";
-#line 119 "/Users/guenter/ws/git/my-devices/gateway/src/IndexPage.cpsp"
+#line 119 "/ws/git/my-devices/gateway/src/IndexPage.cpsp"
 	responseStream << ( even ? "even" : "odd" );
 	responseStream << "\">\n";
 	responseStream << "        <td colspan=\"5\">\n";
@@ -257,9 +257,9 @@ pageTemplate.set("title", "Gateway");
 	responseStream << "      <div class=\"footercontainer\">\n";
 	responseStream << "        <div class=\"footer\">\n";
 	responseStream << "          ";
-#line 6 "/Users/guenter/ws/git/my-devices/gateway/html/footer.inc"
+#line 6 "/ws/git/my-devices/gateway/html/footer.inc"
 	responseStream << ( pageTemplate["softwareVersion"] );
-	responseStream << " | &copy; 2015-2018 by <a href=\"https://www.appinf.com\">Applied Informatics</a>.\n";
+	responseStream << " | &copy; 2015-2018 by <a href=\"https://macchina.io\">Applied Informatics GmbH</a>.\n";
 	responseStream << "        </div>\n";
 	responseStream << "      </div>\n";
 	responseStream << "    </footer>\n";

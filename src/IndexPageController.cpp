@@ -52,7 +52,16 @@ void IndexPageController::processForm()
 			pDeviceConfig->setString("webtunnel.deviceName", _form.get("deviceName"));
 			pDeviceConfig->setString("webtunnel.host", _form.get("host"));
 			pDeviceConfig->setString("webtunnel.ports", _form.get("ports"));
-			pDeviceConfig->setString("webtunnel.httpPort", _form.get("httpPort"));
+			std::string httpPort = _form.get("httpPort");
+			if (!httpPort.empty())
+				pDeviceConfig->setString("webtunnel.httpPort", _form.get("httpPort"));
+			else
+				pDeviceConfig->remove("webtunnel.httpPort");
+			std::string vncPort = _form.get("vncPort");
+			if (!vncPort.empty())
+				pDeviceConfig->setString("webtunnel.vncPort", _form.get("vncPort"));
+			else
+				pDeviceConfig->remove("webtunnel.vncPort");
 			pDeviceConfig->setString("webtunnel.password", _form.get("password"));
 			_pDeviceManager->updateDevice(pDeviceConfig);
 			_pDeviceManager->restartAgents(2000);

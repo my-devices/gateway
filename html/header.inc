@@ -9,8 +9,8 @@
   <body lang="en">
     <header>
       <div class="headercontainer">
-        <div class="header">  
-		  <h1><%= U::htmlize(pageTemplate["title"]) %></h1>
+        <div class="header">
+		  <h1>Remote Manager <%= U::htmlize(pageTemplate["title"]) %></h1>
         </div>
       </div>
     </header>

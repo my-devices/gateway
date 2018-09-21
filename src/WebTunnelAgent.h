@@ -62,6 +62,7 @@ private:
 	std::string _password;
 	std::string _userAgent;
 	Poco::UInt16 _httpPort;
+	Poco::UInt16 _vncPort;
 	bool _useProxy;
 	std::string _proxyHost;
 	Poco::UInt16 _proxyPort;

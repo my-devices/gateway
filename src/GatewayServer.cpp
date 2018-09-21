@@ -239,16 +239,16 @@ protected:
 		helpFormatter.setCommand(commandName());
 		helpFormatter.setUsage("OPTIONS");
 		helpFormatter.setHeader("\n"
-			"my-devices.net Gateway Server.\n\n"
-			"Copyright (c) 2015-2017 by Applied Informatics Software Engineering GmbH.\n"
+			"macchina.io Remote Manager Gateway Server.\n\n"
+			"Copyright (c) 2015-2018 by Applied Informatics Software Engineering GmbH.\n"
 			"All rights reserved.\n\n"
 			"This application is used to connect device web servers in the local\n"
-			"network to the my-devices.net reflector server in order to make them\n"
+			"network to the macchina.io Remote Manager server in order to make them\n"
 			"accessible remotely.\n\n"
 			"The following command-line options are supported:");
 		helpFormatter.setFooter(
-			"For more information, please visit the my-devices.net "
-			"website at <http://www.my-devices.net>."
+			"For more information, please visit the macchina.io "
+			"website at <https://macchina.io>."
 		);
 		helpFormatter.setIndent(8);
 		helpFormatter.format(std::cout);

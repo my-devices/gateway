@@ -30,11 +30,12 @@ namespace Gateway {
 
 const std::string WebTunnelAgent::SEC_WEBSOCKET_PROTOCOL("Sec-WebSocket-Protocol");
 const std::string WebTunnelAgent::WEBTUNNEL_PROTOCOL("com.appinf.webtunnel.server/1.0");
-const std::string WebTunnelAgent::WEBTUNNEL_AGENT("my-devices.net Gateway");
+const std::string WebTunnelAgent::WEBTUNNEL_AGENT("macchina.io Remote Manager Gateway");
 
 
 WebTunnelAgent::WebTunnelAgent(Poco::SharedPtr<Poco::Util::Timer> pTimer, Poco::SharedPtr<Poco::WebTunnel::SocketDispatcher> pDispatcher, Poco::AutoPtr<Poco::Util::AbstractConfiguration> pConfig):
 	_httpPort(0),
+	_vncPort(0),
 	_useProxy(false),
 	_proxyPort(0),
 	_retryDelay(1000),
@@ -73,7 +74,7 @@ void WebTunnelAgent::stop()
 
 void WebTunnelAgent::connect()
 {
-	_logger.information(Poco::format("Connecting device %s to %s...", _deviceName, _reflectorURI.toString()));
+	_logger.information("Connecting device %s to %s...", _deviceName, _reflectorURI.toString());
 
 	_pHTTPClientSession = Poco::Net::HTTPSessionFactory::defaultFactory().createClientSession(_reflectorURI);
 	_pHTTPClientSession->setTimeout(_httpTimeout);
@@ -101,6 +102,10 @@ void WebTunnelAgent::connect()
 	{
 		request.add("X-PTTH-Set-Property", Poco::format("device;httpPort=%hu", _httpPort));
 	}
+	if (_vncPort != 0)
+	{
+		request.add("X-PTTH-Set-Property", Poco::format("device;vncPort=%hu", _vncPort));
+	}
 	if (!_deviceName.empty())
 	{
 		request.add("X-PTTH-Set-Property", Poco::format("device;name=\"%s\"", _deviceName));
@@ -120,17 +125,18 @@ void WebTunnelAgent::connect()
 			if (response.get(SEC_WEBSOCKET_PROTOCOL, "") == WEBTUNNEL_PROTOCOL)
 			{
 				_logger.debug("WebSocket established. Creating RemotePortForwarder...");
+				pWebSocket->setNoDelay(true);
+				_retryDelay = 1000;
 				_pForwarder = new Poco::WebTunnel::RemotePortForwarder(*_pDispatcher, pWebSocket, _host, _ports, _remoteTimeout);
 				_pForwarder->setConnectTimeout(_connectTimeout);
 				_pForwarder->setLocalTimeout(_localTimeout);
 				_pForwarder->webSocketClosed += Poco::delegate(this, &WebTunnelAgent::onClose);
-				_retryDelay = 1000;
-				_logger.information(Poco::format("WebTunnel connection established for device %s.", _deviceName));
+				_logger.information("WebTunnel connection established for device %s.", _deviceName);
 				return;
 			}
 			else
 			{
-				_logger.error(Poco::format("The host at %s does not support the WebTunnel protocol.", _reflectorURI.toString()));
+				_logger.error("The host at %s does not support the WebTunnel protocol.", _reflectorURI.toString());
 
 				pWebSocket->shutdown(Poco::Net::WebSocket::WS_PROTOCOL_ERROR);
 				// receive final frame from peer; ignore if none is sent.
@@ -152,7 +158,7 @@ void WebTunnelAgent::connect()
 		}
 		catch (Poco::Exception& exc)
 		{
-			_logger.error(Poco::format("Cannot connect device %s to reflector at %s: %s", _deviceName, _reflectorURI.toString(), exc.displayText()));
+			_logger.error("Cannot connect device %s to reflector at %s: %s", _deviceName, _reflectorURI.toString(), exc.displayText());
 			if (_retryDelay < 30000)
 			{
 				_retryDelay *= 2;
@@ -173,7 +179,7 @@ void WebTunnelAgent::disconnect()
 {
 	if (_pForwarder)
 	{
-		_logger.information(Poco::format("Disconnecting device %s from reflector server", _deviceName));
+		_logger.information("Disconnecting device %s from reflector server", _deviceName);
 
 		_pForwarder->webSocketClosed -= Poco::delegate(this, &WebTunnelAgent::onClose);
 		_pForwarder->stop();
@@ -194,7 +200,23 @@ void WebTunnelAgent::disconnect()
 
 void WebTunnelAgent::onClose(const int& reason)
 {
-	_logger.information(Poco::format("WebTunnel connection closed for device %s.", _deviceName));
+	std::string message;
+	switch (reason)
+	{
+	case Poco::WebTunnel::RemotePortForwarder::RPF_CLOSE_GRACEFUL:
+		message = "WebTunnel connection gracefully closed";
+		break;
+	case Poco::WebTunnel::RemotePortForwarder::RPF_CLOSE_UNEXPECTED:
+		message = "WebTunnel connection unexpectedly closed";
+		break;
+	case Poco::WebTunnel::RemotePortForwarder::RPF_CLOSE_ERROR:
+		message = "WebTunnel connection closed due to error";
+		break;
+	case Poco::WebTunnel::RemotePortForwarder::RPF_CLOSE_TIMEOUT:
+		message = "WebTunnel connection closed due to timeout";
+		break;
+	}
+	_logger.information("%s for device %s.", message, _deviceName);
 
 	Poco::Timestamp ts;
 	ts += _retryDelay*1000;
@@ -238,7 +260,7 @@ void WebTunnelAgent::init(Poco::AutoPtr<Poco::Util::AbstractConfiguration> pConf
 		}
 		else
 		{
-			_logger.warning(Poco::format("Ignoring out-of-range port number specified in configuration for device %s: %d", _deviceName, port));
+			_logger.warning("Ignoring out-of-range port number specified in configuration for device %s: %d", _deviceName, port);
 		}
 	}
 
@@ -251,6 +273,7 @@ void WebTunnelAgent::init(Poco::AutoPtr<Poco::Util::AbstractConfiguration> pConf
 	_connectTimeout = Poco::Timespan(pConfig->getInt("webtunnel.connectTimeout", 10), 0);
 	_remoteTimeout = Poco::Timespan(pConfig->getInt("webtunnel.remoteTimeout", 300), 0);
 	_httpPort = static_cast<Poco::UInt16>(pConfig->getInt("webtunnel.httpPort", 0));
+	_vncPort = static_cast<Poco::UInt16>(pConfig->getInt("webtunnel.vncPort", 0));
 	_userAgent = pConfig->getString("webtunnel.userAgent", "");
 	_httpTimeout = Poco::Timespan(pConfig->getInt("http.timeout", 30), 0);
 	_useProxy = pConfig->getBool("http.proxy.enable", false);
@@ -261,7 +284,7 @@ void WebTunnelAgent::init(Poco::AutoPtr<Poco::Util::AbstractConfiguration> pConf
 
 	if (_httpPort != 0 && _ports.find(_httpPort) == _ports.end())
 	{
-		_logger.warning(Poco::format("HTTP port (%hu) not in list of forwarded ports for device %s.", _httpPort, _deviceName));
+		_logger.warning("HTTP port (%hu) not in list of forwarded ports for device %s.", _httpPort, _deviceName);
 	}
 
 	if (_userAgent.empty())
