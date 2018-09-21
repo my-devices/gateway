@@ -1,11 +1,11 @@
-# The my-devices.net Gateway
+# The macchina.io Remote Manager Gateway
 
-## About my-devices.net
+## About macchina.io Remote Manager
 
-[my-devices.net](http://www.my-devices.net) provides secure remote access to connected devices
+[macchina.io Remote Manager](https://macchina.io/remote.html) provides secure remote access to connected devices
 via HTTP or other TCP-based protocols and applications such as secure shell (SSH) or
-Virtual Network Computing (VNC). With my-devices.net, any network-connected device
-running the my-devices.net Agent or this Gateway program can be securely accessed remotely over the
+Virtual Network Computing (VNC). With macchina.io Remote Manager, any network-connected device
+running the Remote Manager Agent or this Gateway program can be securely accessed remotely over the
 internet from browsers, mobile apps, desktop, server or cloud applications.
 
 This even works if the device is behind a NAT router, firewall or proxy server.
@@ -15,22 +15,22 @@ my-devices.net is a great solution for secure remote support and maintenance,
 as well as for providing secure remote access to devices for end-users via web or
 mobile apps.
 
-Visit [my-devices.net](http://www.my-devices.net) to learn more and to register for a free account.
-Specifically, see the [Getting Started](http://www.my-devices.net/getstarted.html) page and the
-[Frequently Asked Questions](http://www.my-devices.net/learnmore.html) for
+Visit [macchina.io](https://macchina.io/remote.html) to learn more and to register for a free account.
+Specifically, see the [Getting Started](https://macchina.io/remote.html#signup) page and the
+[Frequently Asked Questions](https://macchina.io/remote_faq.html) for
 information on how to use this SDK and the included *WebTunnelAgent* executable.
 
-There is also a [blog post](http://www.appinf.com/blog/?p=257) showing step-by-step instructions to connect a Raspberry Pi.
+There is also a [blog post](https://macchina.io/blog/?p=257) showing step-by-step instructions to connect a Raspberry Pi.
 
 
-## About the my-devices.net Gateway
+## About the macchina.io Remote Manager Gateway
 
-The my-devices.net Gateway is similar to the Agent from the SDK, but allows you to
-connect multiple devices or services to the my-device.net reflector server using
+The macchina.io Remote Manager Gateway is similar to the Remote Manager Agent from the SDK, but allows you to
+connect multiple devices or services to the Remote Manager server using
 a single Gateway server instance. The Gateway also has a built-in web user interface
 for managing device/service connections.
 
-The my-devices.net Gateway requires the [my-devices.net SDK](https://github.com/my-devices/sdk).
+The Remote Manager Gateway requires the [Remote Manager SDK](https://github.com/my-devices/sdk).
 
 Like the SDK, the Gateway is licensed under the [Boost Software License](https://spdx.org/licenses/BSL-1.0).
 
