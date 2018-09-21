@@ -152,9 +152,6 @@ div.footercontainer
 	left: 0;
 	bottom: 0;
 	background-color: #eee;
-	background-image: url(../images/footerlogo.png);
-	background-repeat: no-repeat;
-	background-position: bottom right;
 }
 
 @media only screen and (-Webkit-min-device-pixel-ratio: 1.5),

@@ -32,7 +32,6 @@ objects = GatewayServer WebTunnelAgent DeviceManager Utility PageController \
 	FavIcon \
 	Gradient \
 	HeaderLogo HeaderLogoX2 \
-	FooterLogo FooterLogoX2 \
 	PlusIcon PlusIconX2 \
 	MinusIcon MinusIconX2
 

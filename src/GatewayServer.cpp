@@ -48,8 +48,6 @@
 #include "Gradient.h"
 #include "HeaderLogo.h"
 #include "HeaderLogoX2.h"
-#include "FooterLogo.h"
-#include "FooterLogoX2.h"
 #include "PlusIcon.h"
 #include "PlusIconX2.h"
 #include "MinusIcon.h"
@@ -120,10 +118,6 @@ public:
 			return new HeaderLogo;
 		else if (uri == "/images/headerlogo-x2.png")
 			return new HeaderLogoX2;
-		else if (uri == "/images/footerlogo.png")
-			return new FooterLogo;
-		else if (uri == "/images/footerlogo-x2.png")
-			return new FooterLogoX2;
 		else if (uri == "/images/plusicon.png")
 			return new PlusIcon;
 		else if (uri == "/images/plusicon-x2.png")
