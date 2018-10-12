@@ -181,7 +181,7 @@ std::string DeviceManager::deviceConfigurationPath(const std::string& deviceId) 
 
 std::string DeviceManager::deviceRepositoryPath() const
 {
-	std::string deviceConfigPath(_pConfig->getString("deviceConfigPath", ""));
+	std::string deviceConfigPath(_pConfig->getString("gateway.configDir", ""));
 	if (deviceConfigPath.empty())
 	{
 		Poco::Path p(_pConfig->getString("application.configDir"));
