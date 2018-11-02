@@ -50,7 +50,11 @@ void IndexPageController::processForm()
 		{
 			Poco::AutoPtr<Poco::Util::AbstractConfiguration> pDeviceConfig = _pDeviceManager->deviceConfiguration(target);
 			pDeviceConfig->setString("webtunnel.deviceName", _form.get("deviceName"));
-			pDeviceConfig->setString("webtunnel.domain", _form.get("domain"));
+			std::string domain = _form.get("domain");
+			if (!domain.empty())
+				pDeviceConfig->setString("webtunnel.domain", domain);
+			else
+				pDeviceConfig->remove("webtunnel.domain");
 			pDeviceConfig->setString("webtunnel.host", _form.get("host"));
 			pDeviceConfig->setString("webtunnel.ports", _form.get("ports"));
 			std::string httpPort = _form.get("httpPort");
