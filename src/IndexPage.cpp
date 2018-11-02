@@ -1,7 +1,7 @@
 //
 // IndexPage.cpp
 //
-// This file has been generated from IndexPage.cpsp on 2018-09-21 07:59:31.
+// This file has been generated from IndexPage.cpsp on 2018-11-01 19:07:08.
 //
 
 
@@ -137,7 +137,7 @@ pageTemplate.set("title", "Gateway");
 	responseStream << "        </td>\n";
 	responseStream << "      </tr>\n";
 	responseStream << "      <tr>\n";
-	responseStream << "        <td>Domain</td>\n";
+	responseStream << "        <td>Default Domain</td>\n";
 	responseStream << "        <td>\n";
 	responseStream << "          ";
 #line 63 "/ws/git/my-devices/gateway/src/IndexPage.cpsp"
@@ -174,7 +174,7 @@ pageTemplate.set("title", "Gateway");
 	responseStream << "        ";
 #line 88 "/ws/git/my-devices/gateway/src/IndexPage.cpsp"
 
-        Poco::AutoPtr<Poco::Util::AbstractConfiguration> pDeviceConfig = pageController.deviceManager()->deviceConfiguration(*it);	
+        Poco::AutoPtr<Poco::Util::AbstractConfiguration> pDeviceConfig = pageController.deviceManager()->deviceConfiguration(*it);
         	responseStream << "\n";
 	responseStream << "        <tr class=\"";
 #line 91 "/ws/git/my-devices/gateway/src/IndexPage.cpsp"
@@ -217,9 +217,9 @@ pageTemplate.set("title", "Gateway");
 #line 107 "/ws/git/my-devices/gateway/src/IndexPage.cpsp"
 	responseStream << ( U::escape(pDeviceConfig->getString("webtunnel.deviceName", "")) );
 	responseStream << "')\">\n";
-	responseStream << "              <img class=\"button\" \n";
-	responseStream << "                   src=\"/images/minusicon.png\" \n";
-	responseStream << "                   srcset=\"/images/minusicon-x2.png 2x\" \n";
+	responseStream << "              <img class=\"button\"\n";
+	responseStream << "                   src=\"/images/minusicon.png\"\n";
+	responseStream << "                   srcset=\"/images/minusicon-x2.png 2x\"\n";
 	responseStream << "                   title=\"Remove Device\">\n";
 	responseStream << "            </a>\n";
 	responseStream << "          </td>\n";
@@ -227,7 +227,7 @@ pageTemplate.set("title", "Gateway");
 	responseStream << "        ";
 #line 115 "/ws/git/my-devices/gateway/src/IndexPage.cpsp"
 
-        even = !even; 
+        even = !even;
         	responseStream << "\n";
 	responseStream << "      ";
 #line 118 "/ws/git/my-devices/gateway/src/IndexPage.cpsp"
@@ -239,8 +239,8 @@ pageTemplate.set("title", "Gateway");
 	responseStream << "\">\n";
 	responseStream << "        <td colspan=\"5\">\n";
 	responseStream << "          <a href=\"#\" onclick=\"addDevice()\">\n";
-	responseStream << "            <img class=\"button\" \n";
-	responseStream << "                 src=\"/images/plusicon.png\" \n";
+	responseStream << "            <img class=\"button\"\n";
+	responseStream << "                 src=\"/images/plusicon.png\"\n";
 	responseStream << "                 srcset=\"/images/plusicon-x2.png 2x\"\n";
 	responseStream << "                 title=\"Add Device\">\n";
 	responseStream << "          </a>\n";

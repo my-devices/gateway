@@ -58,7 +58,7 @@ function removeDevice(id, name)
         </td>
       </tr>
       <tr>
-        <td>Domain</td>
+        <td>Default Domain</td>
         <td>
           <%= U::htmlize(pageController.deviceManager()->config()->getString("webtunnel.domain", "")) %>
         </td>
@@ -86,7 +86,7 @@ function removeDevice(id, name)
       %>
       <% for (std::vector<std::string>::const_iterator it = pageController.devices().begin(); it != pageController.devices().end(); ++it) { %>
         <%
-        Poco::AutoPtr<Poco::Util::AbstractConfiguration> pDeviceConfig = pageController.deviceManager()->deviceConfiguration(*it);	
+        Poco::AutoPtr<Poco::Util::AbstractConfiguration> pDeviceConfig = pageController.deviceManager()->deviceConfiguration(*it);
         %>
         <tr class="<%= even ? "even" : "odd" %>">
           <td>
@@ -105,22 +105,22 @@ function removeDevice(id, name)
           </td>
           <td class="deviceListButton">
             <a href="#" onclick="removeDevice('<%= U::escape(*it) %>', '<%= U::escape(pDeviceConfig->getString("webtunnel.deviceName", "")) %>')">
-              <img class="button" 
-                   src="/images/minusicon.png" 
-                   srcset="/images/minusicon-x2.png 2x" 
+              <img class="button"
+                   src="/images/minusicon.png"
+                   srcset="/images/minusicon-x2.png 2x"
                    title="Remove Device">
             </a>
           </td>
         </tr>
         <%
-        even = !even; 
+        even = !even;
         %>
       <% } %> <%-- for --%>
       <tr class="<%= even ? "even" : "odd" %>">
         <td colspan="5">
           <a href="#" onclick="addDevice()">
-            <img class="button" 
-                 src="/images/plusicon.png" 
+            <img class="button"
+                 src="/images/plusicon.png"
                  srcset="/images/plusicon-x2.png 2x"
                  title="Add Device">
           </a>

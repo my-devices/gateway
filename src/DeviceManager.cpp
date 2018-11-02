@@ -109,6 +109,7 @@ Poco::AutoPtr<Poco::Util::AbstractConfiguration> DeviceManager::createDevice()
 	Poco::AutoPtr<Poco::Util::PropertyFileConfiguration> pConfig = new Poco::Util::PropertyFileConfiguration;
 	pConfig->setString("webtunnel.deviceName", "Unnamed Device");
 	pConfig->setString("webtunnel.deviceId", uuid.toString());
+	pConfig->setString("webtunnel.domain", _pConfig->getString("webtunnel.domain"));
 	pConfig->setString("webtunnel.host", "127.0.0.1");
 	pConfig->setString("webtunnel.ports", "80");
 	pConfig->setString("webtunnel.httpPort", "80");

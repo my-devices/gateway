@@ -36,13 +36,24 @@ function cancelUpdateDevice(id)
 
 <% if (pageController.deviceConfig()) { %>
   <div class="groupbox">
-    <h2>Device Settings</h2>
+    <h2>Device Properties</h2>
 
     <form name="actionForm" method="post" action="/">
       <input type="hidden" name="action" value="update">
       <input type="hidden" name="target" value="<%= pageController.deviceConfig()->getString("webtunnel.deviceId") %>">
       <table class="list">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Value</th>
+          </tr>
+        </thead>
         <tbody>
+          <tr class="intermediateHeader">
+            <th colspan="2">
+              Basic Properties
+            </th>
+          </tr>
           <tr class="even">
             <td class="basicProperty">ID</td>
             <td><%= U::htmlize(pageController.deviceConfig()->getString("webtunnel.deviceId")) %></td>
@@ -55,6 +66,31 @@ function cancelUpdateDevice(id)
                      size="64"
                      maxLength="64">
             </td>
+          </tr>
+          <tr class="even">
+            <td class="basicProperty">Domain</td>
+            <td>
+              <input name="domain"
+                     value="<%= U::htmlize(pageController.deviceConfig()->getString("webtunnel.domain", "")) %>"
+                     size="64"
+                     maxLength="64">
+            </td>
+          </tr>
+          <tr class="odd">
+            <td>Device Password</td>
+            <td>
+              <input type="password"
+                     name="password"
+                     value="<%= U::htmlize(pageController.deviceConfig()->getString("webtunnel.password")) %>"
+                     size="32"
+                     maxLength="32">
+              (optional)
+            </td>
+          </tr>
+          <tr class="intermediateHeader">
+            <th colspan="2">
+              Device Address and Ports
+            </th>
           </tr>
           <tr class="even">
             <td class="basicProperty">Device IP Address or Domain Name</td>
@@ -95,17 +131,6 @@ function cancelUpdateDevice(id)
             </td>
           </tr>
           <tr class="even">
-            <td>Device Password</td>
-            <td>
-              <input type="password"
-                     name="password"
-                     value="<%= U::htmlize(pageController.deviceConfig()->getString("webtunnel.password")) %>"
-                     size="32"
-                     maxLength="32">
-              (optional)
-            </td>
-          </tr>
-          <tr class="odd">
             <td colspan="2" style="text-align: right">
               <a href="#" onclick="cancelUpdateDevice()">Cancel</a>
               &nbsp;
