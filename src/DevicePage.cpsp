@@ -130,7 +130,7 @@ function cancelUpdateDevice(id)
               (optional)
             </td>
           </tr>
-          <tr class="even">
+          <tr>
             <td colspan="2" style="text-align: right">
               <a href="#" onclick="cancelUpdateDevice()">Cancel</a>
               &nbsp;

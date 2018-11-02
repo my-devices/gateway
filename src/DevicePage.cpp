@@ -1,7 +1,7 @@
 //
 // DevicePage.cpp
 //
-// This file has been generated from DevicePage.cpsp on 2018-11-01 19:54:47.
+// This file has been generated from DevicePage.cpsp on 2018-11-02 10:22:31.
 //
 
 
@@ -231,7 +231,7 @@ void DevicePage::handleRequest(Poco::Net::HTTPServerRequest& request, Poco::Net:
 	responseStream << "              (optional)\n";
 	responseStream << "            </td>\n";
 	responseStream << "          </tr>\n";
-	responseStream << "          <tr class=\"even\">\n";
+	responseStream << "          <tr>\n";
 	responseStream << "            <td colspan=\"2\" style=\"text-align: right\">\n";
 	responseStream << "              <a href=\"#\" onclick=\"cancelUpdateDevice()\">Cancel</a>\n";
 	responseStream << "              &nbsp;\n";
