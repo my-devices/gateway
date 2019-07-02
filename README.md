@@ -57,10 +57,12 @@ $ git clone https://github.com/my-devices/gateway.git
 The SDK should be build and installed to a directory so that it can later
 be picked up by CMake when building the Gateway.
 
+```
 $ mkdir sdk-build && cd sdk-build
 $ cmake ../sdk -DCMAKE_INSTALL_PREFIX=../sdk-install
 $ cmake --build . --target install
 $ cd ..
+```
 
 See the [SDK README](https://github.com/my-devices/sdk/blob/master/README.md) for
 more options, specifically providing the path to OpenSSL headers and libraries
