@@ -1,7 +1,7 @@
 //
 // IndexPage.cpp
 //
-// This file has been generated from IndexPage.cpsp on 2018-11-01 19:07:08.
+// This file has been generated from IndexPage.cpsp on 2019-07-02 16:40:20.
 //
 
 
@@ -259,7 +259,7 @@ pageTemplate.set("title", "Gateway");
 	responseStream << "          ";
 #line 6 "/ws/git/my-devices/gateway/html/footer.inc"
 	responseStream << ( pageTemplate["softwareVersion"] );
-	responseStream << " | &copy; 2015-2018 by <a href=\"https://macchina.io\">Applied Informatics GmbH</a>.\n";
+	responseStream << " | &copy; 2015-2019 by <a href=\"https://macchina.io\">Applied Informatics GmbH</a>.\n";
 	responseStream << "        </div>\n";
 	responseStream << "      </div>\n";
 	responseStream << "    </footer>\n";

@@ -1,7 +1,7 @@
 //
 // MinusIcon.cpp
 //
-// This file has been generated from MinusIcon.cpsp on 2018-09-21 07:59:27.
+// This file has been generated from MinusIcon.cpsp on 2019-07-02 16:40:17.
 //
 
 

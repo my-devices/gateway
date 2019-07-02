@@ -37,8 +37,8 @@ Like the SDK, the Gateway is licensed under the [Boost Software License](https:/
 
 ## Building the Gateway
 
-The Gateway can be built on Linux and macOS. Project files for Visual Studio will be
-provided later.
+The Gateway can be built on Linux, macOS and Windows with CMake.
+
 
 ### 1. Clone the SDK and Gatway repositories.
 
@@ -52,30 +52,40 @@ $ git clone https://github.com/my-devices/sdk.git
 $ git clone https://github.com/my-devices/gateway.git
 ```
 
-### 2. Build the SDK.
+### 2. Build and Install the SDK.
 
-```
-$ (cd sdk && ./buildsdk.sh)
-```
+The SDK should be build and installed to a directory so that it can later
+be picked up by CMake when building the Gateway.
+
+$ mkdir sdk-build && cd sdk-build
+$ cmake ../sdk -DCMAKE_INSTALL_PREFIX=../sdk-install
+$ cmake --build . --target install
+$ cd ..
 
 See the [SDK README](https://github.com/my-devices/sdk/blob/master/README.md) for
-more options, specifically cross-compilation.
+more options, specifically providing the path to OpenSSL headers and libraries
+and cross-compilation.
 
-### 3. Build the Agent
+### 3. Build the Gateway
+
+The important part is specifying the `CMAKE_PREFIX_PATH` so that the SDK
+headers and libraries will be found.
 
 ```
-$ make -s -C gateway shared_release
+$ mkdir gateway-build && cd gateway-build
+$ cmake ../gateway -DCMAKE_PREFIX_PATH=../sdk-install
+$ cmake --build .
 ```
 
 ## Running the Gateway
 
-Edit the configuration file [mygateway.properties](mygateway.properties) and change the default password
+Edit the configuration file [rmgateway.properties](rmgateway.properties) and change the default password
 and Remote Manager domain.
 
 To change the password, run:
 
 ```
-$ gateway/bin/Linux/x86_64/mygateway -H<password>
+$ ./rmgateway -H<password>
 ```
 
 to compute the password hash. Change the value of the `gateway.password` property
@@ -84,11 +94,11 @@ to the hash value for your password.
 Example: if your password is `sup3rS3cr3t`:
 
 ```
-$ gateway/bin/Linux/x86_64/mygateway -Hsup3rS3cr3t
+$ ./rmgateway -Hsup3rS3cr3t
 61cba3bd7cc5bc6f3441a58c290e10a40f3cbcf6d1f538071d45a77e823273b0
 ```
 
-Change the `gateway.password` property in `mygateway.properties` to:
+Change the `gateway.password` property in `rmgateway.properties` to:
 
 ```
 gateway.password = 61cba3bd7cc5bc6f3441a58c290e10a40f3cbcf6d1f538071d45a77e823273b0
@@ -100,10 +110,14 @@ Remote Manager server account.
 Optionally, you can also change other configuration properties, such as the
 port of the internal web server (defaults to 8080).
 
-Finally, run `mygateway`:
+Copy the `rmgateway.properties` file to the same directory
+the `rmgateway` executable is located in, or use the `--config-file` option
+to specify the path to the configuration file.
+
+Finally, run `rmgateway`:
 
 ```
-$ gateway/bin/Linux/x86_64/mygateway
+$ ./rmgateway
 ```
 
 and open its configuration web interface at

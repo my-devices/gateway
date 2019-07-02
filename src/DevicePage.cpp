@@ -1,7 +1,7 @@
 //
 // DevicePage.cpp
 //
-// This file has been generated from DevicePage.cpsp on 2018-11-02 10:22:31.
+// This file has been generated from DevicePage.cpsp on 2019-07-02 16:40:19.
 //
 
 
@@ -254,7 +254,7 @@ void DevicePage::handleRequest(Poco::Net::HTTPServerRequest& request, Poco::Net:
 	responseStream << "          ";
 #line 6 "/ws/git/my-devices/gateway/html/footer.inc"
 	responseStream << ( pageTemplate["softwareVersion"] );
-	responseStream << " | &copy; 2015-2018 by <a href=\"https://macchina.io\">Applied Informatics GmbH</a>.\n";
+	responseStream << " | &copy; 2015-2019 by <a href=\"https://macchina.io\">Applied Informatics GmbH</a>.\n";
 	responseStream << "        </div>\n";
 	responseStream << "      </div>\n";
 	responseStream << "    </footer>\n";
