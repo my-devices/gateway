@@ -36,10 +36,10 @@ if(MSVC)
     else(POCO_MT)
 			set(STATIC_POSTFIX "md" CACHE STRING "Set static library postfix" FORCE)
 	endif(POCO_MT)
-      
+
 	if (ENABLE_MSVC_MP)
 		add_definitions(/MP)
-	endif()  
+	endif()
 else(MSVC)
 	# Other compilers then MSVC don't have a static STATIC_POSTFIX at the moment
 	set(STATIC_POSTFIX "" CACHE STRING "Set static library postfix" FORCE)
@@ -82,6 +82,10 @@ else()
 	    target_link_libraries(rmgateway Poco::NetSSL Poco::Crypto ${OPENSSL_SSL_LIBRARY} ${OPENSSL_CRYPTO_LIBRARY})
     endif()
   endif()
+endif()
+
+if(UNIX AND NOT APPLE)
+  target_link_libraries(rmgateway crypt)
 endif()
 
 target_link_libraries(rmgateway Poco::WebTunnel Poco::Net Poco::Util Poco::Foundation)
