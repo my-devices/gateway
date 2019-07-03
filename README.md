@@ -46,8 +46,7 @@ Note: If you've already cloned the SDK repository, you do not need to clone it a
 that the `gateway` repository is in the same directory, alongside the `sdk` repository.
 
 ```
-$ mkdir my-devices
-$ cd my-devices
+$ mkdir my-devices && cd my-devices
 $ git clone https://github.com/my-devices/sdk.git
 $ git clone https://github.com/my-devices/gateway.git
 ```
