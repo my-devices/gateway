@@ -67,6 +67,9 @@ See the [SDK README](https://github.com/my-devices/sdk/blob/master/README.md) fo
 more options, specifically providing the path to OpenSSL headers and libraries
 and cross-compilation.
 
+To cross-compile, add `-DCMAKE_TOOLCHAIN_FILE=/path/to/toolchain.cmake` to the
+`cmake` configuration command.
+
 ### 3. Build the Gateway
 
 The important part is specifying the `CMAKE_PREFIX_PATH` so that the SDK
@@ -77,6 +80,9 @@ $ mkdir gateway-build && cd gateway-build
 $ cmake ../gateway -DCMAKE_PREFIX_PATH=../sdk-install
 $ cmake --build .
 ```
+
+To cross-compile, add `-DCMAKE_TOOLCHAIN_FILE=/path/to/toolchain.cmake` to the
+`cmake` configuration command.
 
 ## Running the Gateway
 
