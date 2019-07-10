@@ -234,7 +234,7 @@ protected:
 		helpFormatter.setUsage("OPTIONS");
 		helpFormatter.setHeader("\n"
 			"macchina.io Remote Manager Gateway Server.\n\n"
-			"Copyright (c) 2015-2018 by Applied Informatics Software Engineering GmbH.\n"
+			"Copyright (c) 2015-2019 by Applied Informatics Software Engineering GmbH.\n"
 			"All rights reserved.\n\n"
 			"This application is used to connect device web servers in the local\n"
 			"network to the macchina.io Remote Manager server in order to make them\n"
