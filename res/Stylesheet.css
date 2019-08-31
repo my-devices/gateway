@@ -76,7 +76,7 @@ body
 
 p, h1, h2, h3, h4, h5, h6, ul, ol, li, td, th, form, address, blockquote, strong, b, div, emph, i
 {
-	font-family: Helvetica, Arial, SunSans-Regular, sans-serif;
+	font-family: Tahoma, Geneva, sans-serif;
 }
 
 div, p, ul, ol, li, address, blockquote, h6, form, td
@@ -171,10 +171,6 @@ only screen and (min-device-pixel-ratio: 1.5)
 		left: 0;
 		bottom: 0;
 		background-color: #eee;
-		background-image: url(../images/footerlogo-x2.png);
-		background-repeat: no-repeat;
-		background-position: bottom right;
-		background-size: 96px 40px;
 	}
 }
 
@@ -318,63 +314,6 @@ ul
 	margin-left: 2em;
 	list-style-type: disc;
 	list-style-position: outside;
-}
-
-div.usernav
-{
-	width: 100%;
-	height: 28px;
-	margin-top: 0px;
-	margin-bottom: 18px;
-	margin-left: 0;
-	margin-right: 0;
-}
-
-div.usernav a
-{
-	display: inline-block;
-}
-
-div.navigation
-{
-	border: 0;
-	padding: 0;
-	margin: 0;
-	float: left;
-	text-align: left;
-	width: 200px;
-	height: 28px;
-}
-
-div.navigation #homeIcon
-{
-	width: 28px;
-	height: 28px;
-	border: 0;
-	vertical-align: middle;
-}
-
-div.username
-{
-	font-size: 12px;
-	text-align: right;
-	margin: 0;
-	float: right;
-	font-weight: bold;
-}
-
-div.username #userIcon
-{
-	width: 28px;
-	height: 28px;
-	border: 0;
-	vertical-align: middle;
-}
-
-div.username #logoutLink
-{
-	color: #444;
-	font-weight: normal;
 }
 
 div.listcontainer
@@ -571,166 +510,10 @@ emph, i
 .footer
 {
 	font-size: 12px;
-	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-family: Tahoma, Geneva, sans-serif;
 	text-align: left;
 	line-height: 9pt;
 	color: #444;
-}
-
-.sortable
-{
-	cursor: pointer;
-	-moz-user-select: none;
-	-webkit-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
-}
-
-span.clearableInput
-{
-	position: relative;
-}
-
-span.clearableInput span
-{
-	position: absolute;
-	display: block;
-	top: 0px;
-	right: 8px;
-	width: 16px;
-	height: 16px;
-	background: url('../images/clearbutton.png');
-	cursor: pointer;
-}
-
-@media only screen and (-Webkit-min-device-pixel-ratio: 1.5),
-only screen and (-moz-min-device-pixel-ratio: 1.5),
-only screen and (-o-min-device-pixel-ratio: 3/2),
-only screen and (min-device-pixel-ratio: 1.5)
-{
-	span.clearableInput span
-	{
-		position: absolute;
-		display: block;
-		top: 0px;
-		right: 8px;
-		width: 16px;
-		height: 16px;
-		background: url('../images/clearbutton-x2.png');
-		background-size: 16px 16px;
-		cursor: pointer;
-	}
-}
-
-span.clearableInput input
-{
-	padding-right: 16px;
-}
-
-div.loginBox
-{
-	margin-top: 140px;
-	text-align: center;
-	font-size: 16px;
-	margin-left: auto;
-	margin-right: auto;
-	padding: 20px;
-	width: 480px;
-}
-
-div.loginBox td, div.loginBox th
-{
-	padding: 10px;
-}
-
-div.loginBox #notice
-{
-	font-size: 20px;
-	text-align: center;
-	padding-bottom: 40px;
-}
-
-div.loginBox #subnotice
-{
-	font-size: 18px;
-	text-align: center;
-	margin-top: 20px;
-	color: #606060;
-}
-
-div.loginBox #fullNameLabelCell, div.loginBox #usernameLabelCell, div.loginBox #oldPasswordLabelCell, div.loginBox #passwordLabelCell, div.loginBox #verifyLabelCell
-{
-	font-size: 16px;
-	text-align: right;
-	color: #0076B8;
-}
-
-div.loginBox #fullNameInputCell, div.loginBox #usernameInputCell, div.loginBox #oldPasswordInputCell, div.loginBox #passwordInputCell, div.loginBox #verifyInputCell
-{
-	text-align: left;
-}
-
-div.loginBox #fullNameInput, div.loginBox #usernameInput, div.loginBox #oldPasswordInput, div.loginBox #passwordInput, div.loginBox #verifyInput
-{
-	font-size: 18px;
-	width: 240px;
-	height: 28px;
-	background-color: white;
-	color: #111;
-	border: 1px solid #0076B8;
-	padding-left: 6px;
-	padding-right: 6px;
-}
-
-div.loginBox #loginButtonCell
-{
-	text-align: left;
-}
-
-div.loginBox #loginButton, div.loginBox #resetPasswordButton
-{
-	height: 28px;
-	text-align: center;
-	font-size: 16px;
-	background-color: #0076B8;
-	border: 1px solid #012F50;
-	color: white;
-	cursor: pointer;
-}
-
-div.loginBox #loginButton:hover, div.loginBox #resetPasswordButton:hover
-{
-	background-color: #1086C8;
-	border: 1px solid #113F60;
-}
-
-div.loginBox #loginButton:active, div.loginBox #resetPasswordButton:active
-{
-	background-color: #1086C8;
-	border: 1px solid #113F60;
-}
-
-div.loginBox #resetPassword, div.loginBox #loginLink
-{
-	font-size: 14px;
-}
-
-#legal
-{
-	margin-top: 40px;
-	text-align: center;
-	font-size: 16px;
-	color: #606060;
-	line-height: 20px;
-}
-
-#noDevicesFound
-{
-	margin-top: 40px;
-	margin-bottom: 40px;
-	font-size: 16px;
-	line-height: 24px;
-	text-align: center;
 }
 
 img.button
@@ -739,6 +522,7 @@ img.button
 	width: 20px;
 	height: 20px;
 	border: 0;
+	border-radius: 4px;
 }
 
 a:link
@@ -838,51 +622,60 @@ footer a:hover
 }
 
 /*
- * JQuery Tooltip
+ * Forms
  */
-#tooltip
+input[type=text].form-control
 {
-	position: absolute;
-	z-index: 3000;
-	border: 1px solid #0076B8;
-	background-color: #ddf;
-	padding: 2px;
-	opacity: 0.95;
-	font-size: 12px;
-	line-height: 16px;
-	box-shadow: 2px 2px 4px #888;
-}
-
-#tooltip h3, #tooltip div
-{
-	font-size: 12px;
-	line-height: 16px;
+	font-size: 14px;
+	color: #222;
+	background-color: #f4f4f4;
+	border: 1px solid #aaa;
+	padding: 2px 4px 2px 4px;
 	margin: 0;
-	border: 0;
-	padding: 0;
-	background-color: #ddf;
 }
 
-/*
- * Open Layers
- */
-div.olControlAttribution, div.olControlScaleLine
+input[type=number].form-control
 {
-	font-family: Helvetica, Arial, SunSans-Regular, sans-serif;
-	font-size: 12px;
-	bottom: 4px;
-	right: 4px;
+	font-size: 14px;
+	color: #222;
+	background-color: #f4f4f4;
+	border: 1px solid #aaa;
+	padding: 2px 4px 2px 4px;
+	margin: 0;
 }
 
-div.olMapViewport
+select.form-control
 {
-	position: relative;
-	z-index: 0;
+	font-size: 14px;
+	color: #222;
+	background-color: #f4f4f4;
+	border: 1px solid #aaa;
+	margin: 0;
 }
 
-#mapview
+input[type=submit].form-control
 {
-	width: 600px;
-	height: 400px;
-	border: 1px solid #0076B8;
+	height: 24px;
+	text-align: center;
+	font-size: 15px;
+	line-height: 16px;
+	background-color: #008bc5;
+	border: 1px solid #008bc5;
+	padding: 2px 6px 2px 6px;
+	color: white;
+	cursor: pointer;
+	margin: 0;
+	border-radius: 4px;
+}
+
+input[type=submit].form-control:hover
+{
+	background-color: #109bd5;
+	border: 1px solid #109bd5;
+}
+
+input[type=submit].form-control:active
+{
+	background-color: #109bd5;
+	border: 1px solid #109bd5;
 }

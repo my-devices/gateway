@@ -39,12 +39,12 @@ void IndexPageController::processForm()
 		{
 			Poco::AutoPtr<Poco::Util::AbstractConfiguration> pDeviceConfig = _pDeviceManager->createDevice();
 			_request.response().redirect("/device/" + pDeviceConfig->getString("webtunnel.deviceId"));
-			return;
 		}
 		else if (action == "remove")
 		{
 			_pDeviceManager->removeDevice(target);
-			_pDeviceManager->restartAgents(2000);
+			_pDeviceManager->reconfigureAgents(2000);
+			_request.response().redirect(_request.getURI());
 		}
 		else if (action == "update")
 		{
@@ -69,7 +69,8 @@ void IndexPageController::processForm()
 				pDeviceConfig->remove("webtunnel.vncPort");
 			pDeviceConfig->setString("webtunnel.password", _form.get("password"));
 			_pDeviceManager->updateDevice(pDeviceConfig);
-			_pDeviceManager->restartAgents(2000);
+			_pDeviceManager->reconfigureAgents(2000);
+			_request.response().redirect(_request.getURI());
 		}
 		else if (action == "cancel")
 		{
@@ -78,11 +79,37 @@ void IndexPageController::processForm()
 			{
 				_pDeviceManager->removeDevice(target);
 			}
+			_request.response().redirect(_request.getURI());
 		}
 	}
 	catch (Poco::Exception& exc)
 	{
 		_message = exc.displayText();
+	}
+}
+
+
+std::string IndexPageController::deviceStatus(const std::string& id) const
+{
+	WebTunnelAgent::Status status = WebTunnelAgent::STATUS_DISCONNECTED;
+	WebTunnelAgent::Ptr pAgent = _pDeviceManager->agentForDevice(id);
+	if (pAgent)
+	{
+		status = pAgent->status();
+	}
+	switch (status)
+	{
+	case WebTunnelAgent::STATUS_DISCONNECTED:
+		return "disconnected";
+
+	case WebTunnelAgent::STATUS_CONNECTED:
+		return "connected";
+
+	case WebTunnelAgent::STATUS_ERROR:
+		return "error";
+
+	default:
+		return "unknown";
 	}
 }
 

@@ -6,8 +6,7 @@
 <%@ include file="../html/template.inc" %>
 
 <%%
-IndexPageController pageController(context(), request, form);
-
+IndexPageController ctrl(context(), request, form);
 if (response.sent()) return;
 
 pageTemplate.set("title", "Gateway");
@@ -24,7 +23,7 @@ function addDevice()
 
 function removeDevice(id, name)
 {
-  if (confirm('Delete device "' + name + '" (' + id + ')?\\n\\nThis action cannot be undone.'))
+  if (confirm('Delete device "' + name + '" (' + id + ')?\n\nThis action cannot be undone.'))
   {
     document.actionForm.target.value = id;
     document.actionForm.action.value = "remove";
@@ -33,9 +32,9 @@ function removeDevice(id, name)
 }
 </script>
 
-<% if (!pageController.message().empty()) { %>
+<% if (!ctrl.message().empty()) { %>
   <div class="error">
-    <%= U::htmlize(pageController.message()) %>
+    <%= U::htmlize(ctrl.message()) %>
   </div>
 <% } %>
 
@@ -43,29 +42,6 @@ function removeDevice(id, name)
   <input type="hidden" name="action" value="">
   <input type="hidden" name="target" value="">
 </form>
-
-<div class="groupbox">
-  <h2>System Settings</h2>
-
-  <table class="list">
-    <tbody>
-      <tr>
-        <td>Reflector Server</td>
-        <td>
-          <a href="<%= pageController.deviceManager()->config()->getString("webtunnel.reflectorURI", "") %>">
-            <%= U::htmlize(pageController.deviceManager()->config()->getString("webtunnel.reflectorURI", "")) %>
-          </a>
-        </td>
-      </tr>
-      <tr>
-        <td>Default Domain</td>
-        <td>
-          <%= U::htmlize(pageController.deviceManager()->config()->getString("webtunnel.domain", "")) %>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
 
 <div class="groupbox">
   <h2>Devices</h2>
@@ -77,6 +53,7 @@ function removeDevice(id, name)
         <th>ID</th>
         <th>Host</th>
         <th>Ports</th>
+        <th>Status</th>
         <th></th>
       </tr>
     </thead>
@@ -84,9 +61,9 @@ function removeDevice(id, name)
       <%
       bool even = false;
       %>
-      <% for (std::vector<std::string>::const_iterator it = pageController.devices().begin(); it != pageController.devices().end(); ++it) { %>
+      <% for (std::vector<std::string>::const_iterator it = ctrl.devices().begin(); it != ctrl.devices().end(); ++it) { %>
         <%
-        Poco::AutoPtr<Poco::Util::AbstractConfiguration> pDeviceConfig = pageController.deviceManager()->deviceConfiguration(*it);
+        Poco::AutoPtr<Poco::Util::AbstractConfiguration> pDeviceConfig = ctrl.deviceManager()->deviceConfiguration(*it);
         %>
         <tr class="<%= even ? "even" : "odd" %>">
           <td>
@@ -103,6 +80,9 @@ function removeDevice(id, name)
           <td>
             <%= U::htmlize(pDeviceConfig->getString("webtunnel.ports", "")) %>
           </td>
+          <td>
+            <%= ctrl.deviceStatus(*it) %>
+          </td>
           <td class="deviceListButton">
             <a href="#" onclick="removeDevice('<%= U::escape(*it) %>', '<%= U::escape(pDeviceConfig->getString("webtunnel.deviceName", "")) %>')">
               <img class="button"
@@ -117,7 +97,7 @@ function removeDevice(id, name)
         %>
       <% } %> <%-- for --%>
       <tr class="<%= even ? "even" : "odd" %>">
-        <td colspan="5">
+        <td colspan="6">
           <a href="#" onclick="addDevice()">
             <img class="button"
                  src="/images/plusicon.png"
@@ -129,5 +109,34 @@ function removeDevice(id, name)
     </tbody>
   </table>
 </div>
+
+<div class="groupbox">
+  <h2>System Settings</h2>
+
+  <table class="list">
+    <tbody>
+      <tr>
+        <td>Reflector Server</td>
+        <td>
+          <a href="<%= ctrl.deviceManager()->config()->getString("webtunnel.reflectorURI", "") %>">
+            <%= U::htmlize(ctrl.deviceManager()->config()->getString("webtunnel.reflectorURI", "")) %>
+          </a>
+        </td>
+      </tr>
+      <tr>
+        <td>Default Domain</td>
+        <td>
+          <%= U::htmlize(ctrl.deviceManager()->config()->getString("webtunnel.domain", "")) %>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<script>
+	setTimeout(function() {
+		location.reload()
+	}, 10000);
+</script>
 
 <%@ include file="../html/footer.inc" %>

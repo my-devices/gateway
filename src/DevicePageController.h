@@ -13,6 +13,7 @@
 
 
 #include "PageController.h"
+#include "WebTunnelAgent.h"
 
 
 namespace MyDevices {
@@ -38,9 +39,14 @@ public:
 		return _pDeviceConfig;
 	}
 
+	std::string deviceStatus() const;
+
+	std::string deviceError() const;
+
 private:
 	std::string _deviceId;
 	Poco::AutoPtr<Poco::Util::AbstractConfiguration> _pDeviceConfig;
+	WebTunnelAgent::Ptr _pAgent;
 };
 
 

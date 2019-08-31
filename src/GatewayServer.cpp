@@ -33,11 +33,13 @@
 #include "Poco/Util/HelpFormatter.h"
 #include "Poco/Util/LayeredConfiguration.h"
 #include "Poco/Util/PropertyFileConfiguration.h"
+#include "Poco/DirectoryWatcher.h"
 #include "Poco/URI.h"
 #include "Poco/Path.h"
 #include "Poco/File.h"
 #include "Poco/NumberParser.h"
 #include "Poco/SharedPtr.h"
+#include "Poco/Delegate.h"
 #include "WebTunnelAgent.h"
 #include "DeviceManager.h"
 #include "Utility.h"
@@ -68,6 +70,8 @@ using Poco::Util::Option;
 using Poco::Util::OptionSet;
 using Poco::Util::OptionCallback;
 using Poco::Util::HelpFormatter;
+using Poco::DirectoryWatcher;
+using Poco::delegate;
 
 
 namespace MyDevices {
@@ -262,6 +266,12 @@ protected:
 		config().setString(name, value);
 	}
 
+	void onItemChanged(const DirectoryWatcher::DirectoryEvent& ev)
+	{
+		logger().notice("Device configuration changed: %s", ev.item.path());
+		_pDeviceManager->reconfigureAgents(500);
+	}
+
 	int main(const std::vector<std::string>& args)
 	{
 		if (_dontRun) return Application::EXIT_OK;
@@ -290,18 +300,43 @@ protected:
 		Poco::Net::SSLManager::instance().initializeClient(0, pCertificateHandler, pContext);
 #endif
 
-		DeviceManager::Ptr pDeviceManager = new DeviceManager(config(), _pTimer);
+		_pDeviceManager = new DeviceManager(config(), _pTimer);
+
+		bool watchRepository = config().getBool("gateway.watchRepository", false);
+		if (watchRepository)
+		{
+			_pDirectoryWatcher = new DirectoryWatcher(_pDeviceManager->deviceRepositoryPath());
+			_pDirectoryWatcher->itemAdded    += delegate(this, &GatewayServer::onItemChanged);
+			_pDirectoryWatcher->itemRemoved  += delegate(this, &GatewayServer::onItemChanged);
+			_pDirectoryWatcher->itemModified += delegate(this, &GatewayServer::onItemChanged);
+		}
 
 		Poco::UInt16 port = static_cast<Poco::UInt16>(config().getInt("gateway.http.port", 8080));
+		if (port != 0)
+		{
+			ServerSocket svs(port);
+			_pHTTPServer = new HTTPServer(new GatewayRequestHandlerFactory(_pDeviceManager), svs, new HTTPServerParams);
+			_pHTTPServer->start();
+		}
 
-		ServerSocket svs(port);
-		HTTPServer srv(new GatewayRequestHandlerFactory(pDeviceManager), svs, new HTTPServerParams);
-		srv.start();
 		waitForTerminationRequest();
-		srv.stop();
 
-		pDeviceManager->stopAgents();
-		_pTimer->cancel(true);
+		if (_pHTTPServer)
+		{
+			_pHTTPServer->stop();
+			_pHTTPServer.reset();
+		}
+
+		if (_pDirectoryWatcher)
+		{
+			_pDirectoryWatcher->itemAdded    -= delegate(this, &GatewayServer::onItemChanged);
+			_pDirectoryWatcher->itemRemoved  -= delegate(this, &GatewayServer::onItemChanged);
+			_pDirectoryWatcher->itemModified -= delegate(this, &GatewayServer::onItemChanged);
+			_pDirectoryWatcher.reset();
+		}
+
+		_pDeviceManager->stopAgents();
+		_pDeviceManager.reset();
 
 		return Application::EXIT_OK;
 	}
@@ -310,6 +345,9 @@ private:
 	bool _dontRun;
 	SSLInitializer _sslInitializer;
 	Poco::SharedPtr<Poco::Util::Timer> _pTimer;
+	Poco::SharedPtr<HTTPServer> _pHTTPServer;
+	Poco::SharedPtr<DirectoryWatcher> _pDirectoryWatcher;
+	DeviceManager::Ptr _pDeviceManager;
 };
 
 

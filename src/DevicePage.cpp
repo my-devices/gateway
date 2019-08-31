@@ -1,7 +1,7 @@
 //
 // DevicePage.cpp
 //
-// This file has been generated from DevicePage.cpsp on 2019-07-02 16:40:19.
+// This file has been generated from DevicePage.cpsp on 2019-08-31 18:29:48.
 //
 
 
@@ -43,16 +43,17 @@ void DevicePage::handleRequest(Poco::Net::HTTPServerRequest& request, Poco::Net:
 	pageTemplate.set("softwareVersion", Utility::versionString());
 #line 8 "/ws/git/my-devices/gateway/src/DevicePage.cpsp"
 
-	DevicePageController pageController(context(), request, form);
+DevicePageController ctrl(context(), request, form);
+if (response.sent()) return;
 
-	if (pageController.deviceConfig())
-	{
-		pageTemplate.set("title", "Gateway > " + pageController.deviceConfig()->getString("webtunnel.deviceName"));
-	}
-	else
-	{
-		pageTemplate.set("title", "Gateway > Unknown Device");
-	}
+if (ctrl.deviceConfig())
+{
+	pageTemplate.set("title", "Gateway > " + ctrl.deviceConfig()->getString("webtunnel.deviceName"));
+}
+else
+{
+	pageTemplate.set("title", "Gateway > Unknown Device");
+}
 	std::ostream& _responseStream = response.send();
 	Poco::DeflatingOutputStream _gzipStream(_responseStream, Poco::DeflatingStreamBuf::STREAM_GZIP, 1);
 	std::ostream& responseStream = _compressResponse ? _gzipStream : _responseStream;
@@ -97,34 +98,28 @@ void DevicePage::handleRequest(Poco::Net::HTTPServerRequest& request, Poco::Net:
 	responseStream << "}\n";
 	responseStream << "</script>\n";
 	responseStream << "\n";
-#line 31 "/ws/git/my-devices/gateway/src/DevicePage.cpsp"
- if (!pageController.message().empty()) { 	responseStream << "\n";
+#line 32 "/ws/git/my-devices/gateway/src/DevicePage.cpsp"
+ if (!ctrl.message().empty()) { 	responseStream << "\n";
 	responseStream << "  <div class=\"error\">\n";
 	responseStream << "    ";
-#line 33 "/ws/git/my-devices/gateway/src/DevicePage.cpsp"
-	responseStream << ( U::htmlize(pageController.message()) );
+#line 34 "/ws/git/my-devices/gateway/src/DevicePage.cpsp"
+	responseStream << ( U::htmlize(ctrl.message()) );
 	responseStream << "\n";
 	responseStream << "  </div>\n";
-#line 35 "/ws/git/my-devices/gateway/src/DevicePage.cpsp"
+#line 36 "/ws/git/my-devices/gateway/src/DevicePage.cpsp"
  } 	responseStream << "\n";
-#line 37 "/ws/git/my-devices/gateway/src/DevicePage.cpsp"
- if (pageController.deviceConfig()) { 	responseStream << "\n";
+#line 38 "/ws/git/my-devices/gateway/src/DevicePage.cpsp"
+ if (ctrl.deviceConfig()) { 	responseStream << "\n";
 	responseStream << "  <div class=\"groupbox\">\n";
 	responseStream << "    <h2>Device Properties</h2>\n";
 	responseStream << "\n";
 	responseStream << "    <form name=\"actionForm\" method=\"post\" action=\"/\">\n";
 	responseStream << "      <input type=\"hidden\" name=\"action\" value=\"update\">\n";
 	responseStream << "      <input type=\"hidden\" name=\"target\" value=\"";
-#line 43 "/ws/git/my-devices/gateway/src/DevicePage.cpsp"
-	responseStream << ( pageController.deviceConfig()->getString("webtunnel.deviceId") );
+#line 44 "/ws/git/my-devices/gateway/src/DevicePage.cpsp"
+	responseStream << ( ctrl.deviceConfig()->getString("webtunnel.deviceId") );
 	responseStream << "\">\n";
 	responseStream << "      <table class=\"list\">\n";
-	responseStream << "        <thead>\n";
-	responseStream << "          <tr>\n";
-	responseStream << "            <th>Name</th>\n";
-	responseStream << "            <th>Value</th>\n";
-	responseStream << "          </tr>\n";
-	responseStream << "        </thead>\n";
 	responseStream << "        <tbody>\n";
 	responseStream << "          <tr class=\"intermediateHeader\">\n";
 	responseStream << "            <th colspan=\"2\">\n";
@@ -132,34 +127,39 @@ void DevicePage::handleRequest(Poco::Net::HTTPServerRequest& request, Poco::Net:
 	responseStream << "            </th>\n";
 	responseStream << "          </tr>\n";
 	responseStream << "          <tr class=\"even\">\n";
-	responseStream << "            <td class=\"basicProperty\">ID</td>\n";
-	responseStream << "            <td>";
-#line 59 "/ws/git/my-devices/gateway/src/DevicePage.cpsp"
-	responseStream << ( U::htmlize(pageController.deviceConfig()->getString("webtunnel.deviceId")) );
-	responseStream << "</td>\n";
-	responseStream << "          </tr>\n";
-	responseStream << "          <tr class=\"odd\">\n";
 	responseStream << "            <td class=\"basicProperty\">Name</td>\n";
 	responseStream << "            <td>\n";
-	responseStream << "              <input name=\"deviceName\"\n";
+	responseStream << "              <input type=\"text\"\n";
+	responseStream << "                     name=\"deviceName\"\n";
 	responseStream << "                     value=\"";
-#line 65 "/ws/git/my-devices/gateway/src/DevicePage.cpsp"
-	responseStream << ( U::htmlize(pageController.deviceConfig()->getString("webtunnel.deviceName")) );
+#line 57 "/ws/git/my-devices/gateway/src/DevicePage.cpsp"
+	responseStream << ( U::htmlize(ctrl.deviceConfig()->getString("webtunnel.deviceName")) );
 	responseStream << "\"\n";
 	responseStream << "                     size=\"64\"\n";
-	responseStream << "                     maxLength=\"64\">\n";
+	responseStream << "                     maxLength=\"64\"\n";
+	responseStream << "                     class=\"form-control\">\n";
 	responseStream << "            </td>\n";
+	responseStream << "          </tr>\n";
+	responseStream << "          <tr class=\"odd\">\n";
+	responseStream << "            <td class=\"basicProperty\">ID</td>\n";
+	responseStream << "            <td>";
+#line 65 "/ws/git/my-devices/gateway/src/DevicePage.cpsp"
+	responseStream << ( U::htmlize(ctrl.deviceConfig()->getString("webtunnel.deviceId")) );
+	responseStream << "</td>\n";
 	responseStream << "          </tr>\n";
 	responseStream << "          <tr class=\"even\">\n";
 	responseStream << "            <td class=\"basicProperty\">Domain</td>\n";
 	responseStream << "            <td>\n";
-	responseStream << "              <input name=\"domain\"\n";
+	responseStream << "              <input type=\"text\"\n";
+	responseStream << "                     name=\"domain\"\n";
 	responseStream << "                     value=\"";
-#line 74 "/ws/git/my-devices/gateway/src/DevicePage.cpsp"
-	responseStream << ( U::htmlize(pageController.deviceConfig()->getString("webtunnel.domain", "")) );
+#line 72 "/ws/git/my-devices/gateway/src/DevicePage.cpsp"
+	responseStream << ( U::htmlize(ctrl.deviceConfig()->getString("webtunnel.domain", "")) );
 	responseStream << "\"\n";
 	responseStream << "                     size=\"64\"\n";
-	responseStream << "                     maxLength=\"64\">\n";
+	responseStream << "                     maxLength=\"64\"\n";
+	responseStream << "                     class=\"form-control\"\n";
+	responseStream << "                     >\n";
 	responseStream << "            </td>\n";
 	responseStream << "          </tr>\n";
 	responseStream << "          <tr class=\"odd\">\n";
@@ -169,12 +169,20 @@ void DevicePage::handleRequest(Poco::Net::HTTPServerRequest& request, Poco::Net:
 	responseStream << "                     name=\"password\"\n";
 	responseStream << "                     value=\"";
 #line 84 "/ws/git/my-devices/gateway/src/DevicePage.cpsp"
-	responseStream << ( U::htmlize(pageController.deviceConfig()->getString("webtunnel.password")) );
+	responseStream << ( U::htmlize(ctrl.deviceConfig()->getString("webtunnel.password", "")) );
 	responseStream << "\"\n";
 	responseStream << "                     size=\"32\"\n";
-	responseStream << "                     maxLength=\"32\">\n";
+	responseStream << "                     maxLength=\"32\"\n";
+	responseStream << "                     class=\"form-control\">\n";
 	responseStream << "              (optional)\n";
 	responseStream << "            </td>\n";
+	responseStream << "          </tr>\n";
+	responseStream << "          <tr class=\"even\">\n";
+	responseStream << "            <td>Status</td>\n";
+	responseStream << "            <td>";
+#line 93 "/ws/git/my-devices/gateway/src/DevicePage.cpsp"
+	responseStream << ( ctrl.deviceStatus() );
+	responseStream << "</td>\n";
 	responseStream << "          </tr>\n";
 	responseStream << "          <tr class=\"intermediateHeader\">\n";
 	responseStream << "            <th colspan=\"2\">\n";
@@ -184,50 +192,96 @@ void DevicePage::handleRequest(Poco::Net::HTTPServerRequest& request, Poco::Net:
 	responseStream << "          <tr class=\"even\">\n";
 	responseStream << "            <td class=\"basicProperty\">Device IP Address or Domain Name</td>\n";
 	responseStream << "            <td>\n";
-	responseStream << "              <input name=\"host\"\n";
+	responseStream << "              <input type=\"text\"\n";
+	responseStream << "                     name=\"host\"\n";
 	responseStream << "                     value=\"";
-#line 99 "/ws/git/my-devices/gateway/src/DevicePage.cpsp"
-	responseStream << ( U::htmlize(pageController.deviceConfig()->getString("webtunnel.host")) );
+#line 105 "/ws/git/my-devices/gateway/src/DevicePage.cpsp"
+	responseStream << ( U::htmlize(ctrl.deviceConfig()->getString("webtunnel.host", "")) );
 	responseStream << "\"\n";
 	responseStream << "                     size=\"64\"\n";
-	responseStream << "                     maxLength=\"64\">\n";
+	responseStream << "                     maxLength=\"64\"\n";
+	responseStream << "                     class=\"form-control\">\n";
 	responseStream << "            </td>\n";
 	responseStream << "          </tr>\n";
 	responseStream << "          <tr class=\"odd\">\n";
 	responseStream << "            <td class=\"basicProperty\">Forwarded TCP Ports</td>\n";
 	responseStream << "            <td>\n";
-	responseStream << "              <input name=\"ports\"\n";
+	responseStream << "              <input type=\"text\"\n";
+	responseStream << "                     name=\"ports\"\n";
 	responseStream << "                     value=\"";
-#line 108 "/ws/git/my-devices/gateway/src/DevicePage.cpsp"
-	responseStream << ( U::htmlize(pageController.deviceConfig()->getString("webtunnel.ports")) );
+#line 116 "/ws/git/my-devices/gateway/src/DevicePage.cpsp"
+	responseStream << ( U::htmlize(ctrl.deviceConfig()->getString("webtunnel.ports", "")) );
 	responseStream << "\"\n";
 	responseStream << "                     size=\"40\"\n";
-	responseStream << "                     maxLength=\"40\">\n";
+	responseStream << "                     maxLength=\"40\"\n";
+	responseStream << "                     class=\"form-control\">\n";
 	responseStream << "              (comma-separated)\n";
 	responseStream << "            </td>\n";
 	responseStream << "          </tr>\n";
 	responseStream << "          <tr class=\"even\">\n";
 	responseStream << "            <td class=\"basicProperty\">Device HTTP Server Port</td>\n";
 	responseStream << "            <td>\n";
-	responseStream << "              <input name=\"httpPort\"\n";
+	responseStream << "              <input type=\"number\"\n";
+	responseStream << "                     name=\"httpPort\"\n";
 	responseStream << "                     value=\"";
-#line 118 "/ws/git/my-devices/gateway/src/DevicePage.cpsp"
-	responseStream << ( U::htmlize(pageController.deviceConfig()->getString("webtunnel.httpPort")) );
+#line 128 "/ws/git/my-devices/gateway/src/DevicePage.cpsp"
+	responseStream << ( U::htmlize(ctrl.deviceConfig()->getString("webtunnel.httpPort", "")) );
 	responseStream << "\"\n";
 	responseStream << "                     size=\"5\"\n";
-	responseStream << "                     maxLength=\"5\">\n";
+	responseStream << "                     maxLength=\"5\"\n";
+	responseStream << "                     min=\"0\"\n";
+	responseStream << "                     max=\"65535\"\n";
+	responseStream << "                     class=\"form-control\">\n";
 	responseStream << "            </td>\n";
 	responseStream << "          </tr>\n";
 	responseStream << "          <tr class=\"odd\">\n";
-	responseStream << "            <td>Device VNC Server Port</td>\n";
+	responseStream << "            <td>Device SSH Server Port</td>\n";
 	responseStream << "            <td>\n";
-	responseStream << "              <input name=\"vncPort\"\n";
+	responseStream << "              <input type=\"number\"\n";
+	responseStream << "                     name=\"vncPort\"\n";
 	responseStream << "                     value=\"";
-#line 127 "/ws/git/my-devices/gateway/src/DevicePage.cpsp"
-	responseStream << ( U::htmlize(pageController.deviceConfig()->getString("webtunnel.vncPort", "")) );
+#line 141 "/ws/git/my-devices/gateway/src/DevicePage.cpsp"
+	responseStream << ( U::htmlize(ctrl.deviceConfig()->getString("webtunnel.sshPort", "")) );
 	responseStream << "\"\n";
 	responseStream << "                     size=\"5\"\n";
-	responseStream << "                     maxLength=\"5\">\n";
+	responseStream << "                     maxLength=\"5\"\n";
+	responseStream << "                     min=\"1\"\n";
+	responseStream << "                     max=\"65535\"\n";
+	responseStream << "                     class=\"form-control\">\n";
+	responseStream << "              (optional)\n";
+	responseStream << "            </td>\n";
+	responseStream << "          </tr>\n";
+	responseStream << "          <tr class=\"even\">\n";
+	responseStream << "            <td>Device VNC Server Port</td>\n";
+	responseStream << "            <td>\n";
+	responseStream << "              <input type=\"number\"\n";
+	responseStream << "                     name=\"vncPort\"\n";
+	responseStream << "                     value=\"";
+#line 155 "/ws/git/my-devices/gateway/src/DevicePage.cpsp"
+	responseStream << ( U::htmlize(ctrl.deviceConfig()->getString("webtunnel.vncPort", "")) );
+	responseStream << "\"\n";
+	responseStream << "                     size=\"5\"\n";
+	responseStream << "                     maxLength=\"5\"\n";
+	responseStream << "                     min=\"1\"\n";
+	responseStream << "                     max=\"65535\"\n";
+	responseStream << "                     class=\"form-control\">\n";
+	responseStream << "              (optional)\n";
+	responseStream << "            </td>\n";
+	responseStream << "          </tr>\n";
+	responseStream << "          <tr class=\"odd\">\n";
+	responseStream << "            <td>Device RDP Server Port</td>\n";
+	responseStream << "            <td>\n";
+	responseStream << "              <input type=\"number\"\n";
+	responseStream << "                     name=\"vncPort\"\n";
+	responseStream << "                     value=\"";
+#line 169 "/ws/git/my-devices/gateway/src/DevicePage.cpsp"
+	responseStream << ( U::htmlize(ctrl.deviceConfig()->getString("webtunnel.rdpPort", "")) );
+	responseStream << "\"\n";
+	responseStream << "                     size=\"5\"\n";
+	responseStream << "                     maxLength=\"5\"\n";
+	responseStream << "                     min=\"1\"\n";
+	responseStream << "                     max=\"65535\"\n";
+	responseStream << "                     class=\"form-control\">\n";
 	responseStream << "              (optional)\n";
 	responseStream << "            </td>\n";
 	responseStream << "          </tr>\n";
@@ -235,14 +289,14 @@ void DevicePage::handleRequest(Poco::Net::HTTPServerRequest& request, Poco::Net:
 	responseStream << "            <td colspan=\"2\" style=\"text-align: right\">\n";
 	responseStream << "              <a href=\"#\" onclick=\"cancelUpdateDevice()\">Cancel</a>\n";
 	responseStream << "              &nbsp;\n";
-	responseStream << "              <input type=\"submit\" value=\"Save\">\n";
+	responseStream << "              <input type=\"submit\" value=\"Save\" class=\"form-control\">\n";
 	responseStream << "            </td>\n";
 	responseStream << "          </tr>\n";
 	responseStream << "        </tbody>\n";
 	responseStream << "      </table>\n";
 	responseStream << "    </div>\n";
 	responseStream << "  </form>\n";
-#line 144 "/ws/git/my-devices/gateway/src/DevicePage.cpsp"
+#line 189 "/ws/git/my-devices/gateway/src/DevicePage.cpsp"
  } 	responseStream << " ";
 	responseStream << "\n";
 	// begin include html/footer.inc

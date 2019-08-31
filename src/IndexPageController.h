@@ -33,6 +33,8 @@ public:
 		return _devices;
 	}
 
+	std::string deviceStatus(const std::string& id) const;
+
 protected:
 	void processForm();
 

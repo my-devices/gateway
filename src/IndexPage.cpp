@@ -1,7 +1,7 @@
 //
 // IndexPage.cpp
 //
-// This file has been generated from IndexPage.cpsp on 2019-07-02 16:40:20.
+// This file has been generated from IndexPage.cpsp on 2019-08-31 18:41:19.
 //
 
 
@@ -43,8 +43,7 @@ void IndexPage::handleRequest(Poco::Net::HTTPServerRequest& request, Poco::Net::
 	pageTemplate.set("softwareVersion", Utility::versionString());
 #line 8 "/ws/git/my-devices/gateway/src/IndexPage.cpsp"
 
-IndexPageController pageController(context(), request, form);
-
+IndexPageController ctrl(context(), request, form);
 if (response.sent()) return;
 
 pageTemplate.set("title", "Gateway");
@@ -102,52 +101,20 @@ pageTemplate.set("title", "Gateway");
 	responseStream << "}\n";
 	responseStream << "</script>\n";
 	responseStream << "\n";
-#line 36 "/ws/git/my-devices/gateway/src/IndexPage.cpsp"
- if (!pageController.message().empty()) { 	responseStream << "\n";
+#line 35 "/ws/git/my-devices/gateway/src/IndexPage.cpsp"
+ if (!ctrl.message().empty()) { 	responseStream << "\n";
 	responseStream << "  <div class=\"error\">\n";
 	responseStream << "    ";
-#line 38 "/ws/git/my-devices/gateway/src/IndexPage.cpsp"
-	responseStream << ( U::htmlize(pageController.message()) );
+#line 37 "/ws/git/my-devices/gateway/src/IndexPage.cpsp"
+	responseStream << ( U::htmlize(ctrl.message()) );
 	responseStream << "\n";
 	responseStream << "  </div>\n";
-#line 40 "/ws/git/my-devices/gateway/src/IndexPage.cpsp"
+#line 39 "/ws/git/my-devices/gateway/src/IndexPage.cpsp"
  } 	responseStream << "\n";
 	responseStream << "<form name=\"actionForm\" method=\"post\">\n";
 	responseStream << "  <input type=\"hidden\" name=\"action\" value=\"\">\n";
 	responseStream << "  <input type=\"hidden\" name=\"target\" value=\"\">\n";
 	responseStream << "</form>\n";
-	responseStream << "\n";
-	responseStream << "<div class=\"groupbox\">\n";
-	responseStream << "  <h2>System Settings</h2>\n";
-	responseStream << "\n";
-	responseStream << "  <table class=\"list\">\n";
-	responseStream << "    <tbody>\n";
-	responseStream << "      <tr>\n";
-	responseStream << "        <td>Reflector Server</td>\n";
-	responseStream << "        <td>\n";
-	responseStream << "          <a href=\"";
-#line 55 "/ws/git/my-devices/gateway/src/IndexPage.cpsp"
-	responseStream << ( pageController.deviceManager()->config()->getString("webtunnel.reflectorURI", "") );
-	responseStream << "\">\n";
-	responseStream << "            ";
-#line 56 "/ws/git/my-devices/gateway/src/IndexPage.cpsp"
-	responseStream << ( U::htmlize(pageController.deviceManager()->config()->getString("webtunnel.reflectorURI", "")) );
-	responseStream << "\n";
-	responseStream << "          </a>\n";
-	responseStream << "        </td>\n";
-	responseStream << "      </tr>\n";
-	responseStream << "      <tr>\n";
-	responseStream << "        <td>Default Domain</td>\n";
-	responseStream << "        <td>\n";
-	responseStream << "          ";
-#line 63 "/ws/git/my-devices/gateway/src/IndexPage.cpsp"
-	responseStream << ( U::htmlize(pageController.deviceManager()->config()->getString("webtunnel.domain", "")) );
-	responseStream << "\n";
-	responseStream << "        </td>\n";
-	responseStream << "      </tr>\n";
-	responseStream << "    </tbody>\n";
-	responseStream << "  </table>\n";
-	responseStream << "</div>\n";
 	responseStream << "\n";
 	responseStream << "<div class=\"groupbox\">\n";
 	responseStream << "  <h2>Devices</h2>\n";
@@ -159,62 +126,69 @@ pageTemplate.set("title", "Gateway");
 	responseStream << "        <th>ID</th>\n";
 	responseStream << "        <th>Host</th>\n";
 	responseStream << "        <th>Ports</th>\n";
+	responseStream << "        <th>Status</th>\n";
 	responseStream << "        <th></th>\n";
 	responseStream << "      </tr>\n";
 	responseStream << "    </thead>\n";
 	responseStream << "    <tbody>\n";
 	responseStream << "      ";
-#line 84 "/ws/git/my-devices/gateway/src/IndexPage.cpsp"
+#line 61 "/ws/git/my-devices/gateway/src/IndexPage.cpsp"
 
       bool even = false;
       	responseStream << "\n";
 	responseStream << "      ";
-#line 87 "/ws/git/my-devices/gateway/src/IndexPage.cpsp"
- for (std::vector<std::string>::const_iterator it = pageController.devices().begin(); it != pageController.devices().end(); ++it) { 	responseStream << "\n";
+#line 64 "/ws/git/my-devices/gateway/src/IndexPage.cpsp"
+ for (std::vector<std::string>::const_iterator it = ctrl.devices().begin(); it != ctrl.devices().end(); ++it) { 	responseStream << "\n";
 	responseStream << "        ";
-#line 88 "/ws/git/my-devices/gateway/src/IndexPage.cpsp"
+#line 65 "/ws/git/my-devices/gateway/src/IndexPage.cpsp"
 
-        Poco::AutoPtr<Poco::Util::AbstractConfiguration> pDeviceConfig = pageController.deviceManager()->deviceConfiguration(*it);
+        Poco::AutoPtr<Poco::Util::AbstractConfiguration> pDeviceConfig = ctrl.deviceManager()->deviceConfiguration(*it);
         	responseStream << "\n";
 	responseStream << "        <tr class=\"";
-#line 91 "/ws/git/my-devices/gateway/src/IndexPage.cpsp"
+#line 68 "/ws/git/my-devices/gateway/src/IndexPage.cpsp"
 	responseStream << ( even ? "even" : "odd" );
 	responseStream << "\">\n";
 	responseStream << "          <td>\n";
 	responseStream << "            <a href=\"/device/";
-#line 93 "/ws/git/my-devices/gateway/src/IndexPage.cpsp"
+#line 70 "/ws/git/my-devices/gateway/src/IndexPage.cpsp"
 	responseStream << ( *it );
 	responseStream << "\">\n";
 	responseStream << "              ";
-#line 94 "/ws/git/my-devices/gateway/src/IndexPage.cpsp"
+#line 71 "/ws/git/my-devices/gateway/src/IndexPage.cpsp"
 	responseStream << ( U::htmlize(pDeviceConfig->getString("webtunnel.deviceName", "")) );
 	responseStream << "\n";
 	responseStream << "            </a>\n";
 	responseStream << "          </td>\n";
 	responseStream << "          <td>\n";
 	responseStream << "            ";
-#line 98 "/ws/git/my-devices/gateway/src/IndexPage.cpsp"
+#line 75 "/ws/git/my-devices/gateway/src/IndexPage.cpsp"
 	responseStream << ( U::htmlize(pDeviceConfig->getString("webtunnel.deviceId", "")) );
 	responseStream << "\n";
 	responseStream << "          </td>\n";
 	responseStream << "          <td>\n";
 	responseStream << "            ";
-#line 101 "/ws/git/my-devices/gateway/src/IndexPage.cpsp"
+#line 78 "/ws/git/my-devices/gateway/src/IndexPage.cpsp"
 	responseStream << ( U::htmlize(pDeviceConfig->getString("webtunnel.host", "")) );
 	responseStream << "\n";
 	responseStream << "          </td>\n";
 	responseStream << "          <td>\n";
 	responseStream << "            ";
-#line 104 "/ws/git/my-devices/gateway/src/IndexPage.cpsp"
+#line 81 "/ws/git/my-devices/gateway/src/IndexPage.cpsp"
 	responseStream << ( U::htmlize(pDeviceConfig->getString("webtunnel.ports", "")) );
+	responseStream << "\n";
+	responseStream << "          </td>\n";
+	responseStream << "          <td>\n";
+	responseStream << "            ";
+#line 84 "/ws/git/my-devices/gateway/src/IndexPage.cpsp"
+	responseStream << ( ctrl.deviceStatus(*it) );
 	responseStream << "\n";
 	responseStream << "          </td>\n";
 	responseStream << "          <td class=\"deviceListButton\">\n";
 	responseStream << "            <a href=\"#\" onclick=\"removeDevice('";
-#line 107 "/ws/git/my-devices/gateway/src/IndexPage.cpsp"
+#line 87 "/ws/git/my-devices/gateway/src/IndexPage.cpsp"
 	responseStream << ( U::escape(*it) );
 	responseStream << "', '";
-#line 107 "/ws/git/my-devices/gateway/src/IndexPage.cpsp"
+#line 87 "/ws/git/my-devices/gateway/src/IndexPage.cpsp"
 	responseStream << ( U::escape(pDeviceConfig->getString("webtunnel.deviceName", "")) );
 	responseStream << "')\">\n";
 	responseStream << "              <img class=\"button\"\n";
@@ -225,19 +199,19 @@ pageTemplate.set("title", "Gateway");
 	responseStream << "          </td>\n";
 	responseStream << "        </tr>\n";
 	responseStream << "        ";
-#line 115 "/ws/git/my-devices/gateway/src/IndexPage.cpsp"
+#line 95 "/ws/git/my-devices/gateway/src/IndexPage.cpsp"
 
         even = !even;
         	responseStream << "\n";
 	responseStream << "      ";
-#line 118 "/ws/git/my-devices/gateway/src/IndexPage.cpsp"
+#line 98 "/ws/git/my-devices/gateway/src/IndexPage.cpsp"
  } 	responseStream << " ";
 	responseStream << "\n";
 	responseStream << "      <tr class=\"";
-#line 119 "/ws/git/my-devices/gateway/src/IndexPage.cpsp"
+#line 99 "/ws/git/my-devices/gateway/src/IndexPage.cpsp"
 	responseStream << ( even ? "even" : "odd" );
 	responseStream << "\">\n";
-	responseStream << "        <td colspan=\"5\">\n";
+	responseStream << "        <td colspan=\"6\">\n";
 	responseStream << "          <a href=\"#\" onclick=\"addDevice()\">\n";
 	responseStream << "            <img class=\"button\"\n";
 	responseStream << "                 src=\"/images/plusicon.png\"\n";
@@ -249,6 +223,44 @@ pageTemplate.set("title", "Gateway");
 	responseStream << "    </tbody>\n";
 	responseStream << "  </table>\n";
 	responseStream << "</div>\n";
+	responseStream << "\n";
+	responseStream << "<div class=\"groupbox\">\n";
+	responseStream << "  <h2>System Settings</h2>\n";
+	responseStream << "\n";
+	responseStream << "  <table class=\"list\">\n";
+	responseStream << "    <tbody>\n";
+	responseStream << "      <tr>\n";
+	responseStream << "        <td>Reflector Server</td>\n";
+	responseStream << "        <td>\n";
+	responseStream << "          <a href=\"";
+#line 121 "/ws/git/my-devices/gateway/src/IndexPage.cpsp"
+	responseStream << ( ctrl.deviceManager()->config()->getString("webtunnel.reflectorURI", "") );
+	responseStream << "\">\n";
+	responseStream << "            ";
+#line 122 "/ws/git/my-devices/gateway/src/IndexPage.cpsp"
+	responseStream << ( U::htmlize(ctrl.deviceManager()->config()->getString("webtunnel.reflectorURI", "")) );
+	responseStream << "\n";
+	responseStream << "          </a>\n";
+	responseStream << "        </td>\n";
+	responseStream << "      </tr>\n";
+	responseStream << "      <tr>\n";
+	responseStream << "        <td>Default Domain</td>\n";
+	responseStream << "        <td>\n";
+	responseStream << "          ";
+#line 129 "/ws/git/my-devices/gateway/src/IndexPage.cpsp"
+	responseStream << ( U::htmlize(ctrl.deviceManager()->config()->getString("webtunnel.domain", "")) );
+	responseStream << "\n";
+	responseStream << "        </td>\n";
+	responseStream << "      </tr>\n";
+	responseStream << "    </tbody>\n";
+	responseStream << "  </table>\n";
+	responseStream << "</div>\n";
+	responseStream << "\n";
+	responseStream << "<script>\n";
+	responseStream << "\tsetTimeout(function() {\n";
+	responseStream << "\t\tlocation.reload()\n";
+	responseStream << "\t}, 10000);\n";
+	responseStream << "</script>\n";
 	responseStream << "\n";
 	// begin include html/footer.inc
 	responseStream << "      </div>\n";

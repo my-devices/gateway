@@ -24,6 +24,8 @@ DevicePageController::DevicePageController(DeviceManager::Ptr pDeviceManager, co
 		Poco::Path p(request.getURI());
 		_deviceId = p.getFileName();
 		_pDeviceConfig = _pDeviceManager->deviceConfiguration(_deviceId);
+		_pAgent = _pDeviceManager->agentForDevice(_deviceId);
+		_message = deviceError();
 	}
 	catch (Poco::Exception& exc)
 	{
@@ -34,6 +36,39 @@ DevicePageController::DevicePageController(DeviceManager::Ptr pDeviceManager, co
 
 DevicePageController::~DevicePageController()
 {
+}
+
+
+std::string DevicePageController::deviceStatus() const
+{
+	WebTunnelAgent::Status status = WebTunnelAgent::STATUS_DISCONNECTED;
+	if (_pAgent)
+	{
+		status = _pAgent->status();
+	}
+	switch (status)
+	{
+	case WebTunnelAgent::STATUS_DISCONNECTED:
+		return "disconnected";
+
+	case WebTunnelAgent::STATUS_CONNECTED:
+		return "connected";
+
+	case WebTunnelAgent::STATUS_ERROR:
+		return "error";
+
+	default:
+		return "unknown";
+	}
+}
+
+
+std::string DevicePageController::deviceError() const
+{
+	if (_pAgent)
+		return _pAgent->lastError();
+	else
+		return std::string();
 }
 
 
