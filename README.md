@@ -142,10 +142,11 @@ Enter the following information to make the Gateway's web user interface accessi
 via Remote Manager:
 
   - **Name:** `Gateway`
+  - **Domain:** *(leave as is)*
+  - **Device Password:** *(leave empty)*
   - **Device IP Address or Domain Name:** `127.0.0.1`
   - **Forwarded TCP Ports:** `8080`
   - **Device HTTP Server Port:** `8080`
-  - **Device Password:** *(leave empty)*
 
 ![Gateway Web User Interface - Add Device][browser2]
 
@@ -155,9 +156,14 @@ You will now see it in the overview:
 
 ![Gateway Web User Interface - Device Added][browser3]
 
+Note that *Status* may initially show *disconnected* for your newly added device.
+The page will refresh automatically after 10 seconds, and the status should
+change to *connected*. If the status shows *error*, click on the device to
+see the error message.
+
 The Gateway should now be visible in your [Remote Manager Dashboard](https://reflector.my-devices.net).
 
-You can now start adding other devices as well.
+You can now add other devices.
 
 
 [browser1]: doc/images/browser1.png "Gateway Web User Interface - First Start"
