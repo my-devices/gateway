@@ -1,7 +1,7 @@
 //
 // DevicePage.cpp
 //
-// This file has been generated from DevicePage.cpsp on 2019-08-31 18:29:48.
+// This file has been generated from DevicePage.cpsp on 2019-09-03 15:44:15.
 //
 
 
@@ -238,7 +238,7 @@ else
 	responseStream << "            <td>Device SSH Server Port</td>\n";
 	responseStream << "            <td>\n";
 	responseStream << "              <input type=\"number\"\n";
-	responseStream << "                     name=\"vncPort\"\n";
+	responseStream << "                     name=\"sshPort\"\n";
 	responseStream << "                     value=\"";
 #line 141 "/ws/git/my-devices/gateway/src/DevicePage.cpsp"
 	responseStream << ( U::htmlize(ctrl.deviceConfig()->getString("webtunnel.sshPort", "")) );
@@ -272,7 +272,7 @@ else
 	responseStream << "            <td>Device RDP Server Port</td>\n";
 	responseStream << "            <td>\n";
 	responseStream << "              <input type=\"number\"\n";
-	responseStream << "                     name=\"vncPort\"\n";
+	responseStream << "                     name=\"rdpPort\"\n";
 	responseStream << "                     value=\"";
 #line 169 "/ws/git/my-devices/gateway/src/DevicePage.cpsp"
 	responseStream << ( U::htmlize(ctrl.deviceConfig()->getString("webtunnel.rdpPort", "")) );

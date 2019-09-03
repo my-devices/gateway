@@ -50,23 +50,40 @@ void IndexPageController::processForm()
 		{
 			Poco::AutoPtr<Poco::Util::AbstractConfiguration> pDeviceConfig = _pDeviceManager->deviceConfiguration(target);
 			pDeviceConfig->setString("webtunnel.deviceName", _form.get("deviceName"));
+
 			std::string domain = _form.get("domain");
 			if (!domain.empty())
 				pDeviceConfig->setString("webtunnel.domain", domain);
 			else
 				pDeviceConfig->remove("webtunnel.domain");
+
 			pDeviceConfig->setString("webtunnel.host", _form.get("host"));
 			pDeviceConfig->setString("webtunnel.ports", _form.get("ports"));
+
 			std::string httpPort = _form.get("httpPort");
 			if (!httpPort.empty())
-				pDeviceConfig->setString("webtunnel.httpPort", _form.get("httpPort"));
+				pDeviceConfig->setString("webtunnel.httpPort", httpPort);
 			else
 				pDeviceConfig->remove("webtunnel.httpPort");
+
+			std::string sshPort = _form.get("sshPort");
+			if (!sshPort.empty())
+				pDeviceConfig->setString("webtunnel.sshPort", sshPort);
+			else
+				pDeviceConfig->remove("webtunnel.sshPort");
+
 			std::string vncPort = _form.get("vncPort");
 			if (!vncPort.empty())
-				pDeviceConfig->setString("webtunnel.vncPort", _form.get("vncPort"));
+				pDeviceConfig->setString("webtunnel.vncPort", vncPort);
 			else
 				pDeviceConfig->remove("webtunnel.vncPort");
+
+			std::string rdpPort = _form.get("rdpPort");
+			if (!rdpPort.empty())
+				pDeviceConfig->setString("webtunnel.rdpPort", rdpPort);
+			else
+				pDeviceConfig->remove("webtunnel.rdpPort");
+
 			pDeviceConfig->setString("webtunnel.password", _form.get("password"));
 			_pDeviceManager->updateDevice(pDeviceConfig);
 			_pDeviceManager->reconfigureAgents(2000);

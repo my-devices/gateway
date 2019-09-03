@@ -137,7 +137,7 @@ function cancelUpdateDevice(id)
             <td>Device SSH Server Port</td>
             <td>
               <input type="number"
-                     name="vncPort"
+                     name="sshPort"
                      value="<%= U::htmlize(ctrl.deviceConfig()->getString("webtunnel.sshPort", "")) %>"
                      size="5"
                      maxLength="5"
@@ -165,7 +165,7 @@ function cancelUpdateDevice(id)
             <td>Device RDP Server Port</td>
             <td>
               <input type="number"
-                     name="vncPort"
+                     name="rdpPort"
                      value="<%= U::htmlize(ctrl.deviceConfig()->getString("webtunnel.rdpPort", "")) %>"
                      size="5"
                      maxLength="5"
