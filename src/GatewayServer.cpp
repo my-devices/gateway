@@ -266,6 +266,39 @@ protected:
 		config().setString(name, value);
 	}
 
+#if defined(WEBTUNNEL_ENABLE_TLS)
+
+	Poco::Net::Context::Ptr createContext(const std::string& prefix)
+	{
+		std::string cipherList = config().getString(prefix + ".ciphers", "HIGH:!DSS:!aNULL@STRENGTH");
+		bool extendedVerification = config().getBool(prefix + ".extendedCertificateVerification", false);
+		std::string caLocation = config().getString(prefix + ".caLocation", "");
+		std::string privateKey = config().getString(prefix + ".privateKey", "");
+		std::string certificate = config().getString(prefix + ".certificate", "");
+
+		Poco::Net::Context::VerificationMode vMode = Poco::Net::Context::VERIFY_RELAXED;
+		std::string vModeStr = config().getString(prefix + ".verification", "");
+		if (vModeStr == "none")
+			vMode = Poco::Net::Context::VERIFY_NONE;
+		else if (vModeStr == "relaxed")
+			vMode = Poco::Net::Context::VERIFY_RELAXED;
+		else if (vModeStr == "strict")
+			vMode = Poco::Net::Context::VERIFY_STRICT;
+
+#if defined(POCO_NETSSL_WIN)
+		int options = Poco::Net::Context::OPT_DEFAULTS;
+		if (!certificate.empty()) options |= Poco::Net::Context::OPT_LOAD_CERT_FROM_FILE;
+		Poco::Net::Context::Ptr pContext = new Poco::Net::Context(Poco::Net::Context::TLSV1_CLIENT_USE, certificate, vMode, options);
+#else
+		Poco::Net::Context::Ptr pContext = new Poco::Net::Context(Poco::Net::Context::TLSV1_CLIENT_USE, privateKey, certificate, caLocation, vMode, 5, true, cipherList);
+#endif // POCO_NETSSL_WIN
+
+		pContext->enableExtendedCertificateVerification(extendedVerification);
+		return pContext;
+	}
+
+#endif // WEBTUNNEL_ENABLE_TLS
+
 	void onItemChanged(const DirectoryWatcher::DirectoryEvent& ev)
 	{
 		logger().notice("Device configuration changed: %s", ev.item.path());
@@ -277,30 +310,21 @@ protected:
 		if (_dontRun) return Application::EXIT_OK;
 
 #if defined(WEBTUNNEL_ENABLE_TLS)
+		Poco::Net::Context::Ptr pContext = createContext("tls");
 		bool acceptUnknownCert = config().getBool("tls.acceptUnknownCertificate", true);
-		std::string cipherList = config().getString("tls.ciphers", "HIGH:!DSS:!aNULL@STRENGTH");
-		bool extendedVerification = config().getBool("tls.extendedCertificateVerification", false);
-		std::string caLocation = config().getString("tls.caLocation", "");
-		std::string privateKey = config().getString("tls.privateKey", "");
-		std::string certificate = config().getString("tls.certificate", "");
-
 		Poco::SharedPtr<Poco::Net::InvalidCertificateHandler> pCertificateHandler;
 		if (acceptUnknownCert)
 			pCertificateHandler = new Poco::Net::AcceptCertificateHandler(false);
 		else
 			pCertificateHandler = new Poco::Net::RejectCertificateHandler(false);
-#if defined(POCO_NETSSL_WIN)
-		int options = Poco::Net::Context::OPT_DEFAULTS;
-		if (!certificate.empty()) options |= Poco::Net::Context::OPT_LOAD_CERT_FROM_FILE;
-		Poco::Net::Context::Ptr pContext = new Poco::Net::Context(Poco::Net::Context::TLSV1_CLIENT_USE, certificate, Poco::Net::Context::VERIFY_RELAXED, options);
-#else
-		Poco::Net::Context::Ptr pContext = new Poco::Net::Context(Poco::Net::Context::TLSV1_CLIENT_USE, privateKey, certificate, caLocation, Poco::Net::Context::VERIFY_RELAXED, 5, true, cipherList);
-#endif
-		pContext->enableExtendedCertificateVerification(extendedVerification);
 		Poco::Net::SSLManager::instance().initializeClient(0, pCertificateHandler, pContext);
 #endif
 
+#if defined(WEBTUNNEL_ENABLE_TLS)
+		_pDeviceManager = new DeviceManager(config(), _pTimer, createContext("https"));
+#else
 		_pDeviceManager = new DeviceManager(config(), _pTimer);
+#endif
 
 		bool watchRepository = config().getBool("gateway.watchRepository", false);
 		if (watchRepository)

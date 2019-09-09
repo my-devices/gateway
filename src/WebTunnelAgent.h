@@ -52,7 +52,7 @@ public:
 		MAX_RETRY_DELAY = 30000
 	};
 
-	WebTunnelAgent(const std::string& deviceId, Poco::SharedPtr<Poco::Util::Timer> pTimer, Poco::SharedPtr<Poco::WebTunnel::SocketDispatcher> pDispatcher, Poco::AutoPtr<Poco::Util::AbstractConfiguration> pConfig);
+	WebTunnelAgent(const std::string& deviceId, Poco::SharedPtr<Poco::Util::Timer> pTimer, Poco::SharedPtr<Poco::WebTunnel::SocketDispatcher> pDispatcher, Poco::AutoPtr<Poco::Util::AbstractConfiguration> pConfig, Poco::WebTunnel::SocketFactory::Ptr pSocketFactory);
 		/// Creates the WebTunnelAgent, using the given deviceId, Timer, SocketDispatcher and configuration.
 
 	~WebTunnelAgent();
@@ -97,6 +97,7 @@ protected:
 private:
 	std::string _id;
 	Poco::AutoPtr<Poco::Util::AbstractConfiguration> _pConfig;
+	Poco::WebTunnel::SocketFactory::Ptr _pSocketFactory;
 	std::string _deviceName;
 	Poco::Net::IPAddress _host;
 	std::set<Poco::UInt16> _ports;
@@ -107,6 +108,7 @@ private:
 	std::string _userAgent;
 	std::string _httpPath;
 	Poco::UInt16 _httpPort;
+	bool _httpsRequired;
 	Poco::UInt16 _sshPort;
 	Poco::UInt16 _vncPort;
 	Poco::UInt16 _rdpPort;

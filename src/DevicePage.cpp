@@ -1,7 +1,7 @@
 //
 // DevicePage.cpp
 //
-// This file has been generated from DevicePage.cpsp on 2019-09-03 15:44:15.
+// This file has been generated from DevicePage.cpsp on 2019-09-09 18:13:15.
 //
 
 
@@ -232,6 +232,15 @@ else
 	responseStream << "                     min=\"0\"\n";
 	responseStream << "                     max=\"65535\"\n";
 	responseStream << "                     class=\"form-control\">\n";
+	responseStream << "              <input type=\"checkbox\"\n";
+	responseStream << "                     name=\"httpsRequired\"\n";
+	responseStream << "                     value=\"true\"\n";
+	responseStream << "                     ";
+#line 137 "/ws/git/my-devices/gateway/src/DevicePage.cpsp"
+	responseStream << ( ctrl.deviceConfig()->getBool("webtunnel.httpsRequired", false) ? "checked" : "" );
+	responseStream << "\n";
+	responseStream << "                     class=\"form-control\">\n";
+	responseStream << "              <label for=\"httpsRequired\">Requires HTTPS</label>\n";
 	responseStream << "            </td>\n";
 	responseStream << "          </tr>\n";
 	responseStream << "          <tr class=\"odd\">\n";
@@ -240,7 +249,7 @@ else
 	responseStream << "              <input type=\"number\"\n";
 	responseStream << "                     name=\"sshPort\"\n";
 	responseStream << "                     value=\"";
-#line 141 "/ws/git/my-devices/gateway/src/DevicePage.cpsp"
+#line 147 "/ws/git/my-devices/gateway/src/DevicePage.cpsp"
 	responseStream << ( U::htmlize(ctrl.deviceConfig()->getString("webtunnel.sshPort", "")) );
 	responseStream << "\"\n";
 	responseStream << "                     size=\"5\"\n";
@@ -257,7 +266,7 @@ else
 	responseStream << "              <input type=\"number\"\n";
 	responseStream << "                     name=\"vncPort\"\n";
 	responseStream << "                     value=\"";
-#line 155 "/ws/git/my-devices/gateway/src/DevicePage.cpsp"
+#line 161 "/ws/git/my-devices/gateway/src/DevicePage.cpsp"
 	responseStream << ( U::htmlize(ctrl.deviceConfig()->getString("webtunnel.vncPort", "")) );
 	responseStream << "\"\n";
 	responseStream << "                     size=\"5\"\n";
@@ -274,7 +283,7 @@ else
 	responseStream << "              <input type=\"number\"\n";
 	responseStream << "                     name=\"rdpPort\"\n";
 	responseStream << "                     value=\"";
-#line 169 "/ws/git/my-devices/gateway/src/DevicePage.cpsp"
+#line 175 "/ws/git/my-devices/gateway/src/DevicePage.cpsp"
 	responseStream << ( U::htmlize(ctrl.deviceConfig()->getString("webtunnel.rdpPort", "")) );
 	responseStream << "\"\n";
 	responseStream << "                     size=\"5\"\n";
@@ -296,7 +305,7 @@ else
 	responseStream << "      </table>\n";
 	responseStream << "    </div>\n";
 	responseStream << "  </form>\n";
-#line 189 "/ws/git/my-devices/gateway/src/DevicePage.cpsp"
+#line 195 "/ws/git/my-devices/gateway/src/DevicePage.cpsp"
  } 	responseStream << " ";
 	responseStream << "\n";
 	// begin include html/footer.inc

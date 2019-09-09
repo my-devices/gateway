@@ -131,6 +131,12 @@ function cancelUpdateDevice(id)
                      min="0"
                      max="65535"
                      class="form-control">
+              <input type="checkbox"
+                     name="httpsRequired"
+                     value="true"
+                     <%= ctrl.deviceConfig()->getBool("webtunnel.httpsRequired", false) ? "checked" : "" %>
+                     class="form-control">
+              <label for="httpsRequired">Requires HTTPS</label>
             </td>
           </tr>
           <tr class="odd">

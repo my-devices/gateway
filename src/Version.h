@@ -19,7 +19,7 @@ namespace Gateway {
 enum GatewayVersion
 {
 	GATEWAY_VERSION_MAJOR = 1,
-	GATEWAY_VERSION_MINOR = 4,
+	GATEWAY_VERSION_MINOR = 5,
 	GATEWAY_VERSION_PATCH = 0
 };
 

@@ -66,6 +66,12 @@ void IndexPageController::processForm()
 			else
 				pDeviceConfig->remove("webtunnel.httpPort");
 
+			std::string httpsRequired = _form.get("httpsRequired");
+			if (httpsRequired == "true")
+				pDeviceConfig->setBool("webtunnel.httpsRequired", true);
+			else
+				pDeviceConfig->remove("webtunnel.httpsRequired");
+
 			std::string sshPort = _form.get("sshPort");
 			if (!sshPort.empty())
 				pDeviceConfig->setString("webtunnel.sshPort", sshPort);

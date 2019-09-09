@@ -15,6 +15,9 @@
 #include "Poco/WebTunnel/SocketDispatcher.h"
 #include "Poco/Util/AbstractConfiguration.h"
 #include "Poco/Util/Timer.h"
+#if defined(WEBTUNNEL_ENABLE_TLS)
+#include "Poco/Net/Context.h"
+#endif
 #include "Poco/RefCountedObject.h"
 #include "Poco/AutoPtr.h"
 #include "Poco/SharedPtr.h"
@@ -34,8 +37,13 @@ class DeviceManager: public Poco::RefCountedObject
 public:
 	typedef Poco::AutoPtr<DeviceManager> Ptr;
 
+#if defined(WEBTUNNEL_ENABLE_TLS)
+	DeviceManager(Poco::Util::AbstractConfiguration& config, Poco::SharedPtr<Poco::Util::Timer> pTimer, Poco::Net::Context::Ptr pContext);
+		/// Creates the DeviceManager, using the given configuration, timer and context.
+#endif
+
 	DeviceManager(Poco::Util::AbstractConfiguration& config, Poco::SharedPtr<Poco::Util::Timer> pTimer);
-		/// Creates the DeviceManager, using the given configuration and Timer.
+		/// Creates the DeviceManager, using the given configuration and timer.
 
 	~DeviceManager();
 		/// Destroys the DeviceManager.
@@ -91,6 +99,9 @@ private:
 
 	Poco::AutoPtr<Poco::Util::AbstractConfiguration> _pConfig;
 	Poco::SharedPtr<Poco::Util::Timer> _pTimer;
+#if defined(WEBTUNNEL_ENABLE_TLS)
+	Poco::Net::Context::Ptr _pContext;
+#endif
 	Poco::SharedPtr<Poco::WebTunnel::SocketDispatcher> _pDispatcher;
 	AgentMap _agents;
 	Poco::UUIDGenerator _uuidGenerator;

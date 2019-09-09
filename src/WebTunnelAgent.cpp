@@ -36,10 +36,12 @@ const std::string WebTunnelAgent::WEBTUNNEL_PROTOCOL("com.appinf.webtunnel.serve
 const std::string WebTunnelAgent::WEBTUNNEL_AGENT("macchina.io Remote Manager Gateway");
 
 
-WebTunnelAgent::WebTunnelAgent(const std::string& deviceId, Poco::SharedPtr<Poco::Util::Timer> pTimer, Poco::SharedPtr<Poco::WebTunnel::SocketDispatcher> pDispatcher, Poco::AutoPtr<Poco::Util::AbstractConfiguration> pConfig):
+WebTunnelAgent::WebTunnelAgent(const std::string& deviceId, Poco::SharedPtr<Poco::Util::Timer> pTimer, Poco::SharedPtr<Poco::WebTunnel::SocketDispatcher> pDispatcher, Poco::AutoPtr<Poco::Util::AbstractConfiguration> pConfig, Poco::WebTunnel::SocketFactory::Ptr pSocketFactory):
 	_id(deviceId),
 	_pConfig(pConfig),
+	_pSocketFactory(pSocketFactory),
 	_httpPort(0),
+	_httpsRequired(false),
 	_sshPort(0),
 	_vncPort(0),
 	_rdpPort(0),
@@ -199,7 +201,7 @@ void WebTunnelAgent::connect()
 				_logger.debug("WebSocket established. Creating RemotePortForwarder...");
 				pWebSocket->setNoDelay(true);
 				_retryDelay = MIN_RETRY_DELAY;
-				_pForwarder = new Poco::WebTunnel::RemotePortForwarder(*_pDispatcher, pWebSocket, _host, _ports, _remoteTimeout);
+				_pForwarder = new Poco::WebTunnel::RemotePortForwarder(*_pDispatcher, pWebSocket, _host, _ports, _remoteTimeout, _pSocketFactory);
 				_pForwarder->setConnectTimeout(_connectTimeout);
 				_pForwarder->setLocalTimeout(_localTimeout);
 				_pForwarder->webSocketClosed += Poco::delegate(this, &WebTunnelAgent::onClose);

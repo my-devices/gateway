@@ -12,6 +12,9 @@
 #include "Poco/Util/PropertyFileConfiguration.h"
 #include "Poco/Util/LayeredConfiguration.h"
 #include "Poco/Util/TimerTask.h"
+#if defined(WEBTUNNEL_ENABLE_TLS)
+#include "Poco/Net/SecureStreamSocket.h"
+#endif
 #include "Poco/Path.h"
 #include "Poco/File.h"
 #include "Poco/FileStream.h"
@@ -23,6 +26,49 @@
 
 namespace MyDevices {
 namespace Gateway {
+
+
+#if defined(WEBTUNNEL_ENABLE_TLS)
+
+
+class TLSSocketFactory: public Poco::WebTunnel::SocketFactory
+{
+public:
+	TLSSocketFactory(Poco::UInt16 tlsPort, Poco::Net::Context::Ptr pContext):
+		_tlsPort(tlsPort),
+		_pContext(pContext)
+	{
+	}
+
+	~TLSSocketFactory()
+	{
+	}
+
+	Poco::Net::StreamSocket createSocket(const Poco::Net::SocketAddress& addr, Poco::Timespan timeout)
+	{
+		if (addr.port() == _tlsPort)
+		{
+			Poco::Net::SecureStreamSocket streamSocket(_pContext);
+			streamSocket.connect(addr, timeout);
+			streamSocket.setNoDelay(true);
+			return streamSocket;
+		}
+		else
+		{
+			Poco::Net::StreamSocket streamSocket;
+			streamSocket.connect(addr, timeout);
+			streamSocket.setNoDelay(true);
+			return streamSocket;
+		}
+	}
+
+private:
+	Poco::UInt16 _tlsPort;
+	Poco::Net::Context::Ptr _pContext;
+};
+
+
+#endif // defined(WEBTUNNEL_ENABLE_TLS)
 
 
 class RestartTask: public Poco::Util::TimerTask
@@ -59,6 +105,23 @@ public:
 private:
 	WebTunnelAgent::Ptr _pAgent;
 };
+
+
+#if defined(WEBTUNNEL_ENABLE_TLS)
+
+
+DeviceManager::DeviceManager(Poco::Util::AbstractConfiguration& config, Poco::SharedPtr<Poco::Util::Timer> pTimer, Poco::Net::Context::Ptr pContext):
+	_pConfig(&config, true),
+	_pTimer(pTimer),
+	_pContext(pContext),
+	_pDispatcher(new Poco::WebTunnel::SocketDispatcher(_pConfig->getInt("webtunnel.threads", 8))),
+	_logger(Poco::Logger::get("DeviceManager"))
+{
+	reconfigureAgents(5);
+}
+
+
+#endif
 
 
 DeviceManager::DeviceManager(Poco::Util::AbstractConfiguration& config, Poco::SharedPtr<Poco::Util::Timer> pTimer):
@@ -180,7 +243,24 @@ WebTunnelAgent::Ptr DeviceManager::loadAgent(const std::string& id)
 	pLayeredConfig->add(deviceConfiguration(id), 0);
 	if (pLayeredConfig->getBool("webtunnel.enable", true))
 	{
-		return new WebTunnelAgent(id, _pTimer, _pDispatcher, pLayeredConfig);
+		Poco::WebTunnel::SocketFactory::Ptr pSocketFactory;
+
+		Poco::UInt16 httpPort = static_cast<Poco::UInt16>(pLayeredConfig->getInt("webtunnel.httpPort", 0));
+		bool httpsRequired = pLayeredConfig->getBool("webtunnel.httpsRequired", false);
+
+#if defined(WEBTUNNEL_ENABLE_TLS)
+		if (httpPort != 0 && httpsRequired)
+		{
+			pSocketFactory = new TLSSocketFactory(httpPort, _pContext);
+		}
+#endif
+
+		if (!pSocketFactory)
+		{
+			pSocketFactory = new Poco::WebTunnel::SocketFactory;
+		}
+
+		return new WebTunnelAgent(id, _pTimer, _pDispatcher, pLayeredConfig, pSocketFactory);
 	}
 	else return 0;
 }
