@@ -147,6 +147,7 @@ via Remote Manager:
   - **Device IP Address or Domain Name:** `127.0.0.1`
   - **Forwarded TCP Ports:** `8080`
   - **Device HTTP Server Port:** `8080`
+  - **Requires HTTPS:** unchecked
 
 ![Gateway Web User Interface - Add Device][browser2]
 

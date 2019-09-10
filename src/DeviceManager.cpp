@@ -246,7 +246,7 @@ WebTunnelAgent::Ptr DeviceManager::loadAgent(const std::string& id)
 		Poco::WebTunnel::SocketFactory::Ptr pSocketFactory;
 
 		Poco::UInt16 httpPort = static_cast<Poco::UInt16>(pLayeredConfig->getInt("webtunnel.httpPort", 0));
-		bool httpsRequired = pLayeredConfig->getBool("webtunnel.httpsRequired", false);
+		bool httpsRequired = pLayeredConfig->getBool("webtunnel.https.enable", false);
 
 #if defined(WEBTUNNEL_ENABLE_TLS)
 		if (httpPort != 0 && httpsRequired)

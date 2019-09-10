@@ -68,9 +68,9 @@ void IndexPageController::processForm()
 
 			std::string httpsRequired = _form.get("httpsRequired");
 			if (httpsRequired == "true")
-				pDeviceConfig->setBool("webtunnel.httpsRequired", true);
+				pDeviceConfig->setBool("webtunnel.https.enable", true);
 			else
-				pDeviceConfig->remove("webtunnel.httpsRequired");
+				pDeviceConfig->remove("webtunnel.https.enable");
 
 			std::string sshPort = _form.get("sshPort");
 			if (!sshPort.empty())

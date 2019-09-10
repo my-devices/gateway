@@ -321,7 +321,7 @@ protected:
 #endif
 
 #if defined(WEBTUNNEL_ENABLE_TLS)
-		_pDeviceManager = new DeviceManager(config(), _pTimer, createContext("https"));
+		_pDeviceManager = new DeviceManager(config(), _pTimer, createContext("webtunnel.https"));
 #else
 		_pDeviceManager = new DeviceManager(config(), _pTimer);
 #endif
