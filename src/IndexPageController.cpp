@@ -66,7 +66,7 @@ void IndexPageController::processForm()
 			else
 				pDeviceConfig->remove("webtunnel.httpPort");
 
-			std::string httpsRequired = _form.get("httpsRequired");
+			std::string httpsRequired = _form.get("httpsRequired", "");
 			if (httpsRequired == "true")
 				pDeviceConfig->setBool("webtunnel.https.enable", true);
 			else

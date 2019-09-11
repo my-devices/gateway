@@ -1,7 +1,7 @@
 //
 // DevicePage.cpp
 //
-// This file has been generated from DevicePage.cpsp on 2019-09-10 18:07:16.
+// This file has been generated from DevicePage.cpsp on 2019-09-11 06:54:13.
 //
 
 
@@ -237,7 +237,7 @@ else
 	responseStream << "                     value=\"true\"\n";
 	responseStream << "                     ";
 #line 137 "/ws/git/my-devices/gateway/src/DevicePage.cpsp"
-	responseStream << ( ctrl.deviceConfig()->getBool("webtunnel.httpsRequired", false) ? "checked" : "" );
+	responseStream << ( ctrl.deviceConfig()->getBool("webtunnel.https.enable", false) ? "checked" : "" );
 	responseStream << "\n";
 	responseStream << "                     class=\"form-control\">\n";
 	responseStream << "              <label for=\"httpsRequired\">Requires HTTPS</label>\n";
