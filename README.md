@@ -78,11 +78,16 @@ headers and libraries will be found.
 ```
 $ mkdir gateway-build && cd gateway-build
 $ cmake ../gateway -DCMAKE_PREFIX_PATH=../sdk-install
-$ cmake --build .
+$ cmake --build . --config Release
 ```
 
 To cross-compile, add `-DCMAKE_TOOLCHAIN_FILE=/path/to/toolchain.cmake` to the
 `cmake` configuration command.
+
+Note: The resulting `rmgateway` executable may contain debug information, which significantly
+increases its size.
+You should run `strip` or `xxx-yyy-linux-strip` on the resulting executable to reduce its
+size before deploying it to the device.
 
 ## Running the Gateway
 
