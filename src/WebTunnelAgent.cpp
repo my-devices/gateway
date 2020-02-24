@@ -428,7 +428,9 @@ void WebTunnelAgent::init()
 	_propertiesUpdateInterval = Poco::Timespan(_pConfig->getInt("webtunnel.propertiesUpdateInterval", 0), 0);
 	_httpPath = _pConfig->getString("webtunnel.httpPath", "");
 	_httpPort = static_cast<Poco::UInt16>(_pConfig->getInt("webtunnel.httpPort", 0));
+	_sshPort = static_cast<Poco::UInt16>(_pConfig->getInt("webtunnel.sshPort", 0));
 	_vncPort = static_cast<Poco::UInt16>(_pConfig->getInt("webtunnel.vncPort", 0));
+	_rdpPort = static_cast<Poco::UInt16>(_pConfig->getInt("webtunnel.rdpPort", 0));
 	_userAgent = _pConfig->getString("webtunnel.userAgent", "");
 	_httpTimeout = Poco::Timespan(_pConfig->getInt("http.timeout", 30), 0);
 	_useProxy = _pConfig->getBool("http.proxy.enable", false);
