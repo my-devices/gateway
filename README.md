@@ -58,7 +58,14 @@ be picked up by CMake when building the Gateway.
 
 ```
 $ mkdir sdk-build && cd sdk-build
-$ cmake ../sdk -DCMAKE_INSTALL_PREFIX=../sdk-install
+$ cmake ../sdk \
+	-DENABLE_JSON=ON \
+	-DENABLE_WEBTUNNELAGENT=OFF \
+	-DENABLE_WEBTUNNELCLIENT=OFF \
+	-DENABLE_WEBTUNNELSSH=OFF \
+	-DENABLE_WEBTUNNELVNC=OFF \
+	-DENABLE_WEBTUNNELRDP=OFF \
+	-DCMAKE_INSTALL_PREFIX=../sdk-install
 $ cmake --build . --target install
 $ cd ..
 ```

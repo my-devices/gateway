@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.0)
 project(RMGateway)
 
 set(CMAKE_CXX_STANDARD 11)
+set(ENABLE_JSON ON)
 
 if(WIN32)
 	option(ENABLE_NETSSL_WIN "Enable NetSSL Windows" ON)
