@@ -63,21 +63,21 @@ DevicePageController::DevicePageController(DeviceManager::Ptr pDeviceManager, co
 		request.response().redirect("/");
 		return;
 	}
-	_username = pSession->getValue<std::string>("username");
-	_csrfToken = pSession->csrfToken();
+	username(pSession->getValue<std::string>("username"));
+	csrfToken(pSession->csrfToken());
 	try
 	{
 		Poco::Path p(request.getURI());
 		_deviceId = p.getFileName();
-		_pDeviceConfig = _pDeviceManager->deviceConfiguration(_deviceId);
-		_pAgent = _pDeviceManager->agentForDevice(_deviceId);
-		_message = deviceError();
+		_pDeviceConfig = deviceManager()->deviceConfiguration(_deviceId);
+		_pAgent = deviceManager()->agentForDevice(_deviceId);
+		message(deviceError());
 		loadDevice();
 		processForm();
 	}
 	catch (Poco::Exception& exc)
 	{
-		_message = exc.displayText();
+		message(exc.displayText());
 	}
 }
 
@@ -134,23 +134,23 @@ std::string DevicePageController::loadExtraPorts() const
 
 void DevicePageController::processForm()
 {
-	std::string action = _form.get("action", "");
-	std::string csrfToken = _form.get("csrfToken", "");
+	std::string action = form().get("action", "");
+	std::string token = form().get("csrfToken", "");
 
-	if (csrfToken == _csrfToken)
+	if (token == csrfToken())
 	{
 		if (action == "update")
 		{
-			_name = _form.get("deviceName");
-			_domain = _form.get("domain");
-			_password = _form.get("password");
-			_host = _form.get("host");
-			_httpPort = _form.get("httpPort");
-			_httpsEnable = _form.get("httpsRequired", "") == "true";
-			_sshPort = _form.get("sshPort");
-			_vncPort = _form.get("vncPort");
-			_rdpPort = _form.get("rdpPort");
-			_extraPorts = _form.get("ports");
+			_name = form().get("deviceName");
+			_domain = form().get("domain");
+			_password = form().get("password");
+			_host = form().get("host");
+			_httpPort = form().get("httpPort");
+			_httpsEnable = form().get("httpsRequired", "") == "true";
+			_sshPort = form().get("sshPort");
+			_vncPort = form().get("vncPort");
+			_rdpPort = form().get("rdpPort");
+			_extraPorts = form().get("ports");
 
 			bool ok = true;
 			try
@@ -240,30 +240,30 @@ void DevicePageController::processForm()
 				}
 				else
 				{
-					_message = "At least one port must be enabled.";
+					message("At least one port must be enabled.");
 					ok = false;
 				}
 			}
 			catch (Poco::Exception& exc)
 			{
-				_message = exc.displayText();
+				message(exc.displayText());
 				ok = false;
 			}
 
 			if (ok)
 			{
-				_pDeviceManager->updateDevice(deviceConfig());
-				_pDeviceManager->reconfigureAgents(2000);
-				_request.response().redirect("/devices");
+				deviceManager()->updateDevice(deviceConfig());
+				deviceManager()->reconfigureAgents(2000);
+				request().response().redirect("/devices");
 			}
 		}
 		else if (action == "cancel")
 		{
 			if (!deviceConfig()->getBool("webtunnel.enable", true))
 			{
-				_pDeviceManager->removeDevice(_deviceId);
+				deviceManager()->removeDevice(_deviceId);
 			}
-			_request.response().redirect("/devices");
+			request().response().redirect("/devices");
 		}
 	}
 }

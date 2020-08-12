@@ -39,14 +39,16 @@ public:
 		return _pDeviceManager;
 	}
 
+	void message(const std::string& text, const std::string& messageClass = MSG_CLASS_ERROR);
+
 	const std::string& message() const
 	{
 		return _message;
 	}
 
-	const std::string& messageStyle() const
+	const std::string& messageClass() const
 	{
-		return _messageStyle;
+		return _messageClass;
 	}
 
 	bool mustRedirect() const
@@ -64,14 +66,39 @@ public:
 		return _csrfToken;
 	}
 
+	const Poco::Net::HTTPServerRequest& request() const
+	{
+		return _request;
+	}
+
+	const Poco::Net::HTMLForm& form() const
+	{
+		return _form;
+	}
+
 	std::string defaultDomain() const;
 
+	static const std::string MSG_CLASS_ERROR;
+	static const std::string MSG_CLASS_WARNING;
+	static const std::string MSG_CLASS_INFORMATION;
+
 protected:
+	void username(const std::string& name)
+	{
+		_username = name;
+	}
+
+	void csrfToken(const std::string& token)
+	{
+		_csrfToken = token;
+	}
+
+private:
 	DeviceManager::Ptr _pDeviceManager;
 	const Poco::Net::HTTPServerRequest& _request;
 	const Poco::Net::HTMLForm& _form;
 	std::string _message;
-	std::string _messageStyle;
+	std::string _messageClass;
 	std::string _username;
 	std::string _csrfToken;
 };

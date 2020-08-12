@@ -15,6 +15,11 @@ namespace MyDevices {
 namespace Gateway {
 
 
+const std::string PageController::MSG_CLASS_ERROR("error");
+const std::string PageController::MSG_CLASS_WARNING("warning");
+const std::string PageController::MSG_CLASS_INFORMATION("information");
+
+
 PageController::PageController(DeviceManager::Ptr pDeviceManager, const Poco::Net::HTTPServerRequest& request, const Poco::Net::HTMLForm& form):
 	_pDeviceManager(pDeviceManager),
 	_request(request),
@@ -25,6 +30,13 @@ PageController::PageController(DeviceManager::Ptr pDeviceManager, const Poco::Ne
 
 PageController::~PageController()
 {
+}
+
+
+void PageController::message(const std::string& text, const std::string& messageClass)
+{
+	_message = text;
+	_messageClass = messageClass;
 }
 
 

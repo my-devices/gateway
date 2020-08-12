@@ -51,11 +51,11 @@ CreateDevicePageController::CreateDevicePageController(DeviceManager::Ptr pDevic
 		request.response().redirect("/");
 		return;
 	}
-	_username = pSession->getValue<std::string>("username");
-	_csrfToken = pSession->csrfToken();
+	username(pSession->getValue<std::string>("username"));
+	csrfToken(pSession->csrfToken());
 	try
 	{
-		if (_form.has("action"))
+		if (form.has("action"))
 		{
 			processForm();
 		}
@@ -69,7 +69,7 @@ CreateDevicePageController::CreateDevicePageController(DeviceManager::Ptr pDevic
 	}
 	catch (Poco::Exception& exc)
 	{
-		_message = exc.displayText();
+		message(exc.displayText());
 	}
 }
 
@@ -81,36 +81,36 @@ CreateDevicePageController::~CreateDevicePageController()
 
 void CreateDevicePageController::processForm()
 {
-	std::string action = _form.get("action", "");
-	std::string csrfToken = _form.get("csrfToken", "");
+	std::string action = form().get("action", "");
+	std::string token = form().get("csrfToken", "");
 
-	if (csrfToken == _csrfToken)
+	if (token == csrfToken())
 	{
 		if (action == "create")
 		{
-			_deviceId = _form.get("deviceId");
-			_name = _form.get("deviceName");
-			_domain = _form.get("domain");
+			_deviceId = form().get("deviceId");
+			_name = form().get("deviceName");
+			_domain = form().get("domain");
 
 			if (!isValidId(_deviceId))
 			{
-				_message = "Invalid device ID: " + _deviceId;
+				message("Invalid device ID: " + _deviceId);
 				return;
 			}
 
 			if (!isValidId(_domain))
 			{
-				_message = "Invalid domain ID: " + _domain;
+				message("Invalid domain ID: " + _domain);
 				return;
 			}
 
-			Poco::AutoPtr<Poco::Util::AbstractConfiguration> pDeviceConfig = _pDeviceManager->createDevice(_deviceId, _domain, _name);
+			Poco::AutoPtr<Poco::Util::AbstractConfiguration> pDeviceConfig = deviceManager()->createDevice(_deviceId, _domain, _name);
 
-			_request.response().redirect("/device/" + _deviceId);
+			request().response().redirect("/device/" + _deviceId);
 		}
 		else if (action == "cancel")
 		{
-			_request.response().redirect("/devices");
+			request().response().redirect("/devices");
 		}
 	}
 }

@@ -32,8 +32,8 @@ IndexPageController::IndexPageController(DeviceManager::Ptr pDeviceManager, cons
 		request.response().redirect("/");
 		return;
 	}
-	_username = pSession->getValue<std::string>("username");
-	_csrfToken = pSession->csrfToken();
+	username(pSession->getValue<std::string>("username"));
+	csrfToken(pSession->csrfToken());
 	processForm();
 	_devices = pDeviceManager->enumerateDevices();
 }
@@ -46,27 +46,27 @@ IndexPageController::~IndexPageController()
 
 void IndexPageController::processForm()
 {
-	std::string action = _form.get("action", "");
-	std::string target = _form.get("target", "");
-	std::string csrfToken = _form.get("csrfToken", "");
-	if (csrfToken == _csrfToken)
+	std::string action = form().get("action", "");
+	std::string target = form().get("target", "");
+	std::string token = form().get("csrfToken", "");
+	if (token == csrfToken())
 	{
 		try
 		{
 			if (action == "add")
 			{
-				_request.response().redirect("/create");
+				request().response().redirect("/create");
 			}
 			else if (action == "remove")
 			{
-				_pDeviceManager->removeDevice(target);
-				_pDeviceManager->reconfigureAgents(2000);
-				_request.response().redirect(_request.getURI());
+				deviceManager()->removeDevice(target);
+				deviceManager()->reconfigureAgents(2000);
+				request().response().redirect(request().getURI());
 			}
 		}
 		catch (Poco::Exception& exc)
 		{
-			_message = exc.displayText();
+			message(exc.displayText());
 		}
 	}
 }
@@ -112,7 +112,7 @@ std::string IndexPageController::formatPorts(Poco::AutoPtr<Poco::Util::AbstractC
 std::string IndexPageController::deviceStatus(const std::string& id) const
 {
 	WebTunnelAgent::Status status = WebTunnelAgent::STATUS_DISCONNECTED;
-	WebTunnelAgent::Ptr pAgent = _pDeviceManager->agentForDevice(id);
+	WebTunnelAgent::Ptr pAgent = deviceManager()->agentForDevice(id);
 	if (pAgent)
 	{
 		status = pAgent->status();

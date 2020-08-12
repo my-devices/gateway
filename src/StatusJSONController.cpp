@@ -24,7 +24,6 @@ StatusJSONController::StatusJSONController(DeviceManager::Ptr pDeviceManager, co
 	{
 		return;
 	}
-	_username = pSession->getValue<std::string>("username");
 	_devices = pDeviceManager->enumerateDevices();
 }
 
@@ -37,7 +36,7 @@ StatusJSONController::~StatusJSONController()
 std::string StatusJSONController::deviceStatus(const std::string& id) const
 {
 	WebTunnelAgent::Status status = WebTunnelAgent::STATUS_DISCONNECTED;
-	WebTunnelAgent::Ptr pAgent = _pDeviceManager->agentForDevice(id);
+	WebTunnelAgent::Ptr pAgent = deviceManager()->agentForDevice(id);
 	if (pAgent)
 	{
 		status = pAgent->status();

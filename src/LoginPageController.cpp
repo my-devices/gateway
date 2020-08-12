@@ -56,55 +56,55 @@ LoginPageController::~LoginPageController()
 
 void LoginPageController::processForm()
 {
-	std::string username = _form.get("username", "");
-	std::string password = _form.get("password", "");
+	std::string username = form().get("username", "");
+	std::string password = form().get("password", "");
 	try
 	{
-		Poco::URI reflectorURI = Poco::URI(_pDeviceManager->config()->getString("webtunnel.reflectorURI"));
+		Poco::URI reflectorURI = Poco::URI(deviceManager()->config()->getString("webtunnel.reflectorURI"));
 		Poco::SharedPtr<Poco::Net::HTTPClientSession> pHTTPClientSession = Poco::Net::HTTPSessionFactory::defaultFactory().createClientSession(reflectorURI);
-		Poco::Net::HTTPRequest request(Poco::Net::HTTPRequest::HTTP_GET, "/my-devices/api/token", Poco::Net::HTTPMessage::HTTP_1_1);
+		Poco::Net::HTTPRequest apiRequest(Poco::Net::HTTPRequest::HTTP_GET, "/my-devices/api/token", Poco::Net::HTTPMessage::HTTP_1_1);
 		Poco::Net::HTMLForm params;
 		params.set("username", username);
 		params.set("password", password);
 		params.set("application", "RemoteManagerGateway");
-		params.prepareSubmit(request);
+		params.prepareSubmit(apiRequest);
 		_logger.debug("Validating credentials with Remote Manager server at %s.", reflectorURI.toString());
-		std::ostream& requestStream = pHTTPClientSession->sendRequest(request);
+		std::ostream& requestStream = pHTTPClientSession->sendRequest(apiRequest);
 		params.write(requestStream);
-		Poco::Net::HTTPResponse response;
-		std::istream& responseStream = pHTTPClientSession->receiveResponse(response);
-		if (response.getStatus() == Poco::Net::HTTPResponse::HTTP_OK)
+		Poco::Net::HTTPResponse apiResponse;
+		std::istream& responseStream = pHTTPClientSession->receiveResponse(apiResponse);
+		if (apiResponse.getStatus() == Poco::Net::HTTPResponse::HTTP_OK)
 		{
 			_logger.information("Login successful for user %s.", username);
 			Poco::Util::JSONConfiguration json(responseStream);
 			std::string token = json.getString("token");
 
-			std::string domain = _pDeviceManager->config()->getString("webtunnel.domain");
+			std::string domain = deviceManager()->config()->getString("webtunnel.domain");
 			if (verifyDomainAccess(reflectorURI, token, domain))
 			{
-				int sessionTimeout = _pDeviceManager->config()->getInt("gateway.sessionTimeout", 3600);
-				WebSession::Ptr pWebSession = _pDeviceManager->webSessionManager().create("rmgateway", _request, sessionTimeout);
+				int sessionTimeout = deviceManager()->config()->getInt("gateway.sessionTimeout", 3600);
+				WebSession::Ptr pWebSession = deviceManager()->webSessionManager().create("rmgateway", request(), sessionTimeout);
 				pWebSession->set("username", username);
 				pWebSession->set("token", token);
-				_request.response().redirect("/devices");
+				request().response().redirect("/devices");
 			}
 			else
 			{
 				_logger.warning("User %s does not have access to gateway domain %s.", username, domain);
-				_message = Poco::format("User account %s does not have access to the gateway's domain %s.", username, domain);
+				message(Poco::format("User account %s does not have access to the gateway's domain %s.", username, domain));
 			}
 		}
 		else
 		{
 			_logger.warning("Login failed for user %s.", username);
-			_message = "The given username is not known, the password is wrong or the account has been disabled.";
+			message("The given username is not known, the password is wrong or the account has been disabled.");
 		}
 		Poco::NullOutputStream nullStream;
 		Poco::StreamCopier::copyStream(responseStream, nullStream);
 	}
 	catch (Poco::Exception& exc)
 	{
-		_message = exc.displayText();
+		message(exc.displayText());
 	}
 }
 
