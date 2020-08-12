@@ -266,21 +266,20 @@ WebTunnelAgent::Ptr DeviceManager::loadAgent(const std::string& id)
 }
 
 
-Poco::AutoPtr<Poco::Util::AbstractConfiguration> DeviceManager::createDevice()
+Poco::AutoPtr<Poco::Util::AbstractConfiguration> DeviceManager::createDevice(const std::string& id, const std::string& domain, const std::string& name)
 {
 	Poco::FastMutex::ScopedLock lock(_mutex);
 
-	Poco::UUID uuid = _uuidGenerator.createOne();
 	Poco::AutoPtr<Poco::Util::PropertyFileConfiguration> pConfig = new Poco::Util::PropertyFileConfiguration;
-	pConfig->setString("webtunnel.deviceName", "Unnamed Device");
-	pConfig->setString("webtunnel.deviceId", uuid.toString());
-	pConfig->setString("webtunnel.domain", _pConfig->getString("webtunnel.domain"));
+	pConfig->setString("webtunnel.deviceName", name);
+	pConfig->setString("webtunnel.deviceId", id);
+	pConfig->setString("webtunnel.domain", domain);
 	pConfig->setString("webtunnel.host", "127.0.0.1");
 	pConfig->setString("webtunnel.ports", "80");
 	pConfig->setString("webtunnel.httpPort", "80");
 	pConfig->setString("webtunnel.password", "");
 	pConfig->setBool("webtunnel.enable", false);
-	pConfig->save(deviceConfigurationPath(uuid.toString()));
+	pConfig->save(deviceConfigurationPath(id));
 
 	return pConfig;
 }

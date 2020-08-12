@@ -1,7 +1,7 @@
 //
 // Gradient.cpp
 //
-// This file has been generated from Gradient.cpsp on 2019-09-11 06:54:12.
+// This file has been generated from Gradient.cpsp on 2020-08-12 06:42:46.
 //
 
 
@@ -15,7 +15,7 @@
 #include "Poco/DateTimeParser.h"
 #include "Poco/DateTimeFormatter.h"
 #include "Poco/DateTimeFormat.h"
-#line 9 "/ws/git/my-devices/gateway/src/Gradient.cpsp"
+#line 9 "/Users/guenter/ws/git/my-devices/gateway/src/Gradient.cpsp"
 
 
 // res/Gradient.png
@@ -92,7 +92,7 @@ void Gradient::handleRequest(Poco::Net::HTTPServerRequest& request, Poco::Net::H
 	if (!(checkModified(request))) return;
 
 	std::ostream& responseStream = response.send();
-#line 71 "/ws/git/my-devices/gateway/src/Gradient.cpsp"
+#line 71 "/Users/guenter/ws/git/my-devices/gateway/src/Gradient.cpsp"
 
 	responseStream.write(reinterpret_cast<const char*>(data), sizeof(data));
 }

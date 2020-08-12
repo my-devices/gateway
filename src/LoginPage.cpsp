@@ -1,0 +1,56 @@
+<!DOCTYPE HTML>
+<%@ page class="LoginPage"
+  namespace="MyDevices::Gateway"
+  contentType="text/html;charset=utf-8"
+  compressed="true"
+  context="DeviceManager::Ptr" %>
+
+<%@ header include="DeviceManager.h" %>
+<%@ impl include="LoginPageController.h" %>
+<%@ include file="../html/template.inc" %>
+
+<%%
+LoginPageController ctrl(context(), request, form);
+if (ctrl.mustRedirect()) return;
+
+pageTemplate.set("title", "Gateway");
+pageTemplate.set("domain", ctrl.defaultDomain());
+%>
+
+<%@ include file="../html/header.inc" %>
+
+<% if (!ctrl.message().empty()) { %>
+  <div class="error">
+    <%= U::htmlize(ctrl.message()) %>
+  </div>
+<% } %>
+
+<div class="loginBox">
+  <form method="post" action="/" accept-charset="utf-8">
+    <table>
+      <tr>
+        <th colspan="2" id="notice">
+          Please log in with your Remote Manager credentials.
+        </th>
+      </tr>
+      <tr>
+        <th id="usernameLabelCell">Username:</th>
+        <td id="usernameInputCell"><input id="usernameInput" type="text" name="username" autofocus></td>
+      </tr>
+      <tr>
+        <th id="passwordLabelCell">Password:</th>
+        <td id="passwordInputCell"><input id="passwordInput" type="password" name="password"></td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td id="loginButtonCell">
+          <input type="hidden" name="action" value="login">
+          <input id="loginButton" type="submit" name="accept" value="Login">
+        </td>
+      </tr>
+    </table>
+    <input type="hidden" name="operation" value="login">
+  </form>
+</div>
+
+<%@ include file="../html/footer.inc" %>

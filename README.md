@@ -91,36 +91,17 @@ size before deploying it to the device.
 
 ## Running the Gateway
 
-Edit the configuration file [rmgateway.properties](rmgateway.properties) and change the default password
-and Remote Manager domain.
+Edit the configuration file [rmgateway.properties](rmgateway.properties) and change the default
+Remote Manager domain.
 
-To change the password, run:
-
-```
-$ ./rmgateway -H<password>
-```
-
-to compute the password hash. Change the value of the `gateway.password` property
-to the hash value for your password.
-
-Example: if your password is `sup3rS3cr3t`:
-
-```
-$ ./rmgateway -Hsup3rS3cr3t
-61cba3bd7cc5bc6f3441a58c290e10a40f3cbcf6d1f538071d45a77e823273b0
-```
-
-Change the `gateway.password` property in `rmgateway.properties` to:
-
-```
-gateway.password = 61cba3bd7cc5bc6f3441a58c290e10a40f3cbcf6d1f538071d45a77e823273b0
-```
-
-Next, change the value of the `webtunnel.domain` property to the domain UUID of your
+Change the value of the `webtunnel.domain` property to the domain UUID of your
 Remote Manager server account.
 
 Optionally, you can also change other configuration properties, such as the
 port of the internal web server (defaults to 8080).
+
+You can change the address (URI) of the Remote Manager server
+the agent connects to via the `webtunnel.reflectorURI` property.
 
 Copy the `rmgateway.properties` file to the same directory
 the `rmgateway` executable is located in, or use the `--config-file` option
@@ -137,7 +118,16 @@ and open its configuration web interface at
 
 You should see this:
 
-![Gateway Web User Interface - First Start][browser1]
+![Gateway Web User Interface - First Login][login]
+
+Sign in with your Remote Manager username and password.
+The Gateway will validate the username and password
+against the Remote Manager server instance configured
+in the `webtunnel.reflectorURI` property.
+
+After signing in you'll see the Local Devices overview page.
+
+![Gateway Web User Interface - Overview][browser1]
 
 Click the `[+]` button to create a new device connection. Your first device
 can be to the built-in web interface of the Gateway, so that you will be able
@@ -146,21 +136,29 @@ to manage it remotely.
 Enter the following information to make the Gateway's web user interface accessible remotely
 via Remote Manager:
 
+![Gateway Web User Interface - Create Device][create]
+
   - **Name:** `Gateway`
+  - **ID:** *(leave as is)*
   - **Domain:** *(leave as is)*
-  - **Device Password:** *(leave empty)*
+
+Click *Next* to finish configuring the device.
+
+![Gateway Web User Interface - Create Device][device]
+
+Specify the following settings.
+
   - **Device IP Address or Domain Name:** `127.0.0.1`
-  - **Forwarded TCP Ports:** `8080`
   - **Device HTTP Server Port:** `8080`
   - **Requires HTTPS:** unchecked
 
-![Gateway Web User Interface - Add Device][browser2]
+All other fields can be left at their defaults or empty.
 
 Click `Save` to save your first Gateway connection.
 
 You will now see it in the overview:
 
-![Gateway Web User Interface - Device Added][browser3]
+![Gateway Web User Interface - Device Added][browser2]
 
 Note that *Status* may initially show *disconnected* for your newly added device.
 The page will refresh automatically after 10 seconds, and the status should
@@ -172,6 +170,8 @@ The Gateway should now be visible in your [Remote Manager Dashboard](https://ref
 You can now add other devices.
 
 
-[browser1]: doc/images/browser1.png "Gateway Web User Interface - First Start"
-[browser2]: doc/images/browser2.png "Gateway Web User Interface - Add Device"
-[browser3]: doc/images/browser3.png "Gateway Web User Interface - Device Added"
+[login]: doc/images/login.png "Gateway Web User Interface - First Login"
+[browser1]: doc/images/browser1.png "Gateway Web User Interface - Overview"
+[create]: doc/images/create.png "Gateway Web User Interface - Create Device"
+[device]: doc/images/device.png "Gateway Web User Interface - Create Device"
+[browser2]: doc/images/browser1.png "Gateway Web User Interface - Device Created"

@@ -1,7 +1,7 @@
 //
 // MinusIcon.cpp
 //
-// This file has been generated from MinusIcon.cpsp on 2019-09-11 06:54:11.
+// This file has been generated from MinusIcon.cpsp on 2020-08-12 06:42:46.
 //
 
 
@@ -15,7 +15,7 @@
 #include "Poco/DateTimeParser.h"
 #include "Poco/DateTimeFormatter.h"
 #include "Poco/DateTimeFormat.h"
-#line 9 "/ws/git/my-devices/gateway/src/MinusIcon.cpsp"
+#line 9 "/Users/guenter/ws/git/my-devices/gateway/src/MinusIcon.cpsp"
 
 
 // res/MinusIcon.png
@@ -78,7 +78,7 @@ void MinusIcon::handleRequest(Poco::Net::HTTPServerRequest& request, Poco::Net::
 	if (!(checkModified(request))) return;
 
 	std::ostream& responseStream = response.send();
-#line 57 "/ws/git/my-devices/gateway/src/MinusIcon.cpsp"
+#line 57 "/Users/guenter/ws/git/my-devices/gateway/src/MinusIcon.cpsp"
 
 	responseStream.write(reinterpret_cast<const char*>(data), sizeof(data));
 }

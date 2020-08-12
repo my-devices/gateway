@@ -1,7 +1,7 @@
 //
 // DevicePage.cpp
 //
-// This file has been generated from DevicePage.cpsp on 2019-09-11 06:54:13.
+// This file has been generated from DevicePage.cpsp on 2020-08-12 09:34:06.
 //
 
 
@@ -34,26 +34,26 @@ void DevicePage::handleRequest(Poco::Net::HTTPServerRequest& request, Poco::Net:
 	bool _compressResponse(request.hasToken("Accept-Encoding", "gzip"));
 	if (_compressResponse) response.set("Content-Encoding", "gzip");
 
-	if (!(U::authenticate(request, response))) return;
-
 	Poco::Net::HTMLForm form(request, request.stream());
-#line 4 "/ws/git/my-devices/gateway/html/template.inc"
+#line 4 "/Users/guenter/ws/git/my-devices/gateway/html/template.inc"
 
 	Poco::Net::NameValueCollection pageTemplate;
 	pageTemplate.set("softwareVersion", Utility::versionString());
-#line 8 "/ws/git/my-devices/gateway/src/DevicePage.cpsp"
+#line 13 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
 
 DevicePageController ctrl(context(), request, form);
 if (response.sent()) return;
+if (ctrl.mustRedirect()) return;
 
 if (ctrl.deviceConfig())
 {
-	pageTemplate.set("title", "Gateway > " + ctrl.deviceConfig()->getString("webtunnel.deviceName"));
+	pageTemplate.set("title", "Gateway > " + ctrl.name());
 }
 else
 {
 	pageTemplate.set("title", "Gateway > Unknown Device");
 }
+pageTemplate.set("domain", ctrl.defaultDomain());
 	std::ostream& _responseStream = response.send();
 	Poco::DeflatingOutputStream _gzipStream(_responseStream, Poco::DeflatingStreamBuf::STREAM_GZIP, 1);
 	std::ostream& responseStream = _compressResponse ? _gzipStream : _responseStream;
@@ -69,7 +69,7 @@ else
 	responseStream << "    <meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\">\n";
 	responseStream << "    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge,chrome=1\">\n";
 	responseStream << "    <title>";
-#line 5 "/ws/git/my-devices/gateway/html/header.inc"
+#line 5 "/Users/guenter/ws/git/my-devices/gateway/html/header.inc"
 	responseStream << ( U::htmlize(pageTemplate["title"]) );
 	responseStream << "</title>\n";
 	responseStream << "    <link rel=\"stylesheet\" href=\"/css/styles.css\" type=\"text/css\"/>\n";
@@ -80,7 +80,7 @@ else
 	responseStream << "      <div class=\"headercontainer\">\n";
 	responseStream << "        <div class=\"header\">\n";
 	responseStream << "\t\t  <h1>Remote Manager ";
-#line 13 "/ws/git/my-devices/gateway/html/header.inc"
+#line 13 "/Users/guenter/ws/git/my-devices/gateway/html/header.inc"
 	responseStream << ( U::htmlize(pageTemplate["title"]) );
 	responseStream << "</h1>\n";
 	responseStream << "        </div>\n";
@@ -98,26 +98,50 @@ else
 	responseStream << "}\n";
 	responseStream << "</script>\n";
 	responseStream << "\n";
-#line 32 "/ws/git/my-devices/gateway/src/DevicePage.cpsp"
+	responseStream << "<nav>\n";
+	responseStream << "  <div class=\"usernav\">\n";
+	responseStream << "    <div class=\"navigation\">\n";
+	responseStream << "    </div>\n";
+	responseStream << "    <div class=\"username\">\n";
+	responseStream << "      &nbsp;\n";
+	responseStream << "      ";
+#line 45 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
+	responseStream << ( ctrl.username() );
+	responseStream << "\n";
+	responseStream << "      &nbsp;\n";
+	responseStream << "      <a id=\"logoutLink\" href=\"#\" onclick=\"document.logout.submit()\">Sign out</a>\n";
+	responseStream << "   </div>\n";
+	responseStream << "   <form method=\"post\" name=\"logout\" action=\"/\">\n";
+	responseStream << "     <input type=\"hidden\" name=\"action\" value=\"logout\">\n";
+	responseStream << "   </form>\n";
+	responseStream << "   <div style=\"clear: both;\"></div>\n";
+	responseStream << " </div>\n";
+	responseStream << "</nav>\n";
+	responseStream << "\n";
+#line 56 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
  if (!ctrl.message().empty()) { 	responseStream << "\n";
 	responseStream << "  <div class=\"error\">\n";
 	responseStream << "    ";
-#line 34 "/ws/git/my-devices/gateway/src/DevicePage.cpsp"
+#line 58 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
 	responseStream << ( U::htmlize(ctrl.message()) );
 	responseStream << "\n";
 	responseStream << "  </div>\n";
-#line 36 "/ws/git/my-devices/gateway/src/DevicePage.cpsp"
+#line 60 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
  } 	responseStream << "\n";
-#line 38 "/ws/git/my-devices/gateway/src/DevicePage.cpsp"
+#line 62 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
  if (ctrl.deviceConfig()) { 	responseStream << "\n";
 	responseStream << "  <div class=\"groupbox\">\n";
 	responseStream << "    <h2>Device Properties</h2>\n";
 	responseStream << "\n";
-	responseStream << "    <form name=\"actionForm\" method=\"post\" action=\"/\">\n";
+	responseStream << "    <form name=\"actionForm\" method=\"post\">\n";
 	responseStream << "      <input type=\"hidden\" name=\"action\" value=\"update\">\n";
+	responseStream << "      <input type=\"hidden\" name=\"csrfToken\" value=\"";
+#line 68 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
+	responseStream << ( ctrl.csrfToken() );
+	responseStream << "\">\n";
 	responseStream << "      <input type=\"hidden\" name=\"target\" value=\"";
-#line 44 "/ws/git/my-devices/gateway/src/DevicePage.cpsp"
-	responseStream << ( ctrl.deviceConfig()->getString("webtunnel.deviceId") );
+#line 69 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
+	responseStream << ( ctrl.deviceId() );
 	responseStream << "\">\n";
 	responseStream << "      <table class=\"list\">\n";
 	responseStream << "        <tbody>\n";
@@ -132,8 +156,8 @@ else
 	responseStream << "              <input type=\"text\"\n";
 	responseStream << "                     name=\"deviceName\"\n";
 	responseStream << "                     value=\"";
-#line 57 "/ws/git/my-devices/gateway/src/DevicePage.cpsp"
-	responseStream << ( U::htmlize(ctrl.deviceConfig()->getString("webtunnel.deviceName")) );
+#line 82 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
+	responseStream << ( U::htmlize(ctrl.name()) );
 	responseStream << "\"\n";
 	responseStream << "                     size=\"64\"\n";
 	responseStream << "                     maxLength=\"64\"\n";
@@ -143,8 +167,8 @@ else
 	responseStream << "          <tr class=\"odd\">\n";
 	responseStream << "            <td class=\"basicProperty\">ID</td>\n";
 	responseStream << "            <td>";
-#line 65 "/ws/git/my-devices/gateway/src/DevicePage.cpsp"
-	responseStream << ( U::htmlize(ctrl.deviceConfig()->getString("webtunnel.deviceId")) );
+#line 90 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
+	responseStream << ( U::htmlize(ctrl.deviceId()) );
 	responseStream << "</td>\n";
 	responseStream << "          </tr>\n";
 	responseStream << "          <tr class=\"even\">\n";
@@ -153,13 +177,12 @@ else
 	responseStream << "              <input type=\"text\"\n";
 	responseStream << "                     name=\"domain\"\n";
 	responseStream << "                     value=\"";
-#line 72 "/ws/git/my-devices/gateway/src/DevicePage.cpsp"
-	responseStream << ( U::htmlize(ctrl.deviceConfig()->getString("webtunnel.domain", "")) );
+#line 97 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
+	responseStream << ( U::htmlize(ctrl.domain()) );
 	responseStream << "\"\n";
 	responseStream << "                     size=\"64\"\n";
 	responseStream << "                     maxLength=\"64\"\n";
-	responseStream << "                     class=\"form-control\"\n";
-	responseStream << "                     >\n";
+	responseStream << "                     class=\"form-control\">\n";
 	responseStream << "            </td>\n";
 	responseStream << "          </tr>\n";
 	responseStream << "          <tr class=\"odd\">\n";
@@ -168,8 +191,8 @@ else
 	responseStream << "              <input type=\"password\"\n";
 	responseStream << "                     name=\"password\"\n";
 	responseStream << "                     value=\"";
-#line 84 "/ws/git/my-devices/gateway/src/DevicePage.cpsp"
-	responseStream << ( U::htmlize(ctrl.deviceConfig()->getString("webtunnel.password", "")) );
+#line 108 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
+	responseStream << ( U::htmlize(ctrl.password()) );
 	responseStream << "\"\n";
 	responseStream << "                     size=\"32\"\n";
 	responseStream << "                     maxLength=\"32\"\n";
@@ -180,13 +203,13 @@ else
 	responseStream << "          <tr class=\"even\">\n";
 	responseStream << "            <td>Status</td>\n";
 	responseStream << "            <td>";
-#line 93 "/ws/git/my-devices/gateway/src/DevicePage.cpsp"
+#line 117 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
 	responseStream << ( ctrl.deviceStatus() );
 	responseStream << "</td>\n";
 	responseStream << "          </tr>\n";
 	responseStream << "          <tr class=\"intermediateHeader\">\n";
 	responseStream << "            <th colspan=\"2\">\n";
-	responseStream << "              Device Address and Ports\n";
+	responseStream << "              Device Address and Forwarded Ports\n";
 	responseStream << "            </th>\n";
 	responseStream << "          </tr>\n";
 	responseStream << "          <tr class=\"even\">\n";
@@ -195,8 +218,8 @@ else
 	responseStream << "              <input type=\"text\"\n";
 	responseStream << "                     name=\"host\"\n";
 	responseStream << "                     value=\"";
-#line 105 "/ws/git/my-devices/gateway/src/DevicePage.cpsp"
-	responseStream << ( U::htmlize(ctrl.deviceConfig()->getString("webtunnel.host", "")) );
+#line 129 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
+	responseStream << ( U::htmlize(ctrl.host()) );
 	responseStream << "\"\n";
 	responseStream << "                     size=\"64\"\n";
 	responseStream << "                     maxLength=\"64\"\n";
@@ -204,28 +227,13 @@ else
 	responseStream << "            </td>\n";
 	responseStream << "          </tr>\n";
 	responseStream << "          <tr class=\"odd\">\n";
-	responseStream << "            <td class=\"basicProperty\">Forwarded TCP Ports</td>\n";
-	responseStream << "            <td>\n";
-	responseStream << "              <input type=\"text\"\n";
-	responseStream << "                     name=\"ports\"\n";
-	responseStream << "                     value=\"";
-#line 116 "/ws/git/my-devices/gateway/src/DevicePage.cpsp"
-	responseStream << ( U::htmlize(ctrl.deviceConfig()->getString("webtunnel.ports", "")) );
-	responseStream << "\"\n";
-	responseStream << "                     size=\"40\"\n";
-	responseStream << "                     maxLength=\"40\"\n";
-	responseStream << "                     class=\"form-control\">\n";
-	responseStream << "              (comma-separated)\n";
-	responseStream << "            </td>\n";
-	responseStream << "          </tr>\n";
-	responseStream << "          <tr class=\"even\">\n";
-	responseStream << "            <td class=\"basicProperty\">Device HTTP Server Port</td>\n";
+	responseStream << "            <td class=\"basicProperty\">HTTP Server Port</td>\n";
 	responseStream << "            <td>\n";
 	responseStream << "              <input type=\"number\"\n";
 	responseStream << "                     name=\"httpPort\"\n";
 	responseStream << "                     value=\"";
-#line 128 "/ws/git/my-devices/gateway/src/DevicePage.cpsp"
-	responseStream << ( U::htmlize(ctrl.deviceConfig()->getString("webtunnel.httpPort", "")) );
+#line 140 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
+	responseStream << ( U::htmlize(ctrl.httpPort()) );
 	responseStream << "\"\n";
 	responseStream << "                     size=\"5\"\n";
 	responseStream << "                     maxLength=\"5\"\n";
@@ -236,21 +244,38 @@ else
 	responseStream << "                     name=\"httpsRequired\"\n";
 	responseStream << "                     value=\"true\"\n";
 	responseStream << "                     ";
-#line 137 "/ws/git/my-devices/gateway/src/DevicePage.cpsp"
-	responseStream << ( ctrl.deviceConfig()->getBool("webtunnel.https.enable", false) ? "checked" : "" );
+#line 149 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
+	responseStream << ( ctrl.httpsEnable() ? "checked" : "" );
 	responseStream << "\n";
 	responseStream << "                     class=\"form-control\">\n";
 	responseStream << "              <label for=\"httpsRequired\">Requires HTTPS</label>\n";
 	responseStream << "            </td>\n";
 	responseStream << "          </tr>\n";
-	responseStream << "          <tr class=\"odd\">\n";
-	responseStream << "            <td>Device SSH Server Port</td>\n";
+	responseStream << "          <tr class=\"even\">\n";
+	responseStream << "            <td class=\"basicProperty\">SSH Server Port</td>\n";
 	responseStream << "            <td>\n";
 	responseStream << "              <input type=\"number\"\n";
 	responseStream << "                     name=\"sshPort\"\n";
 	responseStream << "                     value=\"";
-#line 147 "/ws/git/my-devices/gateway/src/DevicePage.cpsp"
-	responseStream << ( U::htmlize(ctrl.deviceConfig()->getString("webtunnel.sshPort", "")) );
+#line 159 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
+	responseStream << ( U::htmlize(ctrl.sshPort()) );
+	responseStream << "\"\n";
+	responseStream << "                     size=\"5\"\n";
+	responseStream << "                     maxLength=\"5\"\n";
+	responseStream << "                     min=\"1\"\n";
+	responseStream << "                     max=\"65535\"\n";
+	responseStream << "                     class=\"form-control\">\n";
+	responseStream << "              (optional)\n";
+	responseStream << "            </td>\n";
+	responseStream << "          </tr>\n";
+	responseStream << "          <tr class=\"odd\">\n";
+	responseStream << "            <td class=\"basicProperty\">VNC Server Port</td>\n";
+	responseStream << "            <td>\n";
+	responseStream << "              <input type=\"number\"\n";
+	responseStream << "                     name=\"vncPort\"\n";
+	responseStream << "                     value=\"";
+#line 173 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
+	responseStream << ( U::htmlize(ctrl.vncPort()) );
 	responseStream << "\"\n";
 	responseStream << "                     size=\"5\"\n";
 	responseStream << "                     maxLength=\"5\"\n";
@@ -261,13 +286,13 @@ else
 	responseStream << "            </td>\n";
 	responseStream << "          </tr>\n";
 	responseStream << "          <tr class=\"even\">\n";
-	responseStream << "            <td>Device VNC Server Port</td>\n";
+	responseStream << "            <td class=\"basicProperty\">RDP Server Port</td>\n";
 	responseStream << "            <td>\n";
 	responseStream << "              <input type=\"number\"\n";
-	responseStream << "                     name=\"vncPort\"\n";
+	responseStream << "                     name=\"rdpPort\"\n";
 	responseStream << "                     value=\"";
-#line 161 "/ws/git/my-devices/gateway/src/DevicePage.cpsp"
-	responseStream << ( U::htmlize(ctrl.deviceConfig()->getString("webtunnel.vncPort", "")) );
+#line 187 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
+	responseStream << ( U::htmlize(ctrl.rdpPort()) );
 	responseStream << "\"\n";
 	responseStream << "                     size=\"5\"\n";
 	responseStream << "                     maxLength=\"5\"\n";
@@ -278,20 +303,18 @@ else
 	responseStream << "            </td>\n";
 	responseStream << "          </tr>\n";
 	responseStream << "          <tr class=\"odd\">\n";
-	responseStream << "            <td>Device RDP Server Port</td>\n";
+	responseStream << "            <td>Additional Forwarded TCP Ports</td>\n";
 	responseStream << "            <td>\n";
-	responseStream << "              <input type=\"number\"\n";
-	responseStream << "                     name=\"rdpPort\"\n";
+	responseStream << "              <input type=\"text\"\n";
+	responseStream << "                     name=\"ports\"\n";
 	responseStream << "                     value=\"";
-#line 175 "/ws/git/my-devices/gateway/src/DevicePage.cpsp"
-	responseStream << ( U::htmlize(ctrl.deviceConfig()->getString("webtunnel.rdpPort", "")) );
+#line 201 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
+	responseStream << ( ctrl.extraPorts() );
 	responseStream << "\"\n";
-	responseStream << "                     size=\"5\"\n";
-	responseStream << "                     maxLength=\"5\"\n";
-	responseStream << "                     min=\"1\"\n";
-	responseStream << "                     max=\"65535\"\n";
+	responseStream << "                     size=\"40\"\n";
+	responseStream << "                     maxLength=\"40\"\n";
 	responseStream << "                     class=\"form-control\">\n";
-	responseStream << "              (optional)\n";
+	responseStream << "              (comma-separated)\n";
 	responseStream << "            </td>\n";
 	responseStream << "          </tr>\n";
 	responseStream << "          <tr>\n";
@@ -303,9 +326,9 @@ else
 	responseStream << "          </tr>\n";
 	responseStream << "        </tbody>\n";
 	responseStream << "      </table>\n";
-	responseStream << "    </div>\n";
-	responseStream << "  </form>\n";
-#line 195 "/ws/git/my-devices/gateway/src/DevicePage.cpsp"
+	responseStream << "    </form>\n";
+	responseStream << "  </div>\n";
+#line 219 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
  } 	responseStream << " ";
 	responseStream << "\n";
 	// begin include html/footer.inc
@@ -315,9 +338,12 @@ else
 	responseStream << "      <div class=\"footercontainer\">\n";
 	responseStream << "        <div class=\"footer\">\n";
 	responseStream << "          ";
-#line 6 "/ws/git/my-devices/gateway/html/footer.inc"
+#line 6 "/Users/guenter/ws/git/my-devices/gateway/html/footer.inc"
 	responseStream << ( pageTemplate["softwareVersion"] );
-	responseStream << " | &copy; 2015-2019 by <a href=\"https://macchina.io\">Applied Informatics GmbH</a>.\n";
+	responseStream << " | &copy; 2015-2020 by <a href=\"https://macchina.io\">Applied Informatics GmbH</a> | Gateway Domain: ";
+#line 6 "/Users/guenter/ws/git/my-devices/gateway/html/footer.inc"
+	responseStream << ( U::htmlize(pageTemplate["domain"]) );
+	responseStream << "\n";
 	responseStream << "        </div>\n";
 	responseStream << "      </div>\n";
 	responseStream << "    </footer>\n";

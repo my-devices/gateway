@@ -43,8 +43,11 @@
 #include "WebTunnelAgent.h"
 #include "DeviceManager.h"
 #include "Utility.h"
+#include "LoginPage.h"
 #include "IndexPage.h"
+#include "StatusJSON.h"
 #include "DevicePage.h"
+#include "CreateDevicePage.h"
 #include "Stylesheet.h"
 #include "FavIcon.h"
 #include "Gradient.h"
@@ -54,6 +57,7 @@
 #include "PlusIconX2.h"
 #include "MinusIcon.h"
 #include "MinusIconX2.h"
+#include "AjaxCore.h"
 #include <iostream>
 
 
@@ -101,15 +105,25 @@ class GatewayRequestHandlerFactory: public HTTPRequestHandlerFactory
 {
 public:
 	GatewayRequestHandlerFactory(DeviceManager::Ptr pDeviceManager):
-		_pDeviceManager(pDeviceManager)
+		_pDeviceManager(pDeviceManager),
+		_logger(Poco::Logger::get("GatewayRequestHandlerFactory"))
 	{
 	}
 
 	HTTPRequestHandler* createRequestHandler(const HTTPServerRequest& request)
 	{
+
 		const std::string& uri = request.getURI();
+		_logger.debug("%s %s %s", request.getMethod(), uri, request.getVersion());
+
 		if (uri == "/")
+			return new LoginPage(_pDeviceManager);
+		else if (uri == "/devices")
 			return new IndexPage(_pDeviceManager);
+		else if (uri == "/create")
+			return new CreateDevicePage(_pDeviceManager);
+		else if (uri == "/status.json")
+			return new StatusJSON(_pDeviceManager);
 		else if (uri.compare(0, 8, "/device/") == 0)
 			return new DevicePage(_pDeviceManager);
 		else if (uri == "/images/favicon.ico")
@@ -130,12 +144,15 @@ public:
 			return new MinusIcon;
 		else if (uri == "/images/minusicon-x2.png")
 			return new MinusIconX2;
+		else if (uri == "/js/ajaxcore.js")
+			return new AjaxCore;
 		else
 			return 0;
 	}
 
 private:
 	DeviceManager::Ptr _pDeviceManager;
+	Poco::Logger& _logger;
 };
 
 
@@ -199,13 +216,6 @@ protected:
 				.repeatable(true)
 				.argument("name=value")
 				.callback(OptionCallback<GatewayServer>(this, &GatewayServer::handleDefine)));
-
-		options.addOption(
-			Option("hash-password", "H", "Compute password hash for configuration file.")
-				.required(false)
-				.repeatable(true)
-				.argument("password")
-				.callback(OptionCallback<GatewayServer>(this, &GatewayServer::handleHash)));
 	}
 
 	void handleHelp(const std::string& name, const std::string& value)
@@ -225,12 +235,6 @@ protected:
 		defineProperty(value);
 	}
 
-	void handleHash(const std::string& name, const std::string& value)
-	{
-		_dontRun = true;
-		std::cout << Utility::hashPassword(value) << std::endl;
-	}
-
 	void displayHelp()
 	{
 		HelpFormatter helpFormatter(options());
@@ -238,7 +242,7 @@ protected:
 		helpFormatter.setUsage("OPTIONS");
 		helpFormatter.setHeader("\n"
 			"macchina.io Remote Manager Gateway Server.\n\n"
-			"Copyright (c) 2015-2019 by Applied Informatics Software Engineering GmbH.\n"
+			"Copyright (c) 2015-2020 by Applied Informatics Software Engineering GmbH.\n"
 			"All rights reserved.\n\n"
 			"This application is used to connect device web servers in the local\n"
 			"network to the macchina.io Remote Manager server in order to make them\n"
@@ -309,6 +313,28 @@ protected:
 	{
 		if (_dontRun) return Application::EXIT_OK;
 
+		logger().information(
+			"\n"
+			"\n"
+			"      oooooooooooooooooo\n"
+			"    oooooooooooooooooooooo\n"
+			"    oooooooooooooooooooooo\n"
+			"    oooooooooooooooooooooo\n"
+			"    oooooooooooooooooooooo\n"
+			"    ooooooooo            o\n"
+			"    ooooooooo   oo   oo  \n"
+			"    ooooooooo   oo   oo \n"
+			"    ooooooooo   oo   oo \n"
+			"    ooooooooo   oo   oo \n"
+			"      ooooooo   oo   oo \n"
+			"\n"
+			"    macchina.io Remote Manager Gateway %s\n"
+			"\n"
+			"    Copyright (c) 2015-2020 by Applied Informatics Software Engineering GmbH.\n"
+			"    All rights reserved.\n",
+			U::versionString()
+		);
+
 #if defined(WEBTUNNEL_ENABLE_TLS)
 		Poco::Net::Context::Ptr pContext = createContext("tls");
 		bool acceptUnknownCert = config().getBool("tls.acceptUnknownCertificate", true);
@@ -341,13 +367,14 @@ protected:
 			ServerSocket svs(port);
 			_pHTTPServer = new HTTPServer(new GatewayRequestHandlerFactory(_pDeviceManager), svs, new HTTPServerParams);
 			_pHTTPServer->start();
+			logger().information("Web server started on port %hu.", port);
 		}
 
 		waitForTerminationRequest();
 
 		if (_pHTTPServer)
 		{
-			_pHTTPServer->stop();
+			_pHTTPServer->stopAll(true);
 			_pHTTPServer.reset();
 		}
 

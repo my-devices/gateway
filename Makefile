@@ -26,18 +26,23 @@ SYSLIBS += -lcrypt
 endif
 
 objects = GatewayServer WebTunnelAgent DeviceManager Utility PageController \
+	WebSession WebSessionManager \
+	LoginPage LoginPageController \
 	IndexPage IndexPageController \
 	DevicePage DevicePageController \
+	CreateDevicePage CreateDevicePageController \
+	StatusJSON StatusJSONController \
 	Stylesheet \
 	FavIcon \
 	Gradient \
 	HeaderLogo HeaderLogoX2 \
 	PlusIcon PlusIconX2 \
-	MinusIcon MinusIconX2
+	MinusIcon MinusIconX2 \
+	AjaxCore
 
 target         = rmgateway
 target_version = 1
-target_libs    = PocoWebTunnel PocoNetSSL PocoNet PocoCrypto PocoUtil PocoXML PocoFoundation
+target_libs    = PocoWebTunnel PocoNetSSL PocoNet PocoCrypto PocoUtil PocoXML PocoJSON PocoFoundation
 
 include $(POCO_BASE)/build/rules/exec
 

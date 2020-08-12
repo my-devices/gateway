@@ -1,7 +1,7 @@
 //
 // PageController.h
 //
-// Copyright (c) 2017, Applied Informatics Software Engineering GmbH.
+// Copyright (c) 2017-2020, Applied Informatics Software Engineering GmbH.
 // All rights reserved.
 //
 // SPDX-License-Identifier:	BSL-1.0
@@ -13,6 +13,7 @@
 
 
 #include "Poco/Net/HTTPServerRequest.h"
+#include "Poco/Net/HTTPServerResponse.h"
 #include "Poco/Net/HTMLForm.h"
 #include "DeviceManager.h"
 
@@ -48,12 +49,31 @@ public:
 		return _messageStyle;
 	}
 
+	bool mustRedirect() const
+	{
+		return _request.response().getStatus() == Poco::Net::HTTPResponse::HTTP_FOUND;
+	}
+
+	const std::string& username() const
+	{
+		return _username;
+	}
+
+	const std::string& csrfToken() const
+	{
+		return _csrfToken;
+	}
+
+	std::string defaultDomain() const;
+
 protected:
 	DeviceManager::Ptr _pDeviceManager;
 	const Poco::Net::HTTPServerRequest& _request;
 	const Poco::Net::HTMLForm& _form;
 	std::string _message;
 	std::string _messageStyle;
+	std::string _username;
+	std::string _csrfToken;
 };
 
 

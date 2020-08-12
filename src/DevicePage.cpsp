@@ -1,5 +1,10 @@
 <!DOCTYPE HTML>
-<%@ page class="DevicePage" namespace="MyDevices::Gateway" contentType="text/html;charset=utf-8" compressed="true" context="DeviceManager::Ptr" precondition="U::authenticate(request, response)" %>
+<%@ page class="DevicePage"
+  namespace="MyDevices::Gateway"
+  contentType="text/html;charset=utf-8"
+  compressed="true"
+  context="DeviceManager::Ptr"
+%>
 
 <%@ header include="DeviceManager.h" %>
 <%@ impl include="DevicePageController.h" %>
@@ -8,15 +13,17 @@
 <%%
 DevicePageController ctrl(context(), request, form);
 if (response.sent()) return;
+if (ctrl.mustRedirect()) return;
 
 if (ctrl.deviceConfig())
 {
-	pageTemplate.set("title", "Gateway > " + ctrl.deviceConfig()->getString("webtunnel.deviceName"));
+	pageTemplate.set("title", "Gateway > " + ctrl.name());
 }
 else
 {
 	pageTemplate.set("title", "Gateway > Unknown Device");
 }
+pageTemplate.set("domain", ctrl.defaultDomain());
 %>
 
 <%@ include file="../html/header.inc" %>
@@ -29,6 +36,23 @@ function cancelUpdateDevice(id)
 }
 </script>
 
+<nav>
+  <div class="usernav">
+    <div class="navigation">
+    </div>
+    <div class="username">
+      &nbsp;
+      <%= ctrl.username() %>
+      &nbsp;
+      <a id="logoutLink" href="#" onclick="document.logout.submit()">Sign out</a>
+   </div>
+   <form method="post" name="logout" action="/">
+     <input type="hidden" name="action" value="logout">
+   </form>
+   <div style="clear: both;"></div>
+ </div>
+</nav>
+
 <% if (!ctrl.message().empty()) { %>
   <div class="error">
     <%= U::htmlize(ctrl.message()) %>
@@ -39,9 +63,10 @@ function cancelUpdateDevice(id)
   <div class="groupbox">
     <h2>Device Properties</h2>
 
-    <form name="actionForm" method="post" action="/">
+    <form name="actionForm" method="post">
       <input type="hidden" name="action" value="update">
-      <input type="hidden" name="target" value="<%= ctrl.deviceConfig()->getString("webtunnel.deviceId") %>">
+      <input type="hidden" name="csrfToken" value="<%= ctrl.csrfToken() %>">
+      <input type="hidden" name="target" value="<%= ctrl.deviceId() %>">
       <table class="list">
         <tbody>
           <tr class="intermediateHeader">
@@ -54,7 +79,7 @@ function cancelUpdateDevice(id)
             <td>
               <input type="text"
                      name="deviceName"
-                     value="<%= U::htmlize(ctrl.deviceConfig()->getString("webtunnel.deviceName")) %>"
+                     value="<%= U::htmlize(ctrl.name()) %>"
                      size="64"
                      maxLength="64"
                      class="form-control">
@@ -62,18 +87,17 @@ function cancelUpdateDevice(id)
           </tr>
           <tr class="odd">
             <td class="basicProperty">ID</td>
-            <td><%= U::htmlize(ctrl.deviceConfig()->getString("webtunnel.deviceId")) %></td>
+            <td><%= U::htmlize(ctrl.deviceId()) %></td>
           </tr>
           <tr class="even">
             <td class="basicProperty">Domain</td>
             <td>
               <input type="text"
                      name="domain"
-                     value="<%= U::htmlize(ctrl.deviceConfig()->getString("webtunnel.domain", "")) %>"
+                     value="<%= U::htmlize(ctrl.domain()) %>"
                      size="64"
                      maxLength="64"
-                     class="form-control"
-                     >
+                     class="form-control">
             </td>
           </tr>
           <tr class="odd">
@@ -81,7 +105,7 @@ function cancelUpdateDevice(id)
             <td>
               <input type="password"
                      name="password"
-                     value="<%= U::htmlize(ctrl.deviceConfig()->getString("webtunnel.password", "")) %>"
+                     value="<%= U::htmlize(ctrl.password()) %>"
                      size="32"
                      maxLength="32"
                      class="form-control">
@@ -94,7 +118,7 @@ function cancelUpdateDevice(id)
           </tr>
           <tr class="intermediateHeader">
             <th colspan="2">
-              Device Address and Ports
+              Device Address and Forwarded Ports
             </th>
           </tr>
           <tr class="even">
@@ -102,30 +126,18 @@ function cancelUpdateDevice(id)
             <td>
               <input type="text"
                      name="host"
-                     value="<%= U::htmlize(ctrl.deviceConfig()->getString("webtunnel.host", "")) %>"
+                     value="<%= U::htmlize(ctrl.host()) %>"
                      size="64"
                      maxLength="64"
                      class="form-control">
             </td>
           </tr>
           <tr class="odd">
-            <td class="basicProperty">Forwarded TCP Ports</td>
-            <td>
-              <input type="text"
-                     name="ports"
-                     value="<%= U::htmlize(ctrl.deviceConfig()->getString("webtunnel.ports", "")) %>"
-                     size="40"
-                     maxLength="40"
-                     class="form-control">
-              (comma-separated)
-            </td>
-          </tr>
-          <tr class="even">
-            <td class="basicProperty">Device HTTP Server Port</td>
+            <td class="basicProperty">HTTP Server Port</td>
             <td>
               <input type="number"
                      name="httpPort"
-                     value="<%= U::htmlize(ctrl.deviceConfig()->getString("webtunnel.httpPort", "")) %>"
+                     value="<%= U::htmlize(ctrl.httpPort()) %>"
                      size="5"
                      maxLength="5"
                      min="0"
@@ -134,17 +146,31 @@ function cancelUpdateDevice(id)
               <input type="checkbox"
                      name="httpsRequired"
                      value="true"
-                     <%= ctrl.deviceConfig()->getBool("webtunnel.https.enable", false) ? "checked" : "" %>
+                     <%= ctrl.httpsEnable() ? "checked" : "" %>
                      class="form-control">
               <label for="httpsRequired">Requires HTTPS</label>
             </td>
           </tr>
-          <tr class="odd">
-            <td>Device SSH Server Port</td>
+          <tr class="even">
+            <td class="basicProperty">SSH Server Port</td>
             <td>
               <input type="number"
                      name="sshPort"
-                     value="<%= U::htmlize(ctrl.deviceConfig()->getString("webtunnel.sshPort", "")) %>"
+                     value="<%= U::htmlize(ctrl.sshPort()) %>"
+                     size="5"
+                     maxLength="5"
+                     min="1"
+                     max="65535"
+                     class="form-control">
+              (optional)
+            </td>
+          </tr>
+          <tr class="odd">
+            <td class="basicProperty">VNC Server Port</td>
+            <td>
+              <input type="number"
+                     name="vncPort"
+                     value="<%= U::htmlize(ctrl.vncPort()) %>"
                      size="5"
                      maxLength="5"
                      min="1"
@@ -154,11 +180,11 @@ function cancelUpdateDevice(id)
             </td>
           </tr>
           <tr class="even">
-            <td>Device VNC Server Port</td>
+            <td class="basicProperty">RDP Server Port</td>
             <td>
               <input type="number"
-                     name="vncPort"
-                     value="<%= U::htmlize(ctrl.deviceConfig()->getString("webtunnel.vncPort", "")) %>"
+                     name="rdpPort"
+                     value="<%= U::htmlize(ctrl.rdpPort()) %>"
                      size="5"
                      maxLength="5"
                      min="1"
@@ -168,17 +194,15 @@ function cancelUpdateDevice(id)
             </td>
           </tr>
           <tr class="odd">
-            <td>Device RDP Server Port</td>
+            <td>Additional Forwarded TCP Ports</td>
             <td>
-              <input type="number"
-                     name="rdpPort"
-                     value="<%= U::htmlize(ctrl.deviceConfig()->getString("webtunnel.rdpPort", "")) %>"
-                     size="5"
-                     maxLength="5"
-                     min="1"
-                     max="65535"
+              <input type="text"
+                     name="ports"
+                     value="<%= ctrl.extraPorts() %>"
+                     size="40"
+                     maxLength="40"
                      class="form-control">
-              (optional)
+              (comma-separated)
             </td>
           </tr>
           <tr>
@@ -190,8 +214,8 @@ function cancelUpdateDevice(id)
           </tr>
         </tbody>
       </table>
-    </div>
-  </form>
+    </form>
+  </div>
 <% } %> <%-- if --%>
 
 <%@ include file="../html/footer.inc" %>

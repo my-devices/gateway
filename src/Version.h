@@ -1,7 +1,7 @@
 //
 // Version.h
 //
-// Copyright (c) 2015-2017, Applied Informatics Software Engineering GmbH.
+// Copyright (c) 2015-2020, Applied Informatics Software Engineering GmbH.
 // All rights reserved.
 //
 // SPDX-License-Identifier:	BSL-1.0
@@ -18,9 +18,9 @@ namespace Gateway {
 
 enum GatewayVersion
 {
-	GATEWAY_VERSION_MAJOR = 1,
-	GATEWAY_VERSION_MINOR = 5,
-	GATEWAY_VERSION_PATCH = 2
+	GATEWAY_VERSION_MAJOR = 2,
+	GATEWAY_VERSION_MINOR = 0,
+	GATEWAY_VERSION_PATCH = 0
 };
 
 

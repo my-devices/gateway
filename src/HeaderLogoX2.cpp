@@ -1,7 +1,7 @@
 //
 // HeaderLogoX2.cpp
 //
-// This file has been generated from HeaderLogoX2.cpsp on 2019-09-11 06:54:12.
+// This file has been generated from HeaderLogoX2.cpsp on 2020-08-12 06:42:46.
 //
 
 
@@ -15,7 +15,7 @@
 #include "Poco/DateTimeParser.h"
 #include "Poco/DateTimeFormatter.h"
 #include "Poco/DateTimeFormat.h"
-#line 9 "/ws/git/my-devices/gateway/src/HeaderLogoX2.cpsp"
+#line 9 "/Users/guenter/ws/git/my-devices/gateway/src/HeaderLogoX2.cpsp"
 
 
 // res/HeaderLogoX2.png
@@ -391,7 +391,7 @@ void HeaderLogoX2::handleRequest(Poco::Net::HTTPServerRequest& request, Poco::Ne
 	if (!(checkModified(request))) return;
 
 	std::ostream& responseStream = response.send();
-#line 370 "/ws/git/my-devices/gateway/src/HeaderLogoX2.cpsp"
+#line 370 "/Users/guenter/ws/git/my-devices/gateway/src/HeaderLogoX2.cpsp"
 
 	responseStream.write(reinterpret_cast<const char*>(data), sizeof(data));
 }

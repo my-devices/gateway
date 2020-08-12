@@ -1,0 +1,19 @@
+<%@ page class="StatusJSON"
+  namespace="MyDevices::Gateway"
+  contentType="text/html;charset=utf-8"
+  compressed="true"
+  context="DeviceManager::Ptr" %>
+
+<%@ header include="DeviceManager.h" %>
+<%@ impl include="Utility.h" %>
+<%@ impl include="StatusJSONController.h" %>
+
+<%%
+StatusJSONController ctrl(context(), request, form);
+%>
+{
+<% for (std::vector<std::string>::const_iterator it = ctrl.devices().begin(); it != ctrl.devices().end(); ++it) { %>
+<%= it != ctrl.devices().begin() ? "," : "" %>
+  "<%= Utility::escape(*it) %>": "<%= ctrl.deviceStatus(*it) %>"
+<% } %>
+}

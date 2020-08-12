@@ -679,3 +679,138 @@ input[type=submit].form-control:active
 	background-color: #109bd5;
 	border: 1px solid #109bd5;
 }
+
+div.loginBox
+{
+	margin-top: 140px;
+	text-align: center;
+	font-size: 16px;
+	margin-left: auto;
+	margin-right: auto;
+	padding: 20px;
+	width: 480px;
+}
+
+div.loginBox #notice
+{
+	font-size: 20px;
+	text-align: center;
+	padding-bottom: 40px;
+}
+
+div.loginBox #subnotice
+{
+	font-size: 18px;
+	text-align: center;
+	margin-top: 20px;
+	color: #606060;
+}
+
+div.loginBox table
+{
+	width: auto;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+div.loginBox th
+{
+	padding: 10px 10px 10px 0px;
+}
+
+div.loginBox td
+{
+	padding: 10px 0px 10px 0px;
+}
+
+div.loginBox #usernameLabelCell,
+div.loginBox #passwordLabelCell
+{
+	font-size: 16px;
+	text-align: right;
+	color: #0076b8;
+}
+
+div.loginBox #usernameInputCell,
+div.loginBox #passwordInputCell
+{
+	text-align: left;
+}
+
+div.loginBox #usernameInput,
+div.loginBox #passwordInput
+{
+	font-size: 18px;
+	width: 240px;
+	height: 28px;
+	background-color: white;
+	color: #111;
+	border: 1px solid #0076b8;
+	padding-left: 6px;
+	padding-right: 6px;
+}
+
+div.loginBox #loginButtonCell
+{
+	text-align: left;
+}
+
+div.loginBox #loginButton
+{
+	height: 28px;
+	text-align: center;
+	font-size: 16px;
+	line-height: 18px;
+	background-color: #008bc5;
+	border: 1px solid #008bc5;
+	color: white;
+	cursor: pointer;
+	border-radius: 4px;
+}
+
+div.loginBox #loginButton:hover
+{
+	background-color: #109bd5;
+	border: 1px solid #109bd5;
+}
+
+div.loginBox #loginButton:active
+{
+	background-color: #109bd5;
+	border: 1px solid #109bd5;
+}
+
+div.usernav
+{
+	width: 100%;
+	height: 28px;
+	margin-top: 0px;
+	margin-bottom: 18px;
+	margin-left: 0;
+	margin-right: 0;
+}
+
+div.navigation
+{
+	border: 0;
+	padding: 0;
+	margin: 0;
+	float: left;
+	height: 28px;
+}
+
+div.username
+{
+	font-size: 12px;
+	text-align: right;
+	margin: 0;
+	float: right;
+	font-weight: bold;
+}
+
+div.username #logoutLink
+{
+	color: #444;
+	font-weight: normal;
+}
+

@@ -1,7 +1,7 @@
 //
 // IndexPageController.h
 //
-// Copyright (c) 2017, Applied Informatics Software Engineering GmbH.
+// Copyright (c) 2017-2020, Applied Informatics Software Engineering GmbH.
 // All rights reserved.
 //
 // SPDX-License-Identifier:	BSL-1.0
@@ -34,6 +34,8 @@ public:
 	}
 
 	std::string deviceStatus(const std::string& id) const;
+
+	std::string formatPorts(Poco::AutoPtr<Poco::Util::AbstractConfiguration> pDeviceConfig) const;
 
 protected:
 	void processForm();

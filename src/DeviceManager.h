@@ -1,7 +1,7 @@
 //
 // DeviceManager.h
 //
-// Copyright (c) 2015-2017, Applied Informatics Software Engineering GmbH.
+// Copyright (c) 2015-2020, Applied Informatics Software Engineering GmbH.
 // All rights reserved.
 //
 // SPDX-License-Identifier:	BSL-1.0
@@ -21,10 +21,10 @@
 #include "Poco/RefCountedObject.h"
 #include "Poco/AutoPtr.h"
 #include "Poco/SharedPtr.h"
-#include "Poco/UUIDGenerator.h"
 #include "Poco/Mutex.h"
 #include "Poco/Logger.h"
 #include "WebTunnelAgent.h"
+#include "WebSessionManager.h"
 #include <map>
 
 
@@ -55,7 +55,7 @@ public:
 	void stopAgents();
 		/// Stops all agents.
 
-	Poco::AutoPtr<Poco::Util::AbstractConfiguration> createDevice();
+	Poco::AutoPtr<Poco::Util::AbstractConfiguration> createDevice(const std::string& id, const std::string& domain, const std::string& name);
 		/// Creates a new device and returns the device's configuration.
 
 	void updateDevice(Poco::AutoPtr<Poco::Util::AbstractConfiguration> pConfig);
@@ -85,6 +85,9 @@ public:
 	WebTunnelAgent::Ptr agentForDevice(const std::string& deviceId) const;
 		/// Returns the WebTunnelAgent for the device with the given deviceId.
 
+	WebSessionManager& webSessionManager();
+		/// Returns the WebSessionManager.
+
 protected:
 	void reconfigureAgents();
 	WebTunnelAgent::Ptr loadAgent(const std::string& id);
@@ -104,13 +107,24 @@ private:
 #endif
 	Poco::SharedPtr<Poco::WebTunnel::SocketDispatcher> _pDispatcher;
 	AgentMap _agents;
-	Poco::UUIDGenerator _uuidGenerator;
+	WebSessionManager _webSessionManager;
 	mutable Poco::FastMutex _mutex;
 	Poco::Logger& _logger;
 
 	friend class RestartTask;
 	friend class StopTask;
 };
+
+
+//
+// inlines
+//
+
+
+inline WebSessionManager& DeviceManager::webSessionManager()
+{
+	return _webSessionManager;
+}
 
 
 } } // namespace MyDevices::Gateway

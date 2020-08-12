@@ -1,0 +1,110 @@
+<!DOCTYPE HTML>
+<%@ page class="CreateDevicePage"
+  namespace="MyDevices::Gateway"
+  contentType="text/html;charset=utf-8"
+  compressed="true"
+  context="DeviceManager::Ptr"
+%>
+
+<%@ header include="DeviceManager.h" %>
+<%@ impl include="CreateDevicePageController.h" %>
+<%@ include file="../html/template.inc" %>
+
+<%%
+CreateDevicePageController ctrl(context(), request, form);
+if (response.sent()) return;
+if (ctrl.mustRedirect()) return;
+
+pageTemplate.set("title", "Gateway > Create Device");
+pageTemplate.set("domain", ctrl.defaultDomain());
+%>
+
+<%@ include file="../html/header.inc" %>
+
+<script language="JavaScript">
+function cancelUpdateDevice(id)
+{
+  document.actionForm.action.value = "cancel";
+  document.actionForm.submit();
+}
+</script>
+
+<nav>
+  <div class="usernav">
+    <div class="navigation">
+    </div>
+    <div class="username">
+      &nbsp;
+      <%= ctrl.username() %>
+      &nbsp;
+      <a id="logoutLink" href="#" onclick="document.logout.submit()">Sign out</a>
+   </div>
+   <form method="post" name="logout" action="/">
+     <input type="hidden" name="action" value="logout">
+   </form>
+   <div style="clear: both;"></div>
+ </div>
+</nav>
+
+<% if (!ctrl.message().empty()) { %>
+  <div class="error">
+    <%= U::htmlize(ctrl.message()) %>
+  </div>
+<% } %>
+
+<div class="groupbox">
+  <h2>New Device Properties</h2>
+
+  <form name="actionForm" method="post">
+    <input type="hidden" name="action" value="create">
+    <input type="hidden" name="csrfToken" value="<%= ctrl.csrfToken() %>">
+    <table class="list">
+      <tbody>
+        <tr class="even">
+          <td class="basicProperty">Name</td>
+          <td>
+            <input type="text"
+                   name="deviceName"
+                   value="<%= U::htmlize(ctrl.name()) %>"
+                   size="64"
+                   maxLength="64"
+                   class="form-control"
+                   autofocus>
+          </td>
+        </tr>
+        <tr class="odd">
+          <td class="basicProperty">ID</td>
+          <td>
+            <input type="text"
+                   name="deviceId"
+                   value="<%= U::htmlize(ctrl.deviceId()) %>"
+                   size="64"
+                   maxLength="64"
+                   class="form-control">
+          </td>
+        </tr>
+        <tr class="even">
+          <td class="basicProperty">Domain</td>
+          <td>
+            <input type="text"
+                   name="domain"
+                   value="<%= U::htmlize(ctrl.domain()) %>"
+                   size="64"
+                   maxLength="64"
+                   class="form-control">
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2" style="text-align: right">
+            <a href="#" onclick="cancelUpdateDevice()">Cancel</a>
+            &nbsp;
+            <input type="submit" value="Next" class="form-control">
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </form>
+</div>
+
+
+<%@ include file="../html/footer.inc" %>

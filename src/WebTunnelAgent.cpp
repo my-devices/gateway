@@ -36,6 +36,42 @@ const std::string WebTunnelAgent::WEBTUNNEL_PROTOCOL("com.appinf.webtunnel.serve
 const std::string WebTunnelAgent::WEBTUNNEL_AGENT("macchina.io Remote Manager Gateway");
 
 
+class ReconnectTask: public Poco::Util::TimerTask
+{
+public:
+	ReconnectTask(WebTunnelAgent::Ptr pWebTunnelAgent):
+		_pWebTunnelAgent(pWebTunnelAgent)
+	{
+	}
+
+	void run()
+	{
+		_pWebTunnelAgent->reconnectTask(*this);
+	}
+
+private:
+	WebTunnelAgent::Ptr _pWebTunnelAgent;
+};
+
+
+class PropertiesUpdateTask: public Poco::Util::TimerTask
+{
+public:
+	PropertiesUpdateTask(WebTunnelAgent::Ptr pWebTunnelAgent):
+		_pWebTunnelAgent(pWebTunnelAgent)
+	{
+	}
+
+	void run()
+	{
+		_pWebTunnelAgent->propertiesUpdateTask(*this);
+	}
+
+private:
+	WebTunnelAgent::Ptr _pWebTunnelAgent;
+};
+
+
 WebTunnelAgent::WebTunnelAgent(const std::string& deviceId, Poco::SharedPtr<Poco::Util::Timer> pTimer, Poco::SharedPtr<Poco::WebTunnel::SocketDispatcher> pDispatcher, Poco::AutoPtr<Poco::Util::AbstractConfiguration> pConfig, Poco::WebTunnel::SocketFactory::Ptr pSocketFactory):
 	_id(deviceId),
 	_pConfig(pConfig),
@@ -51,6 +87,7 @@ WebTunnelAgent::WebTunnelAgent(const std::string& deviceId, Poco::SharedPtr<Poco
 	_pTimer(pTimer),
 	_pDispatcher(pDispatcher),
 	_status(STATUS_DISCONNECTED),
+	_stopping(false),
 	_logger(Poco::Logger::get("WebTunnelAgent"))
 {
 	init();
@@ -72,9 +109,18 @@ WebTunnelAgent::~WebTunnelAgent()
 
 void WebTunnelAgent::stop()
 {
-	_logger.debug("Stopping agent %s...", _id);
-	_stopped.set();
-	disconnect();
+	bool stopping = false;
+	{
+		Poco::FastMutex::ScopedLock lock(_mutex);
+		stopping = _stopping;
+		_stopping = true;
+	}
+	if (!stopping)
+	{
+		_logger.debug("Stopping agent %s...", _id);
+		_stopped.set();
+		disconnect();
+	}
 }
 
 
@@ -133,7 +179,7 @@ std::string WebTunnelAgent::formatPorts()
 void WebTunnelAgent::startPropertiesUpdateTask()
 {
 	_logger.debug("Starting PropertiesUpdateTask...");
-	_pPropertiesUpdateTask = new Poco::Util::TimerTaskAdapter<WebTunnelAgent>(*this, &WebTunnelAgent::updateProperties);
+	_pPropertiesUpdateTask = new PropertiesUpdateTask(Ptr(this, true));
 	_pTimer->scheduleAtFixedRate(_pPropertiesUpdateTask, _propertiesUpdateInterval.totalMilliseconds(), _propertiesUpdateInterval.totalMilliseconds());
 }
 
@@ -145,6 +191,17 @@ void WebTunnelAgent::stopPropertiesUpdateTask()
 		_logger.debug("Stopping PropertiesUpdateTask...");
 		_pPropertiesUpdateTask->cancel();
 		_pPropertiesUpdateTask.reset();
+	}
+}
+
+
+void WebTunnelAgent::stopReconnectTask()
+{
+	if (_pReconnectTask)
+	{
+		_logger.debug("Stopping ReconnectTask...");
+		_pReconnectTask->cancel();
+		_pReconnectTask.reset();
 	}
 }
 
@@ -279,10 +336,11 @@ void WebTunnelAgent::connect()
 
 void WebTunnelAgent::disconnect()
 {
+	stopReconnectTask();
 	stopPropertiesUpdateTask();
 	if (_pForwarder)
 	{
-		_logger.information("Disconnecting device %s from reflector server", _deviceName);
+		_logger.information("Disconnecting device %s from reflector server.", _deviceName);
 
 		_pForwarder->webSocketClosed -= Poco::delegate(this, &WebTunnelAgent::onClose);
 		_pForwarder->stop();
@@ -299,11 +357,13 @@ void WebTunnelAgent::disconnect()
 		}
 	}
 	statusChanged(STATUS_DISCONNECTED);
+	_logger.debug("Disconnect complete.");
 }
 
 
 void WebTunnelAgent::onClose(const int& reason)
 {
+	stopReconnectTask();
 	stopPropertiesUpdateTask();
 
 	std::string message;
@@ -333,23 +393,27 @@ void WebTunnelAgent::reconnectTask(Poco::Util::TimerTask&)
 {
 	try
 	{
-		try
+		if (!isStopping())
 		{
-			disconnect();
+			try
+			{
+				_logger.debug("Disconnecting for reconnect...");
+				disconnect();
+			}
+			catch (Poco::Exception& exc)
+			{
+				_logger.warning("Exception during disconnect: " + exc.displayText());
+			}
+			catch (std::exception& exc)
+			{
+				_logger.error(std::string("Exception during disconnect: ") + exc.what());
+			}
+			catch (...)
+			{
+				_logger.error("Unknown exception during disconnect.");
+			}
+			connect();
 		}
-		catch (Poco::Exception& exc)
-		{
-			_logger.warning("Exception during disconnect: " + exc.displayText());
-		}
-		catch (std::exception& exc)
-		{
-			_logger.error(std::string("Exception during disconnect: ") + exc.what());
-		}
-		catch (...)
-		{
-			_logger.error("Unknown exception during disconnect.");
-		}
-		connect();
 	}
 	catch (Poco::Exception& exc)
 	{
@@ -364,19 +428,6 @@ void WebTunnelAgent::reconnectTask(Poco::Util::TimerTask&)
 }
 
 
-void WebTunnelAgent::disconnectTask(Poco::Util::TimerTask&)
-{
-	try
-	{
-		disconnect();
-	}
-	catch (Poco::Exception& exc)
-	{
-		_logger.warning("Exception during disconnect: " + exc.displayText());
-	}
-}
-
-
 void WebTunnelAgent::scheduleReconnect()
 {
 	if (!_stopped.tryWait(1))
@@ -386,7 +437,8 @@ void WebTunnelAgent::scheduleReconnect()
 		Poco::Clock nextClock;
 		nextClock += retryDelay;
 		_logger.information(Poco::format("Will reconnect in %.2f seconds.", retryDelay/1000000.0));
-		_pTimer->schedule(new Poco::Util::TimerTaskAdapter<WebTunnelAgent>(*this, &WebTunnelAgent::reconnectTask), nextClock);
+		_pReconnectTask = new ReconnectTask(Ptr(this, true));
+		_pTimer->schedule(_pReconnectTask, nextClock);
 	}
 }
 
@@ -466,14 +518,17 @@ void WebTunnelAgent::init()
 }
 
 
-void WebTunnelAgent::updateProperties(Poco::Util::TimerTask&)
+void WebTunnelAgent::propertiesUpdateTask(Poco::Util::TimerTask&)
 {
 	_logger.debug("Updating device properties...");
 	try
 	{
-		std::map<std::string, std::string> props;
-		collectProperties(props);
-		_pForwarder->updateProperties(props);
+		if (!isStopping())
+		{
+			std::map<std::string, std::string> props;
+			collectProperties(props);
+			_pForwarder->updateProperties(props);
+		}
 	}
 	catch (Poco::Exception& exc)
 	{
@@ -588,6 +643,14 @@ std::string WebTunnelAgent::quoteString(const std::string& str)
 	}
 	quoted += '"';
 	return quoted;
+}
+
+
+bool WebTunnelAgent::isStopping()
+{
+	Poco::FastMutex::ScopedLock lock(_mutex);
+
+	return _stopping;
 }
 
 

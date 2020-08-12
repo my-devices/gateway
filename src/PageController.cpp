@@ -28,4 +28,10 @@ PageController::~PageController()
 }
 
 
+std::string PageController::defaultDomain() const
+{
+	return _pDeviceManager->config()->getString("webtunnel.domain", "");
+}
+
+
 } } // namespace MyDevices::Gateway

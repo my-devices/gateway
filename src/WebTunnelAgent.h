@@ -1,7 +1,7 @@
 //
 // WebTunnelAgent.h
 //
-// Copyright (c) 2015-2017, Applied Informatics Software Engineering GmbH.
+// Copyright (c) 2015-2020, Applied Informatics Software Engineering GmbH.
 // All rights reserved.
 //
 // SPDX-License-Identifier:	BSL-1.0
@@ -75,10 +75,10 @@ protected:
 	void disconnect();
 	void onClose(const int& reason);
 	void reconnectTask(Poco::Util::TimerTask&);
-	void disconnectTask(Poco::Util::TimerTask&);
+	void stopReconnectTask();
 	void init();
 	void addProperties(Poco::Net::HTTPRequest& request, const std::map<std::string, std::string>& props);
-	void updateProperties(Poco::Util::TimerTask&);
+	void propertiesUpdateTask(Poco::Util::TimerTask&);
 	void collectProperties(std::map<std::string, std::string>& props);
 	void startPropertiesUpdateTask();
 	void stopPropertiesUpdateTask();
@@ -88,6 +88,7 @@ protected:
 	void statusChanged(Status status, const std::string& error);
 	void scheduleReconnect();
 	void scheduleDisconnect();
+	bool isStopping();
 	static std::string quoteString(const std::string& str);
 
 	static const std::string SEC_WEBSOCKET_PROTOCOL;
@@ -127,13 +128,18 @@ private:
 	Poco::SharedPtr<Poco::WebTunnel::SocketDispatcher> _pDispatcher;
 	Poco::SharedPtr<Poco::WebTunnel::RemotePortForwarder> _pForwarder;
 	Poco::SharedPtr<Poco::Net::HTTPClientSession> _pHTTPClientSession;
+	Poco::Util::TimerTask::Ptr _pReconnectTask;
 	Poco::Util::TimerTask::Ptr _pPropertiesUpdateTask;
 	Poco::Event _stopped;
 	Poco::Random _random;
 	Status _status;
 	std::string _lastError;
+	bool _stopping;
 	mutable Poco::FastMutex _mutex;
 	Poco::Logger& _logger;
+
+	friend class ReconnectTask;
+	friend class PropertiesUpdateTask;
 };
 
 
