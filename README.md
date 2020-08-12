@@ -174,4 +174,4 @@ devices as well.
 [browser1]: doc/images/browser1.png "Gateway Web User Interface - Overview"
 [create]: doc/images/create.png "Gateway Web User Interface - Create Device"
 [device]: doc/images/device.png "Gateway Web User Interface - Create Device"
-[browser2]: doc/images/browser1.png "Gateway Web User Interface - Device Created"
+[browser2]: doc/images/browser2.png "Gateway Web User Interface - Device Created"
