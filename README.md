@@ -66,7 +66,7 @@ $ cmake ../sdk \
 	-DENABLE_WEBTUNNELVNC=OFF \
 	-DENABLE_WEBTUNNELRDP=OFF \
 	-DCMAKE_INSTALL_PREFIX=../sdk-install
-$ cmake --build . --target install
+$ cmake --build . --config Release --target install
 $ cd ..
 ```
 
