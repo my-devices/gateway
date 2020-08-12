@@ -149,25 +149,25 @@ Click *Next* to finish configuring the device.
 Specify the following settings.
 
   - **Device IP Address or Domain Name:** `127.0.0.1`
-  - **Device HTTP Server Port:** `8080`
+  - **HTTP Server Port:** `8080` (or whatever port you have configured)
   - **Requires HTTPS:** unchecked
 
 All other fields can be left at their defaults or empty.
 
 Click `Save` to save your first Gateway connection.
 
-You will now see it in the overview:
+You will now see the new device in the overview:
 
 ![Gateway Web User Interface - Device Added][browser2]
 
 Note that *Status* may initially show *disconnected* for your newly added device.
-The page will refresh automatically after 10 seconds, and the status should
-change to *connected*. If the status shows *error*, click on the device to
-see the error message.
+The status should refresh after a few seconds and change to *connected*.
+If the status shows *error*, click on the device to see the error message.
 
-The Gateway should now be visible in your [Remote Manager Dashboard](https://reflector.my-devices.net).
+The Gateway should now also be visible in your [Remote Manager Dashboard](https://reflector.my-devices.net).
 
-You can now add other devices.
+You can now manage the Gateway remotely via Remote Manager, and you can also add other
+devices as well.
 
 
 [login]: doc/images/login.png "Gateway Web User Interface - First Login"
