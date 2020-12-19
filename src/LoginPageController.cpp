@@ -118,7 +118,7 @@ bool LoginPageController::verifyDomainAccess(const Poco::URI& reflectorURI, cons
 	Poco::Net::OAuth20Credentials creds(token);
 	creds.authenticate(request);
 	_logger.debug("Validating domain access with Remote Manager server at %s.", reflectorURI.toString());
-	std::ostream& requestStream = pHTTPClientSession->sendRequest(request);
+	pHTTPClientSession->sendRequest(request);
 	Poco::Net::HTTPResponse response;
 	std::istream& responseStream = pHTTPClientSession->receiveResponse(response);
 	Poco::NullOutputStream nullStream;
