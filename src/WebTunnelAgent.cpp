@@ -552,8 +552,10 @@ void WebTunnelAgent::collectProperties(std::map<std::string, std::string>& props
 			std::string command(value, 1, value.length() - 2);
 			try
 			{
+				_logger.debug("Running properties update command for property '%s': '%s'.", *it, command);
 				value = runCommand(command);
 				props[*it] = value;
+				_logger.debug("Property '%s' updated with value '%s'", *it, value);
 			}
 			catch (Poco::Exception& exc)
 			{
