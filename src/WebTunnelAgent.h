@@ -106,6 +106,7 @@ private:
 	Poco::URI _redirectURI;
 	std::string _username;
 	std::string _password;
+	std::string _tenant;
 	std::string _userAgent;
 	std::string _httpPath;
 	Poco::UInt16 _httpPort;

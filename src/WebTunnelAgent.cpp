@@ -27,6 +27,9 @@
 #include "Poco/String.h"
 
 
+using namespace std::string_literals;
+
+
 namespace MyDevices {
 namespace Gateway {
 
@@ -88,7 +91,7 @@ WebTunnelAgent::WebTunnelAgent(const std::string& deviceId, Poco::SharedPtr<Poco
 	_pDispatcher(pDispatcher),
 	_status(STATUS_DISCONNECTED),
 	_stopping(false),
-	_logger(Poco::Logger::get("WebTunnelAgent"))
+	_logger(Poco::Logger::get("WebTunnelAgent"s))
 {
 	init();
 }
@@ -117,7 +120,7 @@ void WebTunnelAgent::stop()
 	}
 	if (!stopping)
 	{
-		_logger.debug("Stopping agent %s...", _id);
+		_logger.debug("Stopping agent %s..."s, _id);
 		_stopped.set();
 		disconnect();
 	}
@@ -126,38 +129,42 @@ void WebTunnelAgent::stop()
 
 void WebTunnelAgent::addProperties(Poco::Net::HTTPRequest& request, const std::map<std::string, std::string>& props)
 {
-	request.add("X-PTTH-Set-Property", Poco::format("device;targetHost=%s", _host.toString()));
-	request.add("X-PTTH-Set-Property", Poco::format("device;targetPorts=%s", formatPorts()));
+	request.add("X-PTTH-Set-Property"s, Poco::format("device;targetHost=%s"s, _host.toString()));
+	request.add("X-PTTH-Set-Property"s, Poco::format("device;targetPorts=%s"s, formatPorts()));
 	if (!_httpPath.empty())
 	{
-		request.add("X-PTTH-Set-Property", Poco::format("device;httpPath=%s", quoteString(_httpPath)));
+		request.add("X-PTTH-Set-Property"s, Poco::format("device;httpPath=%s"s, quoteString(_httpPath)));
 	}
 	if (_httpPort != 0)
 	{
-		request.add("X-PTTH-Set-Property", Poco::format("device;httpPort=%hu", _httpPort));
+		request.add("X-PTTH-Set-Property"s, Poco::format("device;httpPort=%hu"s, _httpPort));
 	}
 	if (_sshPort != 0)
 	{
-		request.add("X-PTTH-Set-Property", Poco::format("device;sshPort=%hu", _sshPort));
+		request.add("X-PTTH-Set-Property"s, Poco::format("device;sshPort=%hu"s, _sshPort));
 	}
 	if (_vncPort != 0)
 	{
-		request.add("X-PTTH-Set-Property", Poco::format("device;vncPort=%hu", _vncPort));
+		request.add("X-PTTH-Set-Property"s, Poco::format("device;vncPort=%hu"s, _vncPort));
 	}
 	if (_rdpPort != 0)
 	{
-		request.add("X-PTTH-Set-Property", Poco::format("device;rdpPort=%hu", _rdpPort));
+		request.add("X-PTTH-Set-Property"s, Poco::format("device;rdpPort=%hu"s, _rdpPort));
 	}
 	if (!_deviceName.empty())
 	{
-		request.add("X-PTTH-Set-Property", Poco::format("device;name=%s", quoteString(_deviceName)));
+		request.add("X-PTTH-Set-Property"s, Poco::format("device;name=%s"s, quoteString(_deviceName)));
+	}
+	if (!_tenant.empty())
+	{
+		request.add("X-PTTH-Set-Property"s, Poco::format("device;tenant=%s"s, quoteString(_tenant)));
 	}
 
 	if (!props.empty())
 	{
 		for (std::map<std::string, std::string>::const_iterator it = props.begin(); it != props.end(); ++it)
 		{
-			request.add("X-PTTH-Set-Property", Poco::format("device;%s=%s", it->first, quoteString(it->second)));
+			request.add("X-PTTH-Set-Property"s, Poco::format("device;%s=%s"s, it->first, quoteString(it->second)));
 		}
 	}
 	request.set("User-Agent", _userAgent);
@@ -178,7 +185,7 @@ std::string WebTunnelAgent::formatPorts()
 
 void WebTunnelAgent::startPropertiesUpdateTask()
 {
-	_logger.debug("Starting PropertiesUpdateTask...");
+	_logger.debug("Starting PropertiesUpdateTask..."s);
 	_pPropertiesUpdateTask = new PropertiesUpdateTask(Ptr(this, true));
 	_pTimer->scheduleAtFixedRate(_pPropertiesUpdateTask, _propertiesUpdateInterval.totalMilliseconds(), _propertiesUpdateInterval.totalMilliseconds());
 }
@@ -188,7 +195,7 @@ void WebTunnelAgent::stopPropertiesUpdateTask()
 {
 	if (_pPropertiesUpdateTask)
 	{
-		_logger.debug("Stopping PropertiesUpdateTask...");
+		_logger.debug("Stopping PropertiesUpdateTask..."s);
 		_pPropertiesUpdateTask->cancel();
 		_pPropertiesUpdateTask.reset();
 	}
@@ -199,7 +206,7 @@ void WebTunnelAgent::stopReconnectTask()
 {
 	if (_pReconnectTask)
 	{
-		_logger.debug("Stopping ReconnectTask...");
+		_logger.debug("Stopping ReconnectTask..."s);
 		_pReconnectTask->cancel();
 		_pReconnectTask.reset();
 	}
@@ -214,7 +221,7 @@ void WebTunnelAgent::connect()
 	else
 		reflectorURI = _reflectorURI;
 
-	_logger.information("Connecting device %s to %s...", _deviceName, reflectorURI.toString());
+	_logger.information("Connecting device %s to %s..."s, _deviceName, reflectorURI.toString());
 
 	_pHTTPClientSession = Poco::Net::HTTPSessionFactory::defaultFactory().createClientSession(reflectorURI);
 	_pHTTPClientSession->setTimeout(_httpTimeout);
@@ -247,22 +254,22 @@ void WebTunnelAgent::connect()
 	bool reconnect = true;
 	if (!_stopped.tryWait(1))
 	{
-		_logger.debug("Entering reconnect loop...");
+		_logger.debug("Entering reconnect loop..."s);
 		try
 		{
 			Poco::Net::DNS::reload();
-			_logger.debug("Creating WebSocket...");
+			_logger.debug("Creating WebSocket..."s);
 			Poco::SharedPtr<Poco::Net::WebSocket> pWebSocket = new Poco::Net::WebSocket(*_pHTTPClientSession, request, response);
-			if (response.get(SEC_WEBSOCKET_PROTOCOL, "") == WEBTUNNEL_PROTOCOL)
+			if (response.get(SEC_WEBSOCKET_PROTOCOL, ""s) == WEBTUNNEL_PROTOCOL)
 			{
-				_logger.debug("WebSocket established. Creating RemotePortForwarder...");
+				_logger.debug("WebSocket established. Creating RemotePortForwarder..."s);
 				pWebSocket->setNoDelay(true);
 				_retryDelay = MIN_RETRY_DELAY;
 				_pForwarder = new Poco::WebTunnel::RemotePortForwarder(*_pDispatcher, pWebSocket, _host, _ports, _remoteTimeout, _pSocketFactory);
 				_pForwarder->setConnectTimeout(_connectTimeout);
 				_pForwarder->setLocalTimeout(_localTimeout);
 				_pForwarder->webSocketClosed += Poco::delegate(this, &WebTunnelAgent::onClose);
-				_logger.information("WebTunnel connection established for device %s.", _deviceName);
+				_logger.information("WebTunnel connection established for device %s."s, _deviceName);
 
 				if (!props.empty() && _propertiesUpdateInterval > 0)
 				{
@@ -274,7 +281,7 @@ void WebTunnelAgent::connect()
 			}
 			else
 			{
-				statusChanged(STATUS_ERROR, Poco::format("The host at %s does not support the WebTunnel protocol.", reflectorURI.toString()));
+				statusChanged(STATUS_ERROR, Poco::format("The host at %s does not support the WebTunnel protocol."s, reflectorURI.toString()));
 				_logger.error(_lastError);
 
 				pWebSocket->shutdown(Poco::Net::WebSocket::WS_PROTOCOL_ERROR);
@@ -299,14 +306,14 @@ void WebTunnelAgent::connect()
 		{
 			if (response.getStatus() == Poco::Net::HTTPResponse::HTTP_FOUND)
 			{
-				_redirectURI = Poco::URI(_reflectorURI, response.get("Location"));
+				_redirectURI = Poco::URI(_reflectorURI, response.get("Location"s));
 				_retryDelay = MIN_RETRY_DELAY;
-				_logger.information("Redirected to %s.", _redirectURI.toString());
+				_logger.information("Redirected to %s."s, _redirectURI.toString());
 			}
 			else
 			{
-				std::string msg = response.get("X-PTTH-Error", exc.displayText());
-				statusChanged(STATUS_ERROR, Poco::format("Cannot connect to reflector at %s: %s", reflectorURI.toString(), msg));
+				std::string msg = response.get("X-PTTH-Error"s, exc.displayText());
+				statusChanged(STATUS_ERROR, Poco::format("Cannot connect to reflector at %s: %s"s, reflectorURI.toString(), msg));
 				_logger.error(_lastError);
 				if (_retryDelay < MAX_RETRY_DELAY)
 				{
@@ -317,8 +324,8 @@ void WebTunnelAgent::connect()
 		}
 		catch (Poco::Exception& exc)
 		{
-			statusChanged(STATUS_ERROR, Poco::format("Cannot connect device to reflector at %s: %s", reflectorURI.toString(), exc.displayText()));
-			_logger.error("Cannot connect device %s to reflector at %s: %s", _deviceName, reflectorURI.toString(), exc.displayText());
+			statusChanged(STATUS_ERROR, Poco::format("Cannot connect device to reflector at %s: %s"s, reflectorURI.toString(), exc.displayText()));
+			_logger.error("Cannot connect device %s to reflector at %s: %s"s, _deviceName, reflectorURI.toString(), exc.displayText());
 			if (_retryDelay < MAX_RETRY_DELAY)
 			{
 				_retryDelay *= 2;
@@ -340,7 +347,7 @@ void WebTunnelAgent::disconnect()
 	stopPropertiesUpdateTask();
 	if (_pForwarder)
 	{
-		_logger.information("Disconnecting device %s from reflector server.", _deviceName);
+		_logger.information("Disconnecting device %s from reflector server."s, _deviceName);
 
 		_pForwarder->webSocketClosed -= Poco::delegate(this, &WebTunnelAgent::onClose);
 		_pForwarder->stop();
@@ -357,7 +364,7 @@ void WebTunnelAgent::disconnect()
 		}
 	}
 	statusChanged(STATUS_DISCONNECTED);
-	_logger.debug("Disconnect complete.");
+	_logger.debug("Disconnect complete."s);
 }
 
 
@@ -370,19 +377,19 @@ void WebTunnelAgent::onClose(const int& reason)
 	switch (reason)
 	{
 	case Poco::WebTunnel::RemotePortForwarder::RPF_CLOSE_GRACEFUL:
-		message = "WebTunnel connection gracefully closed";
+		message = "WebTunnel connection gracefully closed"s;
 		break;
 	case Poco::WebTunnel::RemotePortForwarder::RPF_CLOSE_UNEXPECTED:
-		message = "WebTunnel connection unexpectedly closed";
+		message = "WebTunnel connection unexpectedly closed"s;
 		break;
 	case Poco::WebTunnel::RemotePortForwarder::RPF_CLOSE_ERROR:
-		message = "WebTunnel connection closed due to error";
+		message = "WebTunnel connection closed due to error"s;
 		break;
 	case Poco::WebTunnel::RemotePortForwarder::RPF_CLOSE_TIMEOUT:
-		message = "WebTunnel connection closed due to timeout";
+		message = "WebTunnel connection closed due to timeout"s;
 		break;
 	}
-	_logger.information("%s for device %s.", message, _deviceName);
+	_logger.information("%s for device %s."s, message, _deviceName);
 
 	statusChanged(STATUS_DISCONNECTED);
 	scheduleReconnect();
@@ -397,20 +404,20 @@ void WebTunnelAgent::reconnectTask(Poco::Util::TimerTask&)
 		{
 			try
 			{
-				_logger.debug("Disconnecting for reconnect...");
+				_logger.debug("Disconnecting for reconnect..."s);
 				disconnect();
 			}
 			catch (Poco::Exception& exc)
 			{
-				_logger.warning("Exception during disconnect: " + exc.displayText());
+				_logger.warning("Exception during disconnect: %s"s, exc.displayText());
 			}
 			catch (std::exception& exc)
 			{
-				_logger.error(std::string("Exception during disconnect: ") + exc.what());
+				_logger.error("Exception during disconnect: "s + exc.what());
 			}
 			catch (...)
 			{
-				_logger.error("Unknown exception during disconnect.");
+				_logger.error("Unknown exception during disconnect."s);
 			}
 			connect();
 		}
@@ -423,7 +430,7 @@ void WebTunnelAgent::reconnectTask(Poco::Util::TimerTask&)
 	}
 	catch (...)
 	{
-		_logger.fatal("Unknown exception during connect()");
+		_logger.fatal("Unknown exception during connect()"s);
 	}
 }
 
@@ -436,7 +443,7 @@ void WebTunnelAgent::scheduleReconnect()
 		retryDelay += _random.next(250*_retryDelay);
 		Poco::Clock nextClock;
 		nextClock += retryDelay;
-		_logger.information(Poco::format("Will reconnect in %.2f seconds.", retryDelay/1000000.0));
+		_logger.information(Poco::format("Will reconnect in %.2f seconds."s, retryDelay/1000000.0));
 		_pReconnectTask = new ReconnectTask(Ptr(this, true));
 		_pTimer->schedule(_pReconnectTask, nextClock);
 	}
@@ -445,16 +452,17 @@ void WebTunnelAgent::scheduleReconnect()
 
 void WebTunnelAgent::init()
 {
-	_deviceName = _pConfig->getString("webtunnel.deviceName", "");
-	_reflectorURI = _pConfig->getString("webtunnel.reflectorURI");
-	_username = _pConfig->getString("webtunnel.username", "");
-	_password = _pConfig->getString("webtunnel.password", "");
-	std::string host = _pConfig->getString("webtunnel.host", "localhost");
+	_deviceName = _pConfig->getString("webtunnel.deviceName"s, ""s);
+	_reflectorURI = _pConfig->getString("webtunnel.reflectorURI"s);
+	_username = _pConfig->getString("webtunnel.username"s, ""s);
+	_password = _pConfig->getString("webtunnel.password"s, ""s);
+	_tenant   = _pConfig->getString("webtunnel.tenant"s, ""s);
+	std::string host = _pConfig->getString("webtunnel.host"s, "localhost"s);
 	if (!Poco::Net::IPAddress::tryParse(host, _host))
 	{
 		_host = Poco::Net::DNS::resolveOne(host);
 	}
-	std::string ports = _pConfig->getString("webtunnel.ports", "");
+	std::string ports = _pConfig->getString("webtunnel.ports"s, ""s);
 	Poco::StringTokenizer tok(ports, ";,", Poco::StringTokenizer::TOK_TRIM | Poco::StringTokenizer::TOK_IGNORE_EMPTY);
 	for (Poco::StringTokenizer::Iterator it = tok.begin(); it != tok.end(); ++it)
 	{
@@ -465,7 +473,7 @@ void WebTunnelAgent::init()
 		}
 		else
 		{
-			_logger.warning("Ignoring out-of-range port number specified in configuration for device %s: %d", _deviceName, port);
+			_logger.warning("Ignoring out-of-range port number specified in configuration for device %s: %d"s, _deviceName, port);
 		}
 	}
 
@@ -474,26 +482,26 @@ void WebTunnelAgent::init()
 		throw Poco::InvalidArgumentException("No ports to forward");
 	}
 
-	_localTimeout = Poco::Timespan(_pConfig->getInt("webtunnel.localTimeout", 7200), 0);
-	_connectTimeout = Poco::Timespan(_pConfig->getInt("webtunnel.connectTimeout", 10), 0);
-	_remoteTimeout = Poco::Timespan(_pConfig->getInt("webtunnel.remoteTimeout", 300), 0);
-	_propertiesUpdateInterval = Poco::Timespan(_pConfig->getInt("webtunnel.propertiesUpdateInterval", 0), 0);
-	_httpPath = _pConfig->getString("webtunnel.httpPath", "");
-	_httpPort = static_cast<Poco::UInt16>(_pConfig->getInt("webtunnel.httpPort", 0));
-	_sshPort = static_cast<Poco::UInt16>(_pConfig->getInt("webtunnel.sshPort", 0));
-	_vncPort = static_cast<Poco::UInt16>(_pConfig->getInt("webtunnel.vncPort", 0));
-	_rdpPort = static_cast<Poco::UInt16>(_pConfig->getInt("webtunnel.rdpPort", 0));
-	_userAgent = _pConfig->getString("webtunnel.userAgent", "");
-	_httpTimeout = Poco::Timespan(_pConfig->getInt("http.timeout", 30), 0);
-	_useProxy = _pConfig->getBool("http.proxy.enable", false);
-	_proxyHost = _pConfig->getString("http.proxy.host", "");
-	_proxyPort = static_cast<Poco::UInt16>(_pConfig->getInt("http.proxy.port", 80));
-	_proxyUsername = _pConfig->getString("http.proxy.username", "");
-	_proxyPassword = _pConfig->getString("http.proxy.password", "");
+	_localTimeout = Poco::Timespan(_pConfig->getInt("webtunnel.localTimeout"s, 7200), 0);
+	_connectTimeout = Poco::Timespan(_pConfig->getInt("webtunnel.connectTimeout"s, 10), 0);
+	_remoteTimeout = Poco::Timespan(_pConfig->getInt("webtunnel.remoteTimeout"s, 300), 0);
+	_propertiesUpdateInterval = Poco::Timespan(_pConfig->getInt("webtunnel.propertiesUpdateInterval"s, 0), 0);
+	_httpPath = _pConfig->getString("webtunnel.httpPath"s, ""s);
+	_httpPort = static_cast<Poco::UInt16>(_pConfig->getInt("webtunnel.httpPort"s, 0));
+	_sshPort = static_cast<Poco::UInt16>(_pConfig->getInt("webtunnel.sshPort"s, 0));
+	_vncPort = static_cast<Poco::UInt16>(_pConfig->getInt("webtunnel.vncPort"s, 0));
+	_rdpPort = static_cast<Poco::UInt16>(_pConfig->getInt("webtunnel.rdpPort"s, 0));
+	_userAgent = _pConfig->getString("webtunnel.userAgent"s, ""s);
+	_httpTimeout = Poco::Timespan(_pConfig->getInt("http.timeout"s, 30), 0);
+	_useProxy = _pConfig->getBool("http.proxy.enable"s, false);
+	_proxyHost = _pConfig->getString("http.proxy.host"s, ""s);
+	_proxyPort = static_cast<Poco::UInt16>(_pConfig->getInt("http.proxy.port"s, 80));
+	_proxyUsername = _pConfig->getString("http.proxy.username"s, ""s);
+	_proxyPassword = _pConfig->getString("http.proxy.password"s, ""s);
 
 	if (_httpPort != 0 && _ports.find(_httpPort) == _ports.end())
 	{
-		_logger.warning("HTTP port (%hu) not in list of forwarded ports for device %s.", _httpPort, _deviceName);
+		_logger.warning("HTTP port (%hu) not in list of forwarded ports for device %s."s, _httpPort, _deviceName);
 	}
 
 	if (_userAgent.empty())
@@ -508,7 +516,7 @@ void WebTunnelAgent::init()
 		_userAgent += "; ";
 		_userAgent += Poco::Environment::osArchitecture();
 		_userAgent += ") POCO/";
-		_userAgent += Poco::format("%d.%d.%d",
+		_userAgent += Poco::format("%d.%d.%d"s,
 			static_cast<int>(Poco::Environment::libraryVersion() >> 24),
 			static_cast<int>((Poco::Environment::libraryVersion() >> 16) & 0xFF),
 			static_cast<int>((Poco::Environment::libraryVersion() >> 8) & 0xFF));
@@ -520,7 +528,7 @@ void WebTunnelAgent::init()
 
 void WebTunnelAgent::propertiesUpdateTask(Poco::Util::TimerTask&)
 {
-	_logger.debug("Updating device properties...");
+	_logger.debug("Updating device properties..."s);
 	try
 	{
 		if (!isStopping())
@@ -532,19 +540,19 @@ void WebTunnelAgent::propertiesUpdateTask(Poco::Util::TimerTask&)
 	}
 	catch (Poco::Exception& exc)
 	{
-		_logger.error("Failed to update device properties: %s", exc.displayText());
+		_logger.error("Failed to update device properties: %s"s, exc.displayText());
 	}
-	_logger.debug("Done updating device properties.");
+	_logger.debug("Done updating device properties."s);
 }
 
 
 void WebTunnelAgent::collectProperties(std::map<std::string, std::string>& props)
 {
 	std::vector<std::string> keys;
-	_pConfig->keys("webtunnel.properties", keys);
+	_pConfig->keys("webtunnel.properties"s, keys);
 	for (std::vector<std::string>::const_iterator it = keys.begin(); it != keys.end(); ++it)
 	{
-		std::string fullName("webtunnel.properties.");
+		std::string fullName("webtunnel.properties."s);
 		fullName += *it;
 		std::string value = _pConfig->getString(fullName);
 		if (!value.empty() && value[0] == '`' && value[value.length() - 1] == '`')
@@ -552,14 +560,14 @@ void WebTunnelAgent::collectProperties(std::map<std::string, std::string>& props
 			std::string command(value, 1, value.length() - 2);
 			try
 			{
-				_logger.debug("Running properties update command for property '%s': '%s'.", *it, command);
+				_logger.debug("Running properties update command for property '%s': '%s'."s, *it, command);
 				value = runCommand(command);
 				props[*it] = value;
-				_logger.debug("Property '%s' updated with value '%s'", *it, value);
+				_logger.debug("Property '%s' updated with value '%s'"s, *it, value);
 			}
 			catch (Poco::Exception& exc)
 			{
-				_logger.warning("Command for property '%s' failed: %s", *it, exc.displayText());
+				_logger.warning("Command for property '%s' failed: %s"s, *it, exc.displayText());
 			}
 		}
 		else
