@@ -36,7 +36,7 @@ namespace Gateway {
 
 const std::string WebTunnelAgent::SEC_WEBSOCKET_PROTOCOL("Sec-WebSocket-Protocol");
 const std::string WebTunnelAgent::WEBTUNNEL_PROTOCOL("com.appinf.webtunnel.server/1.0");
-const std::string WebTunnelAgent::WEBTUNNEL_AGENT("macchina.io Remote Manager Gateway");
+const std::string WebTunnelAgent::WEBTUNNEL_AGENT("macchina.io REMOTE Gateway");
 
 
 class ReconnectTask: public Poco::Util::TimerTask

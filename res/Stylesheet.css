@@ -65,25 +65,22 @@ table
 
 body
 {
-	background-color: #cccccc;
+	background-color: #f3f3f4;
 	min-width: 996px;
 	width: 100%;
-	color: #111;
-	background-image: url(../images/gradient.png);
-	background-repeat: repeat-x;
-	background-attachment: fixed;
+	color: #234;
 }
 
-p, h1, h2, h3, h4, h5, h6, ul, ol, li, td, th, form, address, blockquote, strong, b, div, emph, i
+p, h1, h2, h3, h4, h5, h6, ul, ol, li, td, th, form, address, blockquote, strong, b, div, emph, i, input
 {
 	font-family: Tahoma, Geneva, sans-serif;
 }
 
-div, p, ul, ol, li, address, blockquote, h6, form, td
+div, p, ul, ol, li, address, blockquote, h6, form, td, th
 {
-	color: #111;
+	color: #234;
 	font-size: 16px;
-	line-height: 24px;
+	line-height: 20px;
 }
 
 p, ul, ol, address, blockquote, h6, td
@@ -96,8 +93,8 @@ div.headercontainer
 {
 	width: 100%;
 	height: 48px;
-	border-bottom: 1px solid #012F50;
-	background: #0076B8;
+	border-bottom: 1px solid #012f50;
+	background: #0e75b7;
 	background-image: url(../images/headerlogo.png);
 	background-repeat: no-repeat;
 	background-size: 90px 20px;
@@ -113,8 +110,8 @@ only screen and (min-device-pixel-ratio: 1.5)
 	{
 		width: 100%;
 		height: 48px;
-		border-bottom: 1px solid #012F50;
-		background: #0076B8;
+		border-bottom: 1px solid #012f50;
+		background: #0e75b7;
 		background-image: url(../images/headerlogo-x2.png);
 		background-repeat: no-repeat;
 		background-size: 90px 20px;
@@ -133,11 +130,14 @@ div.header
 
 div.header h1
 {
-	font-size: 23px;
+	font-size: 20px;
 	line-height: 28px;
 	color: white;
 	margin: 0px;
 	font-weight: normal;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 div.footercontainer
@@ -151,7 +151,7 @@ div.footercontainer
 	height: 40px;
 	left: 0;
 	bottom: 0;
-	background-color: #eee;
+	background-color: #edeeef;
 }
 
 @media only screen and (-Webkit-min-device-pixel-ratio: 1.5),
@@ -170,7 +170,7 @@ only screen and (min-device-pixel-ratio: 1.5)
 		height: 40px;
 		left: 0;
 		bottom: 0;
-		background-color: #eee;
+		background-color: #edeeef;
 	}
 }
 
@@ -183,7 +183,7 @@ div.footer
 	margin-bottom: 8px;
 	margin-left: 12px;
 	margin-right: 120px;
-	font-size: 12px;
+	font-size: 13px;
 	line-height: 24px;
 	z-index: 100;
 }
@@ -205,8 +205,17 @@ div.information
 	margin-top: 20px;
 	margin-bottom: 20px;
 	padding: 8px;
-	border: 1px solid #0076B8;
-	background-color: #EEE;
+	border: 1px solid #0e75b7;
+	background-color: #eee;
+}
+
+div.warning
+{
+	margin-top: 20px;
+	margin-bottom: 20px;
+	padding: 8px;
+	border: 1px solid #ff0;
+	background-color: #ffd;
 }
 
 div.error
@@ -214,8 +223,8 @@ div.error
 	margin-top: 20px;
 	margin-bottom: 20px;
 	padding: 8px;
-	border: 1px solid #F00;
-	background-color: #FDD;
+	border: 1px solid #f00;
+	background-color: #fdd;
 }
 
 div.groupbox
@@ -228,8 +237,8 @@ div.groupbox
 	padding-right: 6px;
 	padding-top: 6px;
 	padding-bottom: 6px;
-	border: 1px solid #CCC;
-	background-color: #F1F1F1;
+	border: 1px solid #ccc;
+	background-color: #fafbfc;
 	width: auto;
 	font-size: 16px;
 	line-height: 20px;
@@ -250,7 +259,7 @@ pre
 
 h1
 {
-	color: #111;
+	color: #234;
 	font-size: 24px;
 	font-weight: normal;
 	line-height: 32px;
@@ -260,7 +269,7 @@ h1
 
 h2
 {
-	color: #111;
+	color: #234;
 	font-size: 20px;
 	margin-top: 8px;
 	margin-bottom: 8px;
@@ -269,7 +278,7 @@ h2
 
 div.groupbox h2
 {
-	color: #111;
+	color: #234;
 	font-size: 18px;
 	margin-top: 2px;
 	margin-bottom: 8px;
@@ -278,12 +287,12 @@ div.groupbox h2
 
 h3
 {
-	color: #111;
+	color: #234;
 	font-size: 18px;
 	margin-top: 10px;
 	margin-right: 0;
 	margin-bottom: 0px;
-	background: #CCC;
+	background: #ccc;
 	border-bottom-width: 1px;
 	border-bottom-color: #AAA;
 	border-bottom-style: solid;
@@ -332,10 +341,10 @@ div.listheader
 	margin-right: 0px;
 	margin-top: 0px;
 	margin-bottom: 8px;
-	padding-left: 4px;
-	padding-right: 4px;
-	padding-top: 4px;
-	padding-bottom: 4px;
+	padding-left: 0px;
+	padding-right: 0px;
+	padding-top: 2px;
+	padding-bottom: 2px;
 	border: 0;
 	width: auto;
 	font-size: 13px;
@@ -373,7 +382,6 @@ div.listfooter div
 
 table.list
 {
-	background-color: #d8d8d8;
 	border-style: none;
 	padding: 0px;
 	font-size: 14px;
@@ -390,9 +398,9 @@ table.list th
 	color: #fff;
 	font-weight: bold;
 	text-align: left;
-	background-color: #0076B8;
-	padding-top: 4px;
-	padding-bottom: 4px;
+	background-color: #0e75b7;
+	padding-top: 5px;
+	padding-bottom: 5px;
 	padding-left: 6px;
 	padding-right: 6px;
 	text-align: left;
@@ -418,28 +426,27 @@ table.list td.deviceListButton
 
 table.list tr.even
 {
-	background-color: #d0d0d0;
-}
-
-table.list tr.even:hover, table.list tr.odd:hover
-{
-	background-color: #f8f8e8;
+	background-color: #e7e8e9;
+	border-bottom: 1px solid #d7d8d9;
 }
 
 table.list tr.odd
 {
-	background-color: #e0e0e0;
+	background-color: #f0f1f2;
+	border-bottom: 1px solid #d7d8d9;
 }
 
 table.list tr.intermediateHeader
 {
-	background-color: #c0c0c0;
+	background-color: #d0d1d2;
 }
 
 table.list tr.intermediateHeader th
 {
-	background-color: #c0c0c0;
-	color: #0076B8;
+	background-color: #d0d1d2;
+	color: #0e75b7;
+	font-size: 15px;
+	line-height: 15px;
 }
 
 strong, b
@@ -694,6 +701,7 @@ div.loginBox
 div.loginBox #notice
 {
 	font-size: 20px;
+	line-height: 28px;
 	text-align: center;
 	padding-bottom: 40px;
 }
@@ -744,8 +752,8 @@ div.loginBox #passwordInput
 	width: 240px;
 	height: 28px;
 	background-color: white;
-	color: #111;
-	border: 1px solid #0076b8;
+	color: #234;
+	border: 1px solid #0e75b7;
 	padding-left: 6px;
 	padding-right: 6px;
 }
@@ -790,10 +798,16 @@ div.usernav
 	margin-right: 0;
 }
 
+div.usernav a
+{
+	display: inline-block;
+}
+
 div.navigation
 {
 	border: 0;
 	padding: 0;
+	list-style-type: none;
 	margin: 0;
 	float: left;
 	height: 28px;

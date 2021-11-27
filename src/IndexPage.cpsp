@@ -29,7 +29,7 @@ function addDevice()
 
 function removeDevice(id, name)
 {
-  if (confirm('Delete device "' + name + '" (' + id + ')?\n\nThis action cannot be undone.\n\nPlease note that the corresponding device on the Remote Manager server will not be deleted.'))
+  if (confirm('Delete device "' + name + '" (' + id + ')?\n\nThis action cannot be undone.\n\nPlease note that the corresponding device on the macchina.io REMOTE server will not be deleted.'))
   {
     document.actionForm.target.value = id;
     document.actionForm.action.value = "remove";

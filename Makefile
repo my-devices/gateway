@@ -34,7 +34,6 @@ objects = GatewayServer WebTunnelAgent DeviceManager Utility PageController \
 	StatusJSON StatusJSONController \
 	Stylesheet \
 	FavIcon \
-	Gradient \
 	HeaderLogo HeaderLogoX2 \
 	PlusIcon PlusIconX2 \
 	MinusIcon MinusIconX2 \

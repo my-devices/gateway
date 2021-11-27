@@ -1,17 +1,17 @@
-# The macchina.io Remote Manager Gateway
+# The macchina.io REMOTE Gateway
 
-## About macchina.io Remote Manager
+## About macchina.io REMOTE
 
-[macchina.io Remote Manager](https://macchina.io/remote.html) provides secure remote access to connected devices
+[macchina.io REMOTE](https://macchina.io/remote) provides secure remote access to connected devices
 via HTTP or other TCP-based protocols and applications such as secure shell (SSH) or
-Virtual Network Computing (VNC). With macchina.io Remote Manager, any network-connected device
-running the Remote Manager Agent or this Gateway program can be securely accessed remotely over the
+Virtual Network Computing (VNC). With macchina.io REMOTE, any network-connected device
+running the macchina.io REMOTE Device Agent or this Gateway program can be securely accessed remotely over the
 internet from browsers, mobile apps, desktop, server or cloud applications.
 
 This even works if the device is behind a NAT router, firewall or proxy server.
 The device becomes just another host on the internet, addressable via its own URL and
-protected by the Remote Manager server against unauthorized or malicious access.
-Remote Manager is a great solution for secure remote support and maintenance,
+protected by the macchina.io REMOTE server against unauthorized or malicious access.
+macchina.io REMOTE is a great solution for secure remote support and maintenance,
 as well as for providing secure remote access to devices for end-users via web or
 mobile apps.
 
@@ -23,14 +23,14 @@ information on how to use this SDK and the included *WebTunnelAgent* executable.
 There is also a [blog post](https://macchina.io/blog/?p=257) showing step-by-step instructions to connect a Raspberry Pi.
 
 
-## About the macchina.io Remote Manager Gateway
+## About the macchina.io REMOTE Gateway
 
-The macchina.io Remote Manager Gateway is similar to the Remote Manager Agent from the SDK, but allows you to
-connect multiple devices or services to the Remote Manager server using
+The macchina.io REMOTE Gateway is similar to the macchina.io REMOTE Agent from the SDK, but allows you to
+connect multiple devices or services to the macchina.io REMOTE server using
 a single Gateway server instance. The Gateway also has a built-in web user interface
 for managing device/service connections.
 
-The Remote Manager Gateway requires the [Remote Manager SDK](https://github.com/my-devices/sdk).
+The macchina.io REMOTE Gateway requires the [macchina.io REMOTE SDK](https://github.com/my-devices/sdk).
 
 Like the SDK, the Gateway is licensed under the [Boost Software License](https://spdx.org/licenses/BSL-1.0).
 
@@ -99,15 +99,15 @@ size before deploying it to the device.
 ## Running the Gateway
 
 Edit the configuration file [rmgateway.properties](rmgateway.properties) and change the default
-Remote Manager domain.
+macchina.io REMOTE domain.
 
 Change the value of the `webtunnel.domain` property to the domain UUID of your
-Remote Manager server account.
+macchina.io REMOTE server account.
 
 Optionally, you can also change other configuration properties, such as the
 port of the internal web server (defaults to 8080).
 
-You can change the address (URI) of the Remote Manager server
+You can change the address (URI) of the macchina.io REMOTE server
 the agent connects to via the `webtunnel.reflectorURI` property.
 
 Copy the `rmgateway.properties` file to the same directory
@@ -127,9 +127,9 @@ You should see this:
 
 ![Gateway Web User Interface - First Login][login]
 
-Sign in with your Remote Manager username and password.
+Sign in with your macchina.io REMOTE username and password.
 The Gateway will validate the username and password
-against the Remote Manager server instance configured
+against the macchina.io REMOTE server instance configured
 in the `webtunnel.reflectorURI` property.
 
 After signing in you'll see the Local Devices overview page.
@@ -141,7 +141,7 @@ can be to the built-in web interface of the Gateway, so that you will be able
 to manage it remotely.
 
 Enter the following information to make the Gateway's web user interface accessible remotely
-via Remote Manager:
+via macchina.io REMOTE:
 
 ![Gateway Web User Interface - Create Device][create]
 
@@ -171,9 +171,9 @@ Note that *Status* may initially show *disconnected* for your newly added device
 The status should refresh after a few seconds and change to *connected*.
 If the status shows *error*, click on the device to see the error message.
 
-The Gateway should now also be visible in your [Remote Manager Dashboard](https://reflector.my-devices.net).
+The Gateway should now also be visible in your [macchina.io REMOTE Dashboard](https://reflector.my-devices.net).
 
-You can now manage the Gateway remotely via Remote Manager, and you can also add other
+You can now manage the Gateway remotely via macchina.io REMOTE, and you can also add other
 devices as well.
 
 

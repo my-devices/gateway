@@ -1,7 +1,7 @@
 //
 // MinusIcon.cpp
 //
-// This file has been generated from MinusIcon.cpsp on 2020-08-12 06:42:46.
+// This file has been generated from MinusIcon.cpsp on 2021-11-27 19:58:16.
 //
 
 
@@ -9,8 +9,6 @@
 #include "Poco/Net/HTTPServerRequest.h"
 #include "Poco/Net/HTTPServerResponse.h"
 #include "Poco/Net/HTMLForm.h"
-
-
 #include "Poco/DateTime.h"
 #include "Poco/DateTimeParser.h"
 #include "Poco/DateTimeFormatter.h"
@@ -66,6 +64,9 @@ static bool checkModified(Poco::Net::HTTPServerRequest& request)
 }
 
 
+using namespace std::string_literals;
+
+
 namespace MyDevices {
 namespace Gateway {
 
@@ -73,7 +74,7 @@ namespace Gateway {
 void MinusIcon::handleRequest(Poco::Net::HTTPServerRequest& request, Poco::Net::HTTPServerResponse& response)
 {
 	response.setChunkedTransferEncoding(true);
-	response.setContentType("image/png");
+	response.setContentType("image/png"s);
 
 	if (!(checkModified(request))) return;
 

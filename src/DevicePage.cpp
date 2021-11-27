@@ -1,7 +1,7 @@
 //
 // DevicePage.cpp
 //
-// This file has been generated from DevicePage.cpsp on 2020-08-12 09:34:06.
+// This file has been generated from DevicePage.cpsp on 2021-11-27 20:17:05.
 //
 
 
@@ -10,11 +10,12 @@
 #include "Poco/Net/HTTPServerResponse.h"
 #include "Poco/Net/HTMLForm.h"
 #include "Poco/DeflatingStream.h"
-
-
 #include "DevicePageController.h"
 #include "Poco/Net/NameValueCollection.h"
 #include "Utility.h"
+
+
+using namespace std::string_literals;
 
 
 namespace MyDevices {
@@ -30,9 +31,9 @@ DevicePage::DevicePage(DeviceManager::Ptr context):
 void DevicePage::handleRequest(Poco::Net::HTTPServerRequest& request, Poco::Net::HTTPServerResponse& response)
 {
 	response.setChunkedTransferEncoding(true);
-	response.setContentType("text/html;charset=utf-8");
-	bool _compressResponse(request.hasToken("Accept-Encoding", "gzip"));
-	if (_compressResponse) response.set("Content-Encoding", "gzip");
+	response.setContentType("text/html;charset=utf-8"s);
+	bool _compressResponse(request.hasToken("Accept-Encoding"s, "gzip"s));
+	if (_compressResponse) response.set("Content-Encoding"s, "gzip"s);
 
 	Poco::Net::HTMLForm form(request, request.stream());
 #line 4 "/Users/guenter/ws/git/my-devices/gateway/html/template.inc"
@@ -79,7 +80,7 @@ pageTemplate.set("domain", ctrl.defaultDomain());
 	responseStream << "    <header>\n";
 	responseStream << "      <div class=\"headercontainer\">\n";
 	responseStream << "        <div class=\"header\">\n";
-	responseStream << "\t\t  <h1>Remote Manager ";
+	responseStream << "\t\t  <h1>REMOTE ";
 #line 13 "/Users/guenter/ws/git/my-devices/gateway/html/header.inc"
 	responseStream << ( U::htmlize(pageTemplate["title"]) );
 	responseStream << "</h1>\n";
@@ -133,7 +134,7 @@ pageTemplate.set("domain", ctrl.defaultDomain());
 	responseStream << "  <div class=\"groupbox\">\n";
 	responseStream << "    <h2>Device Properties</h2>\n";
 	responseStream << "\n";
-	responseStream << "    <form name=\"actionForm\" method=\"post\">\n";
+	responseStream << "    <form name=\"actionForm\" method=\"post\" autocomplete=\"off\">\n";
 	responseStream << "      <input type=\"hidden\" name=\"action\" value=\"update\">\n";
 	responseStream << "      <input type=\"hidden\" name=\"csrfToken\" value=\"";
 #line 68 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
@@ -340,7 +341,7 @@ pageTemplate.set("domain", ctrl.defaultDomain());
 	responseStream << "          ";
 #line 6 "/Users/guenter/ws/git/my-devices/gateway/html/footer.inc"
 	responseStream << ( pageTemplate["softwareVersion"] );
-	responseStream << " | &copy; 2015-2020 by <a href=\"https://macchina.io\">Applied Informatics GmbH</a> | Gateway Domain: ";
+	responseStream << " | &copy; 2015-2021 by <a href=\"https://macchina.io\">Applied Informatics GmbH</a> | Gateway Domain: ";
 #line 6 "/Users/guenter/ws/git/my-devices/gateway/html/footer.inc"
 	responseStream << ( U::htmlize(pageTemplate["domain"]) );
 	responseStream << "\n";

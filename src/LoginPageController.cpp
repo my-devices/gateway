@@ -68,7 +68,7 @@ void LoginPageController::processForm()
 		params.set("password", password);
 		params.set("application", "RemoteManagerGateway");
 		params.prepareSubmit(apiRequest);
-		_logger.debug("Validating credentials with Remote Manager server at %s.", reflectorURI.toString());
+		_logger.debug("Validating credentials with macchina.io REMOTE server at %s.", reflectorURI.toString());
 		std::ostream& requestStream = pHTTPClientSession->sendRequest(apiRequest);
 		params.write(requestStream);
 		Poco::Net::HTTPResponse apiResponse;
@@ -117,7 +117,7 @@ bool LoginPageController::verifyDomainAccess(const Poco::URI& reflectorURI, cons
 	Poco::Net::HTTPRequest request(Poco::Net::HTTPRequest::HTTP_GET, Poco::format("/my-devices/api/domains/%s", encodedDomain), Poco::Net::HTTPMessage::HTTP_1_1);
 	Poco::Net::OAuth20Credentials creds(token);
 	creds.authenticate(request);
-	_logger.debug("Validating domain access with Remote Manager server at %s.", reflectorURI.toString());
+	_logger.debug("Validating domain access with macchina.io REMOTE server at %s.", reflectorURI.toString());
 	pHTTPClientSession->sendRequest(request);
 	Poco::Net::HTTPResponse response;
 	std::istream& responseStream = pHTTPClientSession->receiveResponse(response);

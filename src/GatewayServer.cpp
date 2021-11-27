@@ -50,7 +50,6 @@
 #include "CreateDevicePage.h"
 #include "Stylesheet.h"
 #include "FavIcon.h"
-#include "Gradient.h"
 #include "HeaderLogo.h"
 #include "HeaderLogoX2.h"
 #include "PlusIcon.h"
@@ -130,8 +129,6 @@ public:
 			return new FavIcon;
 		else if (uri == "/css/styles.css")
 			return new Stylesheet;
-		else if (uri == "/images/gradient.png")
-			return new Gradient;
 		else if (uri == "/images/headerlogo.png")
 			return new HeaderLogo;
 		else if (uri == "/images/headerlogo-x2.png")
@@ -241,16 +238,16 @@ protected:
 		helpFormatter.setCommand(commandName());
 		helpFormatter.setUsage("OPTIONS");
 		helpFormatter.setHeader("\n"
-			"macchina.io Remote Manager Gateway Server.\n\n"
-			"Copyright (c) 2015-2020 by Applied Informatics Software Engineering GmbH.\n"
+			"macchina.io REMOTE Gateway Server.\n\n"
+			"Copyright (c) 2015-2021 by Applied Informatics Software Engineering GmbH.\n"
 			"All rights reserved.\n\n"
 			"This application is used to connect device web servers in the local\n"
-			"network to the macchina.io Remote Manager server in order to make them\n"
+			"network to the macchina.io REMOTE server in order to make them\n"
 			"accessible remotely.\n\n"
 			"The following command-line options are supported:");
 		helpFormatter.setFooter(
-			"For more information, please visit the macchina.io "
-			"website at <https://macchina.io>."
+			"For more information, please visit the macchina.io REMOTE "
+			"website at <https://macchina.io/remote>."
 		);
 		helpFormatter.setIndent(8);
 		helpFormatter.format(std::cout);
@@ -328,9 +325,9 @@ protected:
 			"    ooooooooo   oo   oo \n"
 			"      ooooooo   oo   oo \n"
 			"\n"
-			"    macchina.io Remote Manager Gateway %s\n"
+			"    macchina.io REMOTE Gateway %s\n"
 			"\n"
-			"    Copyright (c) 2015-2020 by Applied Informatics Software Engineering GmbH.\n"
+			"    Copyright (c) 2015-2021 by Applied Informatics Software Engineering GmbH.\n"
 			"    All rights reserved.\n",
 			U::versionString()
 		);

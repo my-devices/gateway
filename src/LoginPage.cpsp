@@ -30,7 +30,7 @@ pageTemplate.set("domain", ctrl.defaultDomain());
     <table>
       <tr>
         <th colspan="2" id="notice">
-          Please log in with your Remote Manager credentials.
+          Please log in with your macchina.io REMOTE credentials.
         </th>
       </tr>
       <tr>

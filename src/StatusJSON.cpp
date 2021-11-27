@@ -1,7 +1,7 @@
 //
 // StatusJSON.cpp
 //
-// This file has been generated from StatusJSON.cpsp on 2020-08-12 06:42:46.
+// This file has been generated from StatusJSON.cpsp on 2021-11-27 20:06:35.
 //
 
 
@@ -10,10 +10,11 @@
 #include "Poco/Net/HTTPServerResponse.h"
 #include "Poco/Net/HTMLForm.h"
 #include "Poco/DeflatingStream.h"
-
-
 #include "Utility.h"
 #include "StatusJSONController.h"
+
+
+using namespace std::string_literals;
 
 
 namespace MyDevices {
@@ -29,9 +30,9 @@ StatusJSON::StatusJSON(DeviceManager::Ptr context):
 void StatusJSON::handleRequest(Poco::Net::HTTPServerRequest& request, Poco::Net::HTTPServerResponse& response)
 {
 	response.setChunkedTransferEncoding(true);
-	response.setContentType("text/html;charset=utf-8");
-	bool _compressResponse(request.hasToken("Accept-Encoding", "gzip"));
-	if (_compressResponse) response.set("Content-Encoding", "gzip");
+	response.setContentType("text/html;charset=utf-8"s);
+	bool _compressResponse(request.hasToken("Accept-Encoding"s, "gzip"s));
+	if (_compressResponse) response.set("Content-Encoding"s, "gzip"s);
 
 	Poco::Net::HTMLForm form(request, request.stream());
 #line 11 "/Users/guenter/ws/git/my-devices/gateway/src/StatusJSON.cpsp"

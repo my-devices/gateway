@@ -63,7 +63,7 @@ function cancelUpdateDevice(id)
   <div class="groupbox">
     <h2>Device Properties</h2>
 
-    <form name="actionForm" method="post">
+    <form name="actionForm" method="post" autocomplete="off">
       <input type="hidden" name="action" value="update">
       <input type="hidden" name="csrfToken" value="<%= ctrl.csrfToken() %>">
       <input type="hidden" name="target" value="<%= ctrl.deviceId() %>">
