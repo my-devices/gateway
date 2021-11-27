@@ -15,7 +15,7 @@ macchina.io REMOTE is a great solution for secure remote support and maintenance
 as well as for providing secure remote access to devices for end-users via web or
 mobile apps.
 
-Visit [macchina.io](https://macchina.io/remote.html) to learn more and to register for a free account.
+Visit [macchina.io/remote](https://macchina.io/remote) to learn more and to register for a free account.
 Specifically, see the [Getting Started](https://macchina.io/remote.html#signup) page and the
 [Frequently Asked Questions](https://macchina.io/remote_faq.html) for
 information on how to use this SDK and the included *WebTunnelAgent* executable.
