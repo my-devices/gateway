@@ -77,6 +77,9 @@ using Poco::DirectoryWatcher;
 using Poco::delegate;
 
 
+using namespace std::string_literals;
+
+
 namespace MyDevices {
 namespace Gateway {
 
@@ -105,7 +108,7 @@ class GatewayRequestHandlerFactory: public HTTPRequestHandlerFactory
 public:
 	GatewayRequestHandlerFactory(DeviceManager::Ptr pDeviceManager):
 		_pDeviceManager(pDeviceManager),
-		_logger(Poco::Logger::get("GatewayRequestHandlerFactory"))
+		_logger(Poco::Logger::get("GatewayRequestHandlerFactory"s))
 	{
 	}
 
@@ -113,7 +116,7 @@ public:
 	{
 
 		const std::string& uri = request.getURI();
-		_logger.debug("%s %s %s", request.getMethod(), uri, request.getVersion());
+		_logger.debug("%s %s %s"s, request.getMethod(), uri, request.getVersion());
 
 		if (uri == "/")
 			return new LoginPage(_pDeviceManager);
@@ -195,23 +198,23 @@ protected:
 		ServerApplication::defineOptions(options);
 
 		options.addOption(
-			Option("help", "h", "Display help information on command line arguments.")
+			Option("help"s, "h"s, "Display help information on command line arguments."s)
 				.required(false)
 				.repeatable(false)
 				.callback(OptionCallback<GatewayServer>(this, &GatewayServer::handleHelp)));
 
 		options.addOption(
-			Option("config-file", "c", "Load configuration data from a file.")
+			Option("config-file"s, "c"s, "Load configuration data from a file."s)
 				.required(false)
 				.repeatable(true)
-				.argument("file")
+				.argument("file"s)
 				.callback(OptionCallback<GatewayServer>(this, &GatewayServer::handleConfig)));
 
 		options.addOption(
-			Option("define", "D", "Define or override a configuration property.")
+			Option("define"s, "D"s, "Define or override a configuration property."s)
 				.required(false)
 				.repeatable(true)
-				.argument("name=value")
+				.argument("name=value"s)
 				.callback(OptionCallback<GatewayServer>(this, &GatewayServer::handleDefine)));
 	}
 
@@ -236,18 +239,18 @@ protected:
 	{
 		HelpFormatter helpFormatter(options());
 		helpFormatter.setCommand(commandName());
-		helpFormatter.setUsage("OPTIONS");
+		helpFormatter.setUsage("OPTIONS"s);
 		helpFormatter.setHeader("\n"
 			"macchina.io REMOTE Gateway Server.\n\n"
-			"Copyright (c) 2015-2021 by Applied Informatics Software Engineering GmbH.\n"
+			"Copyright (c) 2015-2022 by Applied Informatics Software Engineering GmbH.\n"
 			"All rights reserved.\n\n"
 			"This application is used to connect device web servers in the local\n"
 			"network to the macchina.io REMOTE server in order to make them\n"
 			"accessible remotely.\n\n"
-			"The following command-line options are supported:");
+			"The following command-line options are supported:"s);
 		helpFormatter.setFooter(
 			"For more information, please visit the macchina.io REMOTE "
-			"website at <https://macchina.io/remote>."
+			"website at <https://macchina.io/remote>."s
 		);
 		helpFormatter.setIndent(8);
 		helpFormatter.format(std::cout);
@@ -271,14 +274,14 @@ protected:
 
 	Poco::Net::Context::Ptr createContext(const std::string& prefix)
 	{
-		std::string cipherList = config().getString(prefix + ".ciphers", "HIGH:!DSS:!aNULL@STRENGTH");
-		bool extendedVerification = config().getBool(prefix + ".extendedCertificateVerification", false);
-		std::string caLocation = config().getString(prefix + ".caLocation", "");
-		std::string privateKey = config().getString(prefix + ".privateKey", "");
-		std::string certificate = config().getString(prefix + ".certificate", "");
+		std::string cipherList = config().getString(prefix + ".ciphers", "HIGH:!DSS:!aNULL@STRENGTH"s);
+		bool extendedVerification = config().getBool(prefix + ".extendedCertificateVerification"s, false);
+		std::string caLocation = config().getString(prefix + ".caLocation", ""s);
+		std::string privateKey = config().getString(prefix + ".privateKey", ""s);
+		std::string certificate = config().getString(prefix + ".certificate", ""s);
 
 		Poco::Net::Context::VerificationMode vMode = Poco::Net::Context::VERIFY_RELAXED;
-		std::string vModeStr = config().getString(prefix + ".verification", "");
+		std::string vModeStr = config().getString(prefix + ".verification", ""s);
 		if (vModeStr == "none")
 			vMode = Poco::Net::Context::VERIFY_NONE;
 		else if (vModeStr == "relaxed")
@@ -327,14 +330,14 @@ protected:
 			"\n"
 			"    macchina.io REMOTE Gateway %s\n"
 			"\n"
-			"    Copyright (c) 2015-2021 by Applied Informatics Software Engineering GmbH.\n"
-			"    All rights reserved.\n",
+			"    Copyright (c) 2015-2022 by Applied Informatics Software Engineering GmbH.\n"
+			"    All rights reserved.\n"s,
 			U::versionString()
 		);
 
 #if defined(WEBTUNNEL_ENABLE_TLS)
-		Poco::Net::Context::Ptr pContext = createContext("tls");
-		bool acceptUnknownCert = config().getBool("tls.acceptUnknownCertificate", true);
+		Poco::Net::Context::Ptr pContext = createContext("tls"s);
+		bool acceptUnknownCert = config().getBool("tls.acceptUnknownCertificate"s, true);
 		Poco::SharedPtr<Poco::Net::InvalidCertificateHandler> pCertificateHandler;
 		if (acceptUnknownCert)
 			pCertificateHandler = new Poco::Net::AcceptCertificateHandler(false);
@@ -344,12 +347,12 @@ protected:
 #endif
 
 #if defined(WEBTUNNEL_ENABLE_TLS)
-		_pDeviceManager = new DeviceManager(config(), _pTimer, createContext("webtunnel.https"));
+		_pDeviceManager = new DeviceManager(config(), _pTimer, createContext("webtunnel.https"s));
 #else
 		_pDeviceManager = new DeviceManager(config(), _pTimer);
 #endif
 
-		bool watchRepository = config().getBool("gateway.watchRepository", false);
+		bool watchRepository = config().getBool("gateway.watchRepository"s, false);
 		if (watchRepository)
 		{
 			_pDirectoryWatcher = new DirectoryWatcher(_pDeviceManager->deviceRepositoryPath());
@@ -358,13 +361,13 @@ protected:
 			_pDirectoryWatcher->itemModified += delegate(this, &GatewayServer::onItemChanged);
 		}
 
-		Poco::UInt16 port = static_cast<Poco::UInt16>(config().getInt("gateway.http.port", 8080));
+		Poco::UInt16 port = static_cast<Poco::UInt16>(config().getInt("gateway.http.port"s, 8080));
 		if (port != 0)
 		{
 			ServerSocket svs(port);
 			_pHTTPServer = new HTTPServer(new GatewayRequestHandlerFactory(_pDeviceManager), svs, new HTTPServerParams);
 			_pHTTPServer->start();
-			logger().information("Web server started on port %hu.", port);
+			logger().information("Web server started on port %hu."s, port);
 		}
 
 		waitForTerminationRequest();

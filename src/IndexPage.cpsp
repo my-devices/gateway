@@ -14,8 +14,7 @@ IndexPageController ctrl(context(), request, form);
 if (response.sent()) return;
 if (ctrl.mustRedirect()) return;
 
-pageTemplate.set("title", "Gateway");
-pageTemplate.set("domain", ctrl.defaultDomain());
+pageTemplate.set("title"s, "Gateway"s);
 %>
 
 <%@ include file="../html/header.inc" %>

@@ -19,6 +19,9 @@
 #include "Poco/Path.h"
 
 
+using namespace std::string_literals;
+
+
 namespace MyDevices {
 namespace Gateway {
 
@@ -45,17 +48,17 @@ namespace
 CreateDevicePageController::CreateDevicePageController(DeviceManager::Ptr pDeviceManager, const Poco::Net::HTTPServerRequest& request, const Poco::Net::HTMLForm& form):
 	PageController(pDeviceManager, request, form)
 {
-	WebSession::Ptr pSession = pDeviceManager->webSessionManager().find("rmgateway", request);
-	if (!pSession || !pSession->has("username"))
+	WebSession::Ptr pSession = pDeviceManager->webSessionManager().find("rmgateway"s, request);
+	if (!pSession || !pSession->has("username"s))
 	{
-		request.response().redirect("/");
+		request.response().redirect("/"s);
 		return;
 	}
-	username(pSession->getValue<std::string>("username"));
+	username(pSession->getValue<std::string>("username"s));
 	csrfToken(pSession->csrfToken());
 	try
 	{
-		if (form.has("action"))
+		if (form.has("action"s))
 		{
 			processForm();
 		}
@@ -64,7 +67,7 @@ CreateDevicePageController::CreateDevicePageController(DeviceManager::Ptr pDevic
 			Poco::UUIDGenerator uuidGen;
 			_deviceId = uuidGen.createRandom().toString();
 			_name = "Unnamed Device";
-			_domain = defaultDomain();
+			_domain = pSession->getValue<std::string>("domain"s, defaultDomain());
 		}
 	}
 	catch (Poco::Exception& exc)
@@ -81,36 +84,36 @@ CreateDevicePageController::~CreateDevicePageController()
 
 void CreateDevicePageController::processForm()
 {
-	std::string action = form().get("action", "");
-	std::string token = form().get("csrfToken", "");
+	const std::string action = form().get("action"s, ""s);
+	const std::string token = form().get("csrfToken"s, ""s);
 
 	if (token == csrfToken())
 	{
 		if (action == "create")
 		{
-			_deviceId = form().get("deviceId");
-			_name = form().get("deviceName");
-			_domain = form().get("domain");
+			_deviceId = form().get("deviceId"s);
+			_name = form().get("deviceName"s);
+			_domain = form().get("domain"s);
 
 			if (!isValidId(_deviceId))
 			{
-				message("Invalid device ID: " + _deviceId);
+				message("Invalid device ID: "s + _deviceId);
 				return;
 			}
 
 			if (!isValidId(_domain))
 			{
-				message("Invalid domain ID: " + _domain);
+				message("Invalid domain ID: "s + _domain);
 				return;
 			}
 
 			Poco::AutoPtr<Poco::Util::AbstractConfiguration> pDeviceConfig = deviceManager()->createDevice(_deviceId, _domain, _name);
 
-			request().response().redirect("/device/" + _deviceId);
+			request().response().redirect("/device/"s + _deviceId);
 		}
 		else if (action == "cancel")
 		{
-			request().response().redirect("/devices");
+			request().response().redirect("/devices"s);
 		}
 	}
 }

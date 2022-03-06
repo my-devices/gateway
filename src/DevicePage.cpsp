@@ -23,7 +23,6 @@ else
 {
 	pageTemplate.set("title", "Gateway > Unknown Device");
 }
-pageTemplate.set("domain", ctrl.defaultDomain());
 %>
 
 <%@ include file="../html/header.inc" %>

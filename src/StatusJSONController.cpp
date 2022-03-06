@@ -12,6 +12,9 @@
 #include "Poco/Net/HTTPServerResponse.h"
 
 
+using namespace std::string_literals;
+
+
 namespace MyDevices {
 namespace Gateway {
 
@@ -19,8 +22,8 @@ namespace Gateway {
 StatusJSONController::StatusJSONController(DeviceManager::Ptr pDeviceManager, const Poco::Net::HTTPServerRequest& request, const Poco::Net::HTMLForm& form):
 	PageController(pDeviceManager, request, form)
 {
-	WebSession::Ptr pSession = pDeviceManager->webSessionManager().find("rmgateway", request);
-	if (!pSession || !pSession->has("username"))
+	WebSession::Ptr pSession = pDeviceManager->webSessionManager().find("rmgateway"s, request);
+	if (!pSession || !pSession->has("username"s))
 	{
 		return;
 	}
@@ -44,16 +47,16 @@ std::string StatusJSONController::deviceStatus(const std::string& id) const
 	switch (status)
 	{
 	case WebTunnelAgent::STATUS_DISCONNECTED:
-		return "disconnected";
+		return "disconnected"s;
 
 	case WebTunnelAgent::STATUS_CONNECTED:
-		return "connected";
+		return "connected"s;
 
 	case WebTunnelAgent::STATUS_ERROR:
-		return "error";
+		return "error"s;
 
 	default:
-		return "unknown";
+		return "unknown"s;
 	}
 }
 

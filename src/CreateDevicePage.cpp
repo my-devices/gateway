@@ -1,7 +1,7 @@
 //
 // CreateDevicePage.cpp
 //
-// This file has been generated from CreateDevicePage.cpsp on 2021-11-27 20:06:35.
+// This file has been generated from CreateDevicePage.cpsp on 2022-03-06 10:01:18.
 //
 
 
@@ -47,7 +47,6 @@ if (response.sent()) return;
 if (ctrl.mustRedirect()) return;
 
 pageTemplate.set("title", "Gateway > Create Device");
-pageTemplate.set("domain", ctrl.defaultDomain());
 	std::ostream& _responseStream = response.send();
 	Poco::DeflatingOutputStream _gzipStream(_responseStream, Poco::DeflatingStreamBuf::STREAM_GZIP, 1);
 	std::ostream& responseStream = _compressResponse ? _gzipStream : _responseStream;
@@ -99,7 +98,7 @@ pageTemplate.set("domain", ctrl.defaultDomain());
 	responseStream << "    <div class=\"username\">\n";
 	responseStream << "      &nbsp;\n";
 	responseStream << "      ";
-#line 38 "/Users/guenter/ws/git/my-devices/gateway/src/CreateDevicePage.cpsp"
+#line 37 "/Users/guenter/ws/git/my-devices/gateway/src/CreateDevicePage.cpsp"
 	responseStream << ( ctrl.username() );
 	responseStream << "\n";
 	responseStream << "      &nbsp;\n";
@@ -112,15 +111,15 @@ pageTemplate.set("domain", ctrl.defaultDomain());
 	responseStream << " </div>\n";
 	responseStream << "</nav>\n";
 	responseStream << "\n";
-#line 49 "/Users/guenter/ws/git/my-devices/gateway/src/CreateDevicePage.cpsp"
+#line 48 "/Users/guenter/ws/git/my-devices/gateway/src/CreateDevicePage.cpsp"
  if (!ctrl.message().empty()) { 	responseStream << "\n";
 	responseStream << "  <div class=\"error\">\n";
 	responseStream << "    ";
-#line 51 "/Users/guenter/ws/git/my-devices/gateway/src/CreateDevicePage.cpsp"
+#line 50 "/Users/guenter/ws/git/my-devices/gateway/src/CreateDevicePage.cpsp"
 	responseStream << ( U::htmlize(ctrl.message()) );
 	responseStream << "\n";
 	responseStream << "  </div>\n";
-#line 53 "/Users/guenter/ws/git/my-devices/gateway/src/CreateDevicePage.cpsp"
+#line 52 "/Users/guenter/ws/git/my-devices/gateway/src/CreateDevicePage.cpsp"
  } 	responseStream << "\n";
 	responseStream << "<div class=\"groupbox\">\n";
 	responseStream << "  <h2>New Device Properties</h2>\n";
@@ -128,7 +127,7 @@ pageTemplate.set("domain", ctrl.defaultDomain());
 	responseStream << "  <form name=\"actionForm\" method=\"post\">\n";
 	responseStream << "    <input type=\"hidden\" name=\"action\" value=\"create\">\n";
 	responseStream << "    <input type=\"hidden\" name=\"csrfToken\" value=\"";
-#line 60 "/Users/guenter/ws/git/my-devices/gateway/src/CreateDevicePage.cpsp"
+#line 59 "/Users/guenter/ws/git/my-devices/gateway/src/CreateDevicePage.cpsp"
 	responseStream << ( ctrl.csrfToken() );
 	responseStream << "\">\n";
 	responseStream << "    <table class=\"list\">\n";
@@ -139,7 +138,7 @@ pageTemplate.set("domain", ctrl.defaultDomain());
 	responseStream << "            <input type=\"text\"\n";
 	responseStream << "                   name=\"deviceName\"\n";
 	responseStream << "                   value=\"";
-#line 68 "/Users/guenter/ws/git/my-devices/gateway/src/CreateDevicePage.cpsp"
+#line 67 "/Users/guenter/ws/git/my-devices/gateway/src/CreateDevicePage.cpsp"
 	responseStream << ( U::htmlize(ctrl.name()) );
 	responseStream << "\"\n";
 	responseStream << "                   size=\"64\"\n";
@@ -154,7 +153,7 @@ pageTemplate.set("domain", ctrl.defaultDomain());
 	responseStream << "            <input type=\"text\"\n";
 	responseStream << "                   name=\"deviceId\"\n";
 	responseStream << "                   value=\"";
-#line 80 "/Users/guenter/ws/git/my-devices/gateway/src/CreateDevicePage.cpsp"
+#line 79 "/Users/guenter/ws/git/my-devices/gateway/src/CreateDevicePage.cpsp"
 	responseStream << ( U::htmlize(ctrl.deviceId()) );
 	responseStream << "\"\n";
 	responseStream << "                   size=\"64\"\n";
@@ -168,7 +167,7 @@ pageTemplate.set("domain", ctrl.defaultDomain());
 	responseStream << "            <input type=\"text\"\n";
 	responseStream << "                   name=\"domain\"\n";
 	responseStream << "                   value=\"";
-#line 91 "/Users/guenter/ws/git/my-devices/gateway/src/CreateDevicePage.cpsp"
+#line 90 "/Users/guenter/ws/git/my-devices/gateway/src/CreateDevicePage.cpsp"
 	responseStream << ( U::htmlize(ctrl.domain()) );
 	responseStream << "\"\n";
 	responseStream << "                   size=\"64\"\n";
@@ -197,10 +196,7 @@ pageTemplate.set("domain", ctrl.defaultDomain());
 	responseStream << "          ";
 #line 6 "/Users/guenter/ws/git/my-devices/gateway/html/footer.inc"
 	responseStream << ( pageTemplate["softwareVersion"] );
-	responseStream << " | &copy; 2015-2021 by <a href=\"https://macchina.io\">Applied Informatics GmbH</a> | Gateway Domain: ";
-#line 6 "/Users/guenter/ws/git/my-devices/gateway/html/footer.inc"
-	responseStream << ( U::htmlize(pageTemplate["domain"]) );
-	responseStream << "\n";
+	responseStream << " | &copy; 2015-2022 by <a href=\"https://macchina.io\">Applied Informatics GmbH</a>\n";
 	responseStream << "        </div>\n";
 	responseStream << "      </div>\n";
 	responseStream << "    </footer>\n";

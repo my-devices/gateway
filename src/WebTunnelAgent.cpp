@@ -443,7 +443,7 @@ void WebTunnelAgent::scheduleReconnect()
 		retryDelay += _random.next(250*_retryDelay);
 		Poco::Clock nextClock;
 		nextClock += retryDelay;
-		_logger.information(Poco::format("Will reconnect in %.2f seconds."s, retryDelay/1000000.0));
+		_logger.information("Will reconnect in %.2f seconds."s, retryDelay/1000000.0);
 		_pReconnectTask = new ReconnectTask(Ptr(this, true));
 		_pTimer->schedule(_pReconnectTask, nextClock);
 	}

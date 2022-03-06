@@ -16,7 +16,6 @@ if (response.sent()) return;
 if (ctrl.mustRedirect()) return;
 
 pageTemplate.set("title", "Gateway > Create Device");
-pageTemplate.set("domain", ctrl.defaultDomain());
 %>
 
 <%@ include file="../html/header.inc" %>

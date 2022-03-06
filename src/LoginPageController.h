@@ -32,6 +32,7 @@ public:
 protected:
 	void processForm();
 	bool verifyDomainAccess(const Poco::URI& reflectorURI, const std::string& token, const std::string& domain);
+	std::string requestDefaultDomain(const Poco::URI& reflectorURI, const std::string& username, const std::string& token);
 
 private:
 	Poco::Logger& _logger;

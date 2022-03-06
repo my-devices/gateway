@@ -1,7 +1,7 @@
 //
 // DevicePage.cpp
 //
-// This file has been generated from DevicePage.cpsp on 2021-11-27 20:17:05.
+// This file has been generated from DevicePage.cpsp on 2022-03-06 10:00:36.
 //
 
 
@@ -54,7 +54,6 @@ else
 {
 	pageTemplate.set("title", "Gateway > Unknown Device");
 }
-pageTemplate.set("domain", ctrl.defaultDomain());
 	std::ostream& _responseStream = response.send();
 	Poco::DeflatingOutputStream _gzipStream(_responseStream, Poco::DeflatingStreamBuf::STREAM_GZIP, 1);
 	std::ostream& responseStream = _compressResponse ? _gzipStream : _responseStream;
@@ -106,7 +105,7 @@ pageTemplate.set("domain", ctrl.defaultDomain());
 	responseStream << "    <div class=\"username\">\n";
 	responseStream << "      &nbsp;\n";
 	responseStream << "      ";
-#line 45 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
+#line 44 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
 	responseStream << ( ctrl.username() );
 	responseStream << "\n";
 	responseStream << "      &nbsp;\n";
@@ -119,17 +118,17 @@ pageTemplate.set("domain", ctrl.defaultDomain());
 	responseStream << " </div>\n";
 	responseStream << "</nav>\n";
 	responseStream << "\n";
-#line 56 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
+#line 55 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
  if (!ctrl.message().empty()) { 	responseStream << "\n";
 	responseStream << "  <div class=\"error\">\n";
 	responseStream << "    ";
-#line 58 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
+#line 57 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
 	responseStream << ( U::htmlize(ctrl.message()) );
 	responseStream << "\n";
 	responseStream << "  </div>\n";
-#line 60 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
+#line 59 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
  } 	responseStream << "\n";
-#line 62 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
+#line 61 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
  if (ctrl.deviceConfig()) { 	responseStream << "\n";
 	responseStream << "  <div class=\"groupbox\">\n";
 	responseStream << "    <h2>Device Properties</h2>\n";
@@ -137,11 +136,11 @@ pageTemplate.set("domain", ctrl.defaultDomain());
 	responseStream << "    <form name=\"actionForm\" method=\"post\" autocomplete=\"off\">\n";
 	responseStream << "      <input type=\"hidden\" name=\"action\" value=\"update\">\n";
 	responseStream << "      <input type=\"hidden\" name=\"csrfToken\" value=\"";
-#line 68 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
+#line 67 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
 	responseStream << ( ctrl.csrfToken() );
 	responseStream << "\">\n";
 	responseStream << "      <input type=\"hidden\" name=\"target\" value=\"";
-#line 69 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
+#line 68 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
 	responseStream << ( ctrl.deviceId() );
 	responseStream << "\">\n";
 	responseStream << "      <table class=\"list\">\n";
@@ -157,7 +156,7 @@ pageTemplate.set("domain", ctrl.defaultDomain());
 	responseStream << "              <input type=\"text\"\n";
 	responseStream << "                     name=\"deviceName\"\n";
 	responseStream << "                     value=\"";
-#line 82 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
+#line 81 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
 	responseStream << ( U::htmlize(ctrl.name()) );
 	responseStream << "\"\n";
 	responseStream << "                     size=\"64\"\n";
@@ -168,7 +167,7 @@ pageTemplate.set("domain", ctrl.defaultDomain());
 	responseStream << "          <tr class=\"odd\">\n";
 	responseStream << "            <td class=\"basicProperty\">ID</td>\n";
 	responseStream << "            <td>";
-#line 90 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
+#line 89 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
 	responseStream << ( U::htmlize(ctrl.deviceId()) );
 	responseStream << "</td>\n";
 	responseStream << "          </tr>\n";
@@ -178,7 +177,7 @@ pageTemplate.set("domain", ctrl.defaultDomain());
 	responseStream << "              <input type=\"text\"\n";
 	responseStream << "                     name=\"domain\"\n";
 	responseStream << "                     value=\"";
-#line 97 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
+#line 96 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
 	responseStream << ( U::htmlize(ctrl.domain()) );
 	responseStream << "\"\n";
 	responseStream << "                     size=\"64\"\n";
@@ -192,7 +191,7 @@ pageTemplate.set("domain", ctrl.defaultDomain());
 	responseStream << "              <input type=\"password\"\n";
 	responseStream << "                     name=\"password\"\n";
 	responseStream << "                     value=\"";
-#line 108 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
+#line 107 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
 	responseStream << ( U::htmlize(ctrl.password()) );
 	responseStream << "\"\n";
 	responseStream << "                     size=\"32\"\n";
@@ -204,7 +203,7 @@ pageTemplate.set("domain", ctrl.defaultDomain());
 	responseStream << "          <tr class=\"even\">\n";
 	responseStream << "            <td>Status</td>\n";
 	responseStream << "            <td>";
-#line 117 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
+#line 116 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
 	responseStream << ( ctrl.deviceStatus() );
 	responseStream << "</td>\n";
 	responseStream << "          </tr>\n";
@@ -219,7 +218,7 @@ pageTemplate.set("domain", ctrl.defaultDomain());
 	responseStream << "              <input type=\"text\"\n";
 	responseStream << "                     name=\"host\"\n";
 	responseStream << "                     value=\"";
-#line 129 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
+#line 128 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
 	responseStream << ( U::htmlize(ctrl.host()) );
 	responseStream << "\"\n";
 	responseStream << "                     size=\"64\"\n";
@@ -233,7 +232,7 @@ pageTemplate.set("domain", ctrl.defaultDomain());
 	responseStream << "              <input type=\"number\"\n";
 	responseStream << "                     name=\"httpPort\"\n";
 	responseStream << "                     value=\"";
-#line 140 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
+#line 139 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
 	responseStream << ( U::htmlize(ctrl.httpPort()) );
 	responseStream << "\"\n";
 	responseStream << "                     size=\"5\"\n";
@@ -245,7 +244,7 @@ pageTemplate.set("domain", ctrl.defaultDomain());
 	responseStream << "                     name=\"httpsRequired\"\n";
 	responseStream << "                     value=\"true\"\n";
 	responseStream << "                     ";
-#line 149 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
+#line 148 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
 	responseStream << ( ctrl.httpsEnable() ? "checked" : "" );
 	responseStream << "\n";
 	responseStream << "                     class=\"form-control\">\n";
@@ -258,7 +257,7 @@ pageTemplate.set("domain", ctrl.defaultDomain());
 	responseStream << "              <input type=\"number\"\n";
 	responseStream << "                     name=\"sshPort\"\n";
 	responseStream << "                     value=\"";
-#line 159 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
+#line 158 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
 	responseStream << ( U::htmlize(ctrl.sshPort()) );
 	responseStream << "\"\n";
 	responseStream << "                     size=\"5\"\n";
@@ -275,7 +274,7 @@ pageTemplate.set("domain", ctrl.defaultDomain());
 	responseStream << "              <input type=\"number\"\n";
 	responseStream << "                     name=\"vncPort\"\n";
 	responseStream << "                     value=\"";
-#line 173 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
+#line 172 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
 	responseStream << ( U::htmlize(ctrl.vncPort()) );
 	responseStream << "\"\n";
 	responseStream << "                     size=\"5\"\n";
@@ -292,7 +291,7 @@ pageTemplate.set("domain", ctrl.defaultDomain());
 	responseStream << "              <input type=\"number\"\n";
 	responseStream << "                     name=\"rdpPort\"\n";
 	responseStream << "                     value=\"";
-#line 187 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
+#line 186 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
 	responseStream << ( U::htmlize(ctrl.rdpPort()) );
 	responseStream << "\"\n";
 	responseStream << "                     size=\"5\"\n";
@@ -309,7 +308,7 @@ pageTemplate.set("domain", ctrl.defaultDomain());
 	responseStream << "              <input type=\"text\"\n";
 	responseStream << "                     name=\"ports\"\n";
 	responseStream << "                     value=\"";
-#line 201 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
+#line 200 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
 	responseStream << ( ctrl.extraPorts() );
 	responseStream << "\"\n";
 	responseStream << "                     size=\"40\"\n";
@@ -329,7 +328,7 @@ pageTemplate.set("domain", ctrl.defaultDomain());
 	responseStream << "      </table>\n";
 	responseStream << "    </form>\n";
 	responseStream << "  </div>\n";
-#line 219 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
+#line 218 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
  } 	responseStream << " ";
 	responseStream << "\n";
 	// begin include html/footer.inc
@@ -341,10 +340,7 @@ pageTemplate.set("domain", ctrl.defaultDomain());
 	responseStream << "          ";
 #line 6 "/Users/guenter/ws/git/my-devices/gateway/html/footer.inc"
 	responseStream << ( pageTemplate["softwareVersion"] );
-	responseStream << " | &copy; 2015-2021 by <a href=\"https://macchina.io\">Applied Informatics GmbH</a> | Gateway Domain: ";
-#line 6 "/Users/guenter/ws/git/my-devices/gateway/html/footer.inc"
-	responseStream << ( U::htmlize(pageTemplate["domain"]) );
-	responseStream << "\n";
+	responseStream << " | &copy; 2015-2022 by <a href=\"https://macchina.io\">Applied Informatics GmbH</a>\n";
 	responseStream << "        </div>\n";
 	responseStream << "      </div>\n";
 	responseStream << "    </footer>\n";

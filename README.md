@@ -100,11 +100,18 @@ size before deploying it to the device.
 
 ## Running the Gateway
 
-Edit the configuration file [rmgateway.properties](rmgateway.properties) and change the default
-macchina.io REMOTE domain.
+Review the configuration file [rmgateway.properties](rmgateway.properties) and
+make some changes to the configuration if desired.
 
-Change the value of the `webtunnel.domain` property to the domain UUID of your
-macchina.io REMOTE server account.
+The most important setting is `webtunnel.domain`, which specifies the default
+domain any devices created through the web user interface will be assigned to.
+This can be left at the default (`00000000-0000-0000-0000-000000000000`).
+In this case, the default domain of the logged-in user will be used. The default
+domain UUID can be overridden when creating a device.
+
+The value of the `webtunnel.domain` property can also be set to a specific value.
+In this case, when a user logs in, the Gateway will verify that the user has access
+to that specific domain, and deny login if not.
 
 Optionally, you can also change other configuration properties, such as the
 port of the internal web server (defaults to 8080).

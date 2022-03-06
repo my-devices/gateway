@@ -14,7 +14,6 @@ LoginPageController ctrl(context(), request, form);
 if (ctrl.mustRedirect()) return;
 
 pageTemplate.set("title", "Gateway");
-pageTemplate.set("domain", ctrl.defaultDomain());
 %>
 
 <%@ include file="../html/header.inc" %>

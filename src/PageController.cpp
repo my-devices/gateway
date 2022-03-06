@@ -11,6 +11,9 @@
 #include "PageController.h"
 
 
+using namespace std::string_literals;
+
+
 namespace MyDevices {
 namespace Gateway {
 
@@ -42,7 +45,7 @@ void PageController::message(const std::string& text, const std::string& message
 
 std::string PageController::defaultDomain() const
 {
-	return _pDeviceManager->config()->getString("webtunnel.domain", "");
+	return _pDeviceManager->config()->getString("webtunnel.domain"s, ""s);
 }
 
 

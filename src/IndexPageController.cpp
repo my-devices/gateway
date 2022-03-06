@@ -17,22 +17,23 @@
 #include <set>
 
 
+using namespace std::string_literals;
+
+
 namespace MyDevices {
 namespace Gateway {
-
-
 
 
 IndexPageController::IndexPageController(DeviceManager::Ptr pDeviceManager, const Poco::Net::HTTPServerRequest& request, const Poco::Net::HTMLForm& form):
 	PageController(pDeviceManager, request, form)
 {
-	WebSession::Ptr pSession = pDeviceManager->webSessionManager().find("rmgateway", request);
-	if (!pSession || !pSession->has("username"))
+	WebSession::Ptr pSession = pDeviceManager->webSessionManager().find("rmgateway"s, request);
+	if (!pSession || !pSession->has("username"s))
 	{
 		request.response().redirect("/");
 		return;
 	}
-	username(pSession->getValue<std::string>("username"));
+	username(pSession->getValue<std::string>("username"s));
 	csrfToken(pSession->csrfToken());
 	processForm();
 	_devices = pDeviceManager->enumerateDevices();
@@ -46,16 +47,16 @@ IndexPageController::~IndexPageController()
 
 void IndexPageController::processForm()
 {
-	std::string action = form().get("action", "");
-	std::string target = form().get("target", "");
-	std::string token = form().get("csrfToken", "");
+	const std::string action = form().get("action"s, ""s);
+	const std::string target = form().get("target"s, ""s);
+	const std::string token = form().get("csrfToken"s, ""s);
 	if (token == csrfToken())
 	{
 		try
 		{
 			if (action == "add")
 			{
-				request().response().redirect("/create");
+				request().response().redirect("/create"s);
 			}
 			else if (action == "remove")
 			{
@@ -74,13 +75,13 @@ void IndexPageController::processForm()
 
 std::string IndexPageController::formatPorts(Poco::AutoPtr<Poco::Util::AbstractConfiguration> pDeviceConfig) const
 {
-	unsigned httpPort = pDeviceConfig->getUInt("webtunnel.httpPort", 0);
-	unsigned sshPort = pDeviceConfig->getUInt("webtunnel.sshPort", 0);
-	unsigned vncPort = pDeviceConfig->getUInt("webtunnel.vncPort", 0);
-	unsigned rdpPort = pDeviceConfig->getUInt("webtunnel.rdpPort", 0);
-	bool httpsEnable = pDeviceConfig->getBool("webtunnel.https.enable", false);
-	std::string portsStr = pDeviceConfig->getString("webtunnel.ports", "");
-	Poco::StringTokenizer portsTok(portsStr, ",;", Poco::StringTokenizer::TOK_TRIM | Poco::StringTokenizer::TOK_IGNORE_EMPTY);
+	const unsigned httpPort = pDeviceConfig->getUInt("webtunnel.httpPort"s, 0);
+	const unsigned sshPort = pDeviceConfig->getUInt("webtunnel.sshPort"s, 0);
+	const unsigned vncPort = pDeviceConfig->getUInt("webtunnel.vncPort"s, 0);
+	const unsigned rdpPort = pDeviceConfig->getUInt("webtunnel.rdpPort"s, 0);
+	const bool httpsEnable = pDeviceConfig->getBool("webtunnel.https.enable"s, false);
+	const std::string portsStr = pDeviceConfig->getString("webtunnel.ports"s, ""s);
+	Poco::StringTokenizer portsTok(portsStr, ",;"s, Poco::StringTokenizer::TOK_TRIM | Poco::StringTokenizer::TOK_IGNORE_EMPTY);
 	std::set<unsigned> ports;
 	for (Poco::StringTokenizer::Iterator it = portsTok.begin(); it != portsTok.end(); ++it)
 	{
@@ -120,16 +121,16 @@ std::string IndexPageController::deviceStatus(const std::string& id) const
 	switch (status)
 	{
 	case WebTunnelAgent::STATUS_DISCONNECTED:
-		return "disconnected";
+		return "disconnected"s;
 
 	case WebTunnelAgent::STATUS_CONNECTED:
-		return "connected";
+		return "connected"s;
 
 	case WebTunnelAgent::STATUS_ERROR:
-		return "error";
+		return "error"s;
 
 	default:
-		return "unknown";
+		return "unknown"s;
 	}
 }
 

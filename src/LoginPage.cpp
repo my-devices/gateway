@@ -1,7 +1,7 @@
 //
 // LoginPage.cpp
 //
-// This file has been generated from LoginPage.cpsp on 2021-11-27 20:06:35.
+// This file has been generated from LoginPage.cpsp on 2022-03-06 10:00:36.
 //
 
 
@@ -46,7 +46,6 @@ LoginPageController ctrl(context(), request, form);
 if (ctrl.mustRedirect()) return;
 
 pageTemplate.set("title", "Gateway");
-pageTemplate.set("domain", ctrl.defaultDomain());
 	std::ostream& _responseStream = response.send();
 	Poco::DeflatingOutputStream _gzipStream(_responseStream, Poco::DeflatingStreamBuf::STREAM_GZIP, 1);
 	std::ostream& responseStream = _compressResponse ? _gzipStream : _responseStream;
@@ -83,15 +82,15 @@ pageTemplate.set("domain", ctrl.defaultDomain());
 	responseStream << "      <div class=\"content\">\n";
 	// end include html/header.inc
 	responseStream << "\n";
-#line 22 "/Users/guenter/ws/git/my-devices/gateway/src/LoginPage.cpsp"
+#line 21 "/Users/guenter/ws/git/my-devices/gateway/src/LoginPage.cpsp"
  if (!ctrl.message().empty()) { 	responseStream << "\n";
 	responseStream << "  <div class=\"error\">\n";
 	responseStream << "    ";
-#line 24 "/Users/guenter/ws/git/my-devices/gateway/src/LoginPage.cpsp"
+#line 23 "/Users/guenter/ws/git/my-devices/gateway/src/LoginPage.cpsp"
 	responseStream << ( U::htmlize(ctrl.message()) );
 	responseStream << "\n";
 	responseStream << "  </div>\n";
-#line 26 "/Users/guenter/ws/git/my-devices/gateway/src/LoginPage.cpsp"
+#line 25 "/Users/guenter/ws/git/my-devices/gateway/src/LoginPage.cpsp"
  } 	responseStream << "\n";
 	responseStream << "<div class=\"loginBox\">\n";
 	responseStream << "  <form method=\"post\" action=\"/\" accept-charset=\"utf-8\">\n";
@@ -130,10 +129,7 @@ pageTemplate.set("domain", ctrl.defaultDomain());
 	responseStream << "          ";
 #line 6 "/Users/guenter/ws/git/my-devices/gateway/html/footer.inc"
 	responseStream << ( pageTemplate["softwareVersion"] );
-	responseStream << " | &copy; 2015-2021 by <a href=\"https://macchina.io\">Applied Informatics GmbH</a> | Gateway Domain: ";
-#line 6 "/Users/guenter/ws/git/my-devices/gateway/html/footer.inc"
-	responseStream << ( U::htmlize(pageTemplate["domain"]) );
-	responseStream << "\n";
+	responseStream << " | &copy; 2015-2022 by <a href=\"https://macchina.io\">Applied Informatics GmbH</a>\n";
 	responseStream << "        </div>\n";
 	responseStream << "      </div>\n";
 	responseStream << "    </footer>\n";
