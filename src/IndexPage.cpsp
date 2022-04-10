@@ -19,7 +19,7 @@ pageTemplate.set("title"s, "Gateway"s);
 
 <%@ include file="../html/header.inc" %>
 
-<script language="JavaScript">
+<script>
 function addDevice()
 {
   document.actionForm.action.value = "add";
@@ -91,7 +91,7 @@ function removeDevice(id, name)
         <tr class="<%= even ? "even" : "odd" %>">
           <td>
             <a href="/device/<%= *it %>">
-              <%= U::htmlize(pDeviceConfig->getString("webtunnel.deviceName", "")) %>
+              <span class="deviceName"><%= U::htmlize(pDeviceConfig->getString("webtunnel.deviceName", "")) %></span>
             </a>
           </td>
           <td>

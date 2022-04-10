@@ -16,11 +16,12 @@ if (response.sent()) return;
 if (ctrl.mustRedirect()) return;
 
 pageTemplate.set("title", "Gateway > Create Device");
+pageTemplate.set("onload"s, "document.getElementById('deviceNameInput').focus();"s);
 %>
 
 <%@ include file="../html/header.inc" %>
 
-<script language="JavaScript">
+<script>
 function cancelUpdateDevice(id)
 {
   document.actionForm.action.value = "cancel";
@@ -54,7 +55,7 @@ function cancelUpdateDevice(id)
 <div class="groupbox">
   <h2>New Device Properties</h2>
 
-  <form name="actionForm" method="post">
+  <form name="actionForm" method="post" accept-charset="utf-8" autocomplete="off">
     <input type="hidden" name="action" value="create">
     <input type="hidden" name="csrfToken" value="<%= ctrl.csrfToken() %>">
     <table class="list">
@@ -63,6 +64,7 @@ function cancelUpdateDevice(id)
           <td class="basicProperty">Name</td>
           <td>
             <input type="text"
+                   id="deviceNameInput"
                    name="deviceName"
                    value="<%= U::htmlize(ctrl.name()) %>"
                    size="64"
@@ -86,7 +88,7 @@ function cancelUpdateDevice(id)
           <td class="basicProperty">Domain</td>
           <td>
             <input type="text"
-                   name="domain"
+                   name="deviceDomain"
                    value="<%= U::htmlize(ctrl.domain()) %>"
                    size="64"
                    maxLength="64"

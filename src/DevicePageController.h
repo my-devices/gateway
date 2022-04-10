@@ -46,12 +46,40 @@ public:
 
 	const std::string password() const
 	{
-		return _password;
+		if (_password.empty())
+			return "";
+		else
+			return PASSWORD_PLACEHOLDER;
 	}
 
 	const std::string host() const
 	{
 		return _host;
+	}
+
+	bool httpPortEnabled() const
+	{
+		return _httpPortEnabled;
+	}
+
+	bool sshPortEnabled() const
+	{
+		return _sshPortEnabled;
+	}
+
+	bool vncPortEnabled() const
+	{
+		return _vncPortEnabled;
+	}
+
+	bool rdpPortEnabled() const
+	{
+		return _rdpPortEnabled;
+	}
+
+	bool appPortEnabled() const
+	{
+		return _appPortEnabled;
 	}
 
 	const std::string httpPort() const
@@ -79,6 +107,11 @@ public:
 		return _rdpPort;
 	}
 
+	const std::string appPort() const
+	{
+		return _appPort;
+	}
+
 	const std::string extraPorts() const
 	{
 		return _extraPorts;
@@ -93,10 +126,16 @@ public:
 
 	std::string deviceError() const;
 
+	void savePort(const std::string& proto, Poco::UInt16 port);
+
+	Poco::UInt16 loadPort(const std::string& proto) const;
+
 protected:
 	void loadDevice();
 	void processForm();
 	std::string loadExtraPorts() const;
+
+	static const std::string PASSWORD_PLACEHOLDER;
 
 private:
 	std::string _deviceId;
@@ -104,11 +143,17 @@ private:
 	std::string _domain;
 	std::string _password;
 	std::string _host;
+	bool _httpPortEnabled = true;
+	bool _sshPortEnabled = true;
+	bool _vncPortEnabled = true;
+	bool _rdpPortEnabled = true;
+	bool _appPortEnabled = true;
 	std::string _httpPort;
 	bool _httpsEnable;
 	std::string _sshPort;
 	std::string _vncPort;
 	std::string _rdpPort;
+	std::string _appPort;
 	std::string _extraPorts;
 	Poco::AutoPtr<Poco::Util::AbstractConfiguration> _pDeviceConfig;
 	WebTunnelAgent::Ptr _pAgent;

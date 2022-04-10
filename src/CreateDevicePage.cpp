@@ -1,7 +1,7 @@
 //
 // CreateDevicePage.cpp
 //
-// This file has been generated from CreateDevicePage.cpsp on 2022-03-06 10:01:18.
+// This file has been generated from CreateDevicePage.cpsp on 2022-04-10 09:31:11.
 //
 
 
@@ -47,6 +47,7 @@ if (response.sent()) return;
 if (ctrl.mustRedirect()) return;
 
 pageTemplate.set("title", "Gateway > Create Device");
+pageTemplate.set("onload"s, "document.getElementById('deviceNameInput').focus();"s);
 	std::ostream& _responseStream = response.send();
 	Poco::DeflatingOutputStream _gzipStream(_responseStream, Poco::DeflatingStreamBuf::STREAM_GZIP, 1);
 	std::ostream& responseStream = _compressResponse ? _gzipStream : _responseStream;
@@ -57,10 +58,10 @@ pageTemplate.set("title", "Gateway > Create Device");
 	// end include html/template.inc
 	responseStream << "\n";
 	// begin include html/header.inc
-	responseStream << "<html>\n";
+	responseStream << "<html lang=\"en\">\n";
 	responseStream << "  <head>\n";
 	responseStream << "    <meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\">\n";
-	responseStream << "    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge,chrome=1\">\n";
+	responseStream << "    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n";
 	responseStream << "    <title>";
 #line 5 "/Users/guenter/ws/git/my-devices/gateway/html/header.inc"
 	responseStream << ( U::htmlize(pageTemplate["title"]) );
@@ -83,7 +84,7 @@ pageTemplate.set("title", "Gateway > Create Device");
 	responseStream << "      <div class=\"content\">\n";
 	// end include html/header.inc
 	responseStream << "\n";
-	responseStream << "<script language=\"JavaScript\">\n";
+	responseStream << "<script>\n";
 	responseStream << "function cancelUpdateDevice(id)\n";
 	responseStream << "{\n";
 	responseStream << "  document.actionForm.action.value = \"cancel\";\n";
@@ -98,7 +99,7 @@ pageTemplate.set("title", "Gateway > Create Device");
 	responseStream << "    <div class=\"username\">\n";
 	responseStream << "      &nbsp;\n";
 	responseStream << "      ";
-#line 37 "/Users/guenter/ws/git/my-devices/gateway/src/CreateDevicePage.cpsp"
+#line 38 "/Users/guenter/ws/git/my-devices/gateway/src/CreateDevicePage.cpsp"
 	responseStream << ( ctrl.username() );
 	responseStream << "\n";
 	responseStream << "      &nbsp;\n";
@@ -111,23 +112,23 @@ pageTemplate.set("title", "Gateway > Create Device");
 	responseStream << " </div>\n";
 	responseStream << "</nav>\n";
 	responseStream << "\n";
-#line 48 "/Users/guenter/ws/git/my-devices/gateway/src/CreateDevicePage.cpsp"
+#line 49 "/Users/guenter/ws/git/my-devices/gateway/src/CreateDevicePage.cpsp"
  if (!ctrl.message().empty()) { 	responseStream << "\n";
 	responseStream << "  <div class=\"error\">\n";
 	responseStream << "    ";
-#line 50 "/Users/guenter/ws/git/my-devices/gateway/src/CreateDevicePage.cpsp"
+#line 51 "/Users/guenter/ws/git/my-devices/gateway/src/CreateDevicePage.cpsp"
 	responseStream << ( U::htmlize(ctrl.message()) );
 	responseStream << "\n";
 	responseStream << "  </div>\n";
-#line 52 "/Users/guenter/ws/git/my-devices/gateway/src/CreateDevicePage.cpsp"
+#line 53 "/Users/guenter/ws/git/my-devices/gateway/src/CreateDevicePage.cpsp"
  } 	responseStream << "\n";
 	responseStream << "<div class=\"groupbox\">\n";
 	responseStream << "  <h2>New Device Properties</h2>\n";
 	responseStream << "\n";
-	responseStream << "  <form name=\"actionForm\" method=\"post\">\n";
+	responseStream << "  <form name=\"actionForm\" method=\"post\" accept-charset=\"utf-8\" autocomplete=\"off\">\n";
 	responseStream << "    <input type=\"hidden\" name=\"action\" value=\"create\">\n";
 	responseStream << "    <input type=\"hidden\" name=\"csrfToken\" value=\"";
-#line 59 "/Users/guenter/ws/git/my-devices/gateway/src/CreateDevicePage.cpsp"
+#line 60 "/Users/guenter/ws/git/my-devices/gateway/src/CreateDevicePage.cpsp"
 	responseStream << ( ctrl.csrfToken() );
 	responseStream << "\">\n";
 	responseStream << "    <table class=\"list\">\n";
@@ -136,9 +137,10 @@ pageTemplate.set("title", "Gateway > Create Device");
 	responseStream << "          <td class=\"basicProperty\">Name</td>\n";
 	responseStream << "          <td>\n";
 	responseStream << "            <input type=\"text\"\n";
+	responseStream << "                   id=\"deviceNameInput\"\n";
 	responseStream << "                   name=\"deviceName\"\n";
 	responseStream << "                   value=\"";
-#line 67 "/Users/guenter/ws/git/my-devices/gateway/src/CreateDevicePage.cpsp"
+#line 69 "/Users/guenter/ws/git/my-devices/gateway/src/CreateDevicePage.cpsp"
 	responseStream << ( U::htmlize(ctrl.name()) );
 	responseStream << "\"\n";
 	responseStream << "                   size=\"64\"\n";
@@ -153,7 +155,7 @@ pageTemplate.set("title", "Gateway > Create Device");
 	responseStream << "            <input type=\"text\"\n";
 	responseStream << "                   name=\"deviceId\"\n";
 	responseStream << "                   value=\"";
-#line 79 "/Users/guenter/ws/git/my-devices/gateway/src/CreateDevicePage.cpsp"
+#line 81 "/Users/guenter/ws/git/my-devices/gateway/src/CreateDevicePage.cpsp"
 	responseStream << ( U::htmlize(ctrl.deviceId()) );
 	responseStream << "\"\n";
 	responseStream << "                   size=\"64\"\n";
@@ -165,9 +167,9 @@ pageTemplate.set("title", "Gateway > Create Device");
 	responseStream << "          <td class=\"basicProperty\">Domain</td>\n";
 	responseStream << "          <td>\n";
 	responseStream << "            <input type=\"text\"\n";
-	responseStream << "                   name=\"domain\"\n";
+	responseStream << "                   name=\"deviceDomain\"\n";
 	responseStream << "                   value=\"";
-#line 90 "/Users/guenter/ws/git/my-devices/gateway/src/CreateDevicePage.cpsp"
+#line 92 "/Users/guenter/ws/git/my-devices/gateway/src/CreateDevicePage.cpsp"
 	responseStream << ( U::htmlize(ctrl.domain()) );
 	responseStream << "\"\n";
 	responseStream << "                   size=\"64\"\n";
@@ -200,6 +202,12 @@ pageTemplate.set("title", "Gateway > Create Device");
 	responseStream << "        </div>\n";
 	responseStream << "      </div>\n";
 	responseStream << "    </footer>\n";
+	responseStream << "    <script>\n";
+	responseStream << "      ";
+#line 11 "/Users/guenter/ws/git/my-devices/gateway/html/footer.inc"
+	responseStream << ( pageTemplate.get("onload"s, ""s) );
+	responseStream << "\n";
+	responseStream << "    </script>\n";
 	responseStream << "  </body>\n";
 	responseStream << "</html>\n";
 	// end include html/footer.inc

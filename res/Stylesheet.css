@@ -79,7 +79,7 @@ p, h1, h2, h3, h4, h5, h6, ul, ol, li, td, th, form, address, blockquote, strong
 div, p, ul, ol, li, address, blockquote, h6, form, td, th
 {
 	color: #234;
-	font-size: 16px;
+	font-size: 14px;
 	line-height: 20px;
 }
 
@@ -130,7 +130,7 @@ div.header
 
 div.header h1
 {
-	font-size: 20px;
+	font-size: 18px;
 	line-height: 28px;
 	color: white;
 	margin: 0px;
@@ -240,7 +240,7 @@ div.groupbox
 	border: 1px solid #ccc;
 	background-color: #fafbfc;
 	width: auto;
-	font-size: 16px;
+	font-size: 14px;
 	line-height: 20px;
 }
 
@@ -252,7 +252,7 @@ div.groupbox a
 pre
 {
 	color: #222;
-	font-size: 14px;
+	font-size: 13px;
 	padding-top: 4px;
 	padding-bottom: 4px;
 }
@@ -260,7 +260,7 @@ pre
 h1
 {
 	color: #234;
-	font-size: 24px;
+	font-size: 22px;
 	font-weight: normal;
 	line-height: 32px;
 	margin-top: 12px;
@@ -270,7 +270,7 @@ h1
 h2
 {
 	color: #234;
-	font-size: 20px;
+	font-size: 18px;
 	margin-top: 8px;
 	margin-bottom: 8px;
 	line-height: 24px;
@@ -279,7 +279,7 @@ h2
 div.groupbox h2
 {
 	color: #234;
-	font-size: 18px;
+	font-size: 16px;
 	margin-top: 2px;
 	margin-bottom: 8px;
 	line-height: 24px;
@@ -288,7 +288,7 @@ div.groupbox h2
 h3
 {
 	color: #234;
-	font-size: 18px;
+	font-size: 15px;
 	margin-top: 10px;
 	margin-right: 0;
 	margin-bottom: 0px;
@@ -305,7 +305,7 @@ h3
 h4
 {
 	color: #111;
-	font-size: 16px;
+	font-size: 15px;
 	margin-top: 10px;
 	margin-bottom: 0;
 }
@@ -347,13 +347,13 @@ div.listheader
 	padding-bottom: 2px;
 	border: 0;
 	width: auto;
-	font-size: 13px;
+	font-size: 12px;
 	line-height: 20px;
 }
 
 div.listheader form
 {
-	font-size: 14px;
+	font-size: 12px;
 	line-height: 20px;
 }
 
@@ -369,7 +369,7 @@ div.listfooter
 	padding-bottom: 4px;
 	border: 0;
 	width: auto;
-	font-size: 13px;
+	font-size: 12px;
 	line-height: 20px;
 }
 
@@ -384,7 +384,7 @@ table.list
 {
 	border-style: none;
 	padding: 0px;
-	font-size: 14px;
+	font-size: 12px;
 	margin-top: 0;
 	margin-bottom: 0;
 	border: 0;
@@ -445,8 +445,6 @@ table.list tr.intermediateHeader th
 {
 	background-color: #d0d1d2;
 	color: #0e75b7;
-	font-size: 15px;
-	line-height: 15px;
 }
 
 strong, b
@@ -461,14 +459,14 @@ emph, i
 
 .deviceName
 {
-	font-size: 18px;
+	font-size: 16px;
 	line-height: 22px;
 	font-weight: bold;
 }
 
 .deviceDescription
 {
-	font-size: 14px;
+	font-size: 12px;
 	line-height: 20px;
 	font-weight: normal;
 }
@@ -505,7 +503,7 @@ emph, i
 
 .small
 {
-	font-size: 12px;
+	font-size: 11px;
 	text-align: left;
 	line-height: 16px;
 	margin-top: 8px;
@@ -664,7 +662,7 @@ input[type=submit].form-control
 {
 	height: 24px;
 	text-align: center;
-	font-size: 15px;
+	font-size: 14px;
 	line-height: 16px;
 	background-color: #008bc5;
 	border: 1px solid #008bc5;
@@ -691,7 +689,7 @@ div.loginBox
 {
 	margin-top: 140px;
 	text-align: center;
-	font-size: 16px;
+	font-size: 15px;
 	margin-left: auto;
 	margin-right: auto;
 	padding: 20px;
@@ -700,7 +698,7 @@ div.loginBox
 
 div.loginBox #notice
 {
-	font-size: 20px;
+	font-size: 18px;
 	line-height: 28px;
 	text-align: center;
 	padding-bottom: 40px;
@@ -708,7 +706,7 @@ div.loginBox #notice
 
 div.loginBox #subnotice
 {
-	font-size: 18px;
+	font-size: 16px;
 	text-align: center;
 	margin-top: 20px;
 	color: #606060;
@@ -734,7 +732,7 @@ div.loginBox td
 div.loginBox #usernameLabelCell,
 div.loginBox #passwordLabelCell
 {
-	font-size: 16px;
+	font-size: 15px;
 	text-align: right;
 	color: #0076b8;
 }
@@ -748,7 +746,7 @@ div.loginBox #passwordInputCell
 div.loginBox #usernameInput,
 div.loginBox #passwordInput
 {
-	font-size: 18px;
+	font-size: 16px;
 	width: 240px;
 	height: 28px;
 	background-color: white;
@@ -767,7 +765,7 @@ div.loginBox #loginButton
 {
 	height: 28px;
 	text-align: center;
-	font-size: 16px;
+	font-size: 15px;
 	line-height: 18px;
 	background-color: #008bc5;
 	border: 1px solid #008bc5;

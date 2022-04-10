@@ -78,10 +78,12 @@ protected:
 	void stopReconnectTask();
 	void init();
 	void addProperties(Poco::Net::HTTPRequest& request, const std::map<std::string, std::string>& props);
+	void addPortProperty(Poco::Net::HTTPRequest& request, const std::string& proto, Poco::UInt16 port);
 	void propertiesUpdateTask(Poco::Util::TimerTask&);
 	void collectProperties(std::map<std::string, std::string>& props);
 	void startPropertiesUpdateTask();
 	void stopPropertiesUpdateTask();
+	Poco::UInt16 loadPort(const std::string& proto) const;
 	std::string formatPorts();
 	std::string runCommand(const std::string& command);
 	void statusChanged(Status status);
@@ -114,6 +116,7 @@ private:
 	Poco::UInt16 _sshPort;
 	Poco::UInt16 _vncPort;
 	Poco::UInt16 _rdpPort;
+	Poco::UInt16 _appPort;
 	bool _useProxy;
 	std::string _proxyHost;
 	Poco::UInt16 _proxyPort;

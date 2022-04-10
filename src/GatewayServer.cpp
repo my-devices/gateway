@@ -279,6 +279,7 @@ protected:
 		std::string caLocation = config().getString(prefix + ".caLocation", ""s);
 		std::string privateKey = config().getString(prefix + ".privateKey", ""s);
 		std::string certificate = config().getString(prefix + ".certificate", ""s);
+		std::string tlsMinVersion = config().getString(prefix + ".minVersion", ""s);
 
 		Poco::Net::Context::VerificationMode vMode = Poco::Net::Context::VERIFY_RELAXED;
 		std::string vModeStr = config().getString(prefix + ".verification", ""s);
@@ -289,14 +290,25 @@ protected:
 		else if (vModeStr == "strict")
 			vMode = Poco::Net::Context::VERIFY_STRICT;
 
+		Poco::Net::Context::Protocols minProto = Poco::Net::Context::PROTO_TLSV1_2;
+		if (tlsMinVersion == "tlsv1")
+			minProto = Poco::Net::Context::PROTO_TLSV1;
+		else if (tlsMinVersion == "tlsv1_1")
+			minProto = Poco::Net::Context::PROTO_TLSV1_1;
+		else if (tlsMinVersion == "tlsv1_2")
+			minProto = Poco::Net::Context::PROTO_TLSV1_2;
+		else if (tlsMinVersion == "tlsv1_3")
+			minProto = Poco::Net::Context::PROTO_TLSV1_3;
+
 #if defined(POCO_NETSSL_WIN)
 		int options = Poco::Net::Context::OPT_DEFAULTS;
 		if (!certificate.empty()) options |= Poco::Net::Context::OPT_LOAD_CERT_FROM_FILE;
-		Poco::Net::Context::Ptr pContext = new Poco::Net::Context(Poco::Net::Context::TLSV1_CLIENT_USE, certificate, vMode, options);
+		Poco::Net::Context::Ptr pContext = new Poco::Net::Context(Poco::Net::Context::TLS_CLIENT_USE, certificate, vMode, options);
 #else
-		Poco::Net::Context::Ptr pContext = new Poco::Net::Context(Poco::Net::Context::TLSV1_CLIENT_USE, privateKey, certificate, caLocation, vMode, 5, true, cipherList);
+		Poco::Net::Context::Ptr pContext = new Poco::Net::Context(Poco::Net::Context::TLS_CLIENT_USE, privateKey, certificate, caLocation, vMode, 5, true, cipherList);
 #endif // POCO_NETSSL_WIN
 
+		pContext->requireMinimumProtocol(minProto);
 		pContext->enableExtendedCertificateVerification(extendedVerification);
 		return pContext;
 	}

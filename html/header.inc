@@ -1,7 +1,7 @@
-<html>
+<html lang="en">
   <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title><%= U::htmlize(pageTemplate["title"]) %></title>
     <link rel="stylesheet" href="/css/styles.css" type="text/css"/>
     <link rel="icon" href="/images/favicon.ico">

@@ -23,11 +23,13 @@ else
 {
 	pageTemplate.set("title", "Gateway > Unknown Device");
 }
+
+pageTemplate.set("onload"s, "document.getElementById('deviceNameInput').focus();"s);
 %>
 
 <%@ include file="../html/header.inc" %>
 
-<script language="JavaScript">
+<script>
 function cancelUpdateDevice(id)
 {
   document.actionForm.action.value = "cancel";
@@ -62,7 +64,7 @@ function cancelUpdateDevice(id)
   <div class="groupbox">
     <h2>Device Properties</h2>
 
-    <form name="actionForm" method="post" autocomplete="off">
+    <form name="actionForm" method="post" accept-charset="utf-8" autocomplete="off">
       <input type="hidden" name="action" value="update">
       <input type="hidden" name="csrfToken" value="<%= ctrl.csrfToken() %>">
       <input type="hidden" name="target" value="<%= ctrl.deviceId() %>">
@@ -74,14 +76,17 @@ function cancelUpdateDevice(id)
             </th>
           </tr>
           <tr class="even">
-            <td class="basicProperty">Name</td>
+            <td class="basicProperty">
+              <label for="deviceNameInput">Name</label></td>
             <td>
               <input type="text"
+                     id="deviceNameInput"
                      name="deviceName"
                      value="<%= U::htmlize(ctrl.name()) %>"
                      size="64"
                      maxLength="64"
-                     class="form-control">
+                     class="form-control"
+                     autofocus>
             </td>
           </tr>
           <tr class="odd">
@@ -89,10 +94,13 @@ function cancelUpdateDevice(id)
             <td><%= U::htmlize(ctrl.deviceId()) %></td>
           </tr>
           <tr class="even">
-            <td class="basicProperty">Domain</td>
+            <td class="basicProperty">
+              <label for="deviceDomainInput">Domain</label>
+            </td>
             <td>
               <input type="text"
-                     name="domain"
+                     id="deviceDomainInput"
+                     name="deviceDomain"
                      value="<%= U::htmlize(ctrl.domain()) %>"
                      size="64"
                      maxLength="64"
@@ -100,10 +108,13 @@ function cancelUpdateDevice(id)
             </td>
           </tr>
           <tr class="odd">
-            <td>Device Password</td>
+            <td>
+              <label for="devicePasswordInput">Device Password</label>
+            </td>
             <td>
               <input type="password"
-                     name="password"
+                     id="devicePasswordInput"
+                     name="devicePassword"
                      value="<%= U::htmlize(ctrl.password()) %>"
                      size="32"
                      maxLength="32"
@@ -132,67 +143,107 @@ function cancelUpdateDevice(id)
             </td>
           </tr>
           <tr class="odd">
-            <td class="basicProperty">HTTP Server Port</td>
+            <td class="basicProperty">
+              <input type="checkbox"
+                     name="httpPortEnabled"
+                     value="true"
+                     <%= ctrl.httpPortEnabled() ? "checked" : "" %>
+                     class="form-control">
+              HTTP Server Port
+            </td>
             <td>
               <input type="number"
                      name="httpPort"
                      value="<%= U::htmlize(ctrl.httpPort()) %>"
-                     size="5"
-                     maxLength="5"
-                     min="0"
+                     min="1"
                      max="65535"
+                     placeholder="80"
                      class="form-control">
               <input type="checkbox"
+                     id="httpsRequired"
                      name="httpsRequired"
                      value="true"
                      <%= ctrl.httpsEnable() ? "checked" : "" %>
                      class="form-control">
-              <label for="httpsRequired">Requires HTTPS</label>
+              <label for="httpsRequired">requires HTTPS</label>
             </td>
           </tr>
           <tr class="even">
-            <td class="basicProperty">SSH Server Port</td>
+            <td class="basicProperty">
+              <input type="checkbox"
+                     name="sshPortEnabled"
+                     value="true"
+                     <%= ctrl.sshPortEnabled() ? "checked" : "" %>
+                     class="form-control">
+              SSH Server Port
+            </td>
             <td>
               <input type="number"
                      name="sshPort"
                      value="<%= U::htmlize(ctrl.sshPort()) %>"
-                     size="5"
-                     maxLength="5"
                      min="1"
                      max="65535"
+                     placeholder="22"
                      class="form-control">
-              (optional)
             </td>
           </tr>
           <tr class="odd">
-            <td class="basicProperty">VNC Server Port</td>
+            <td class="basicProperty">
+              <input type="checkbox"
+                     name="vncPortEnabled"
+                     value="true"
+                     <%= ctrl.vncPortEnabled() ? "checked" : "" %>
+                     class="form-control">
+              VNC Server Port
+            </td>
             <td>
               <input type="number"
                      name="vncPort"
                      value="<%= U::htmlize(ctrl.vncPort()) %>"
-                     size="5"
-                     maxLength="5"
                      min="1"
                      max="65535"
+                     placeholder="5900"
                      class="form-control">
-              (optional)
             </td>
           </tr>
           <tr class="even">
-            <td class="basicProperty">RDP Server Port</td>
+            <td class="basicProperty">
+              <input type="checkbox"
+                     name="rdpPortEnabled"
+                     value="true"
+                     <%= ctrl.rdpPortEnabled() ? "checked" : "" %>
+                     class="form-control">
+              RDP Server Port
+            </td>
             <td>
               <input type="number"
                      name="rdpPort"
                      value="<%= U::htmlize(ctrl.rdpPort()) %>"
-                     size="5"
-                     maxLength="5"
                      min="1"
                      max="65535"
+                     placeholder="3389"
                      class="form-control">
-              (optional)
             </td>
           </tr>
           <tr class="odd">
+            <td class="basicProperty">
+              <input type="checkbox"
+                     name="appPortEnabled"
+                     value="true"
+                     <%= ctrl.appPortEnabled() ? "checked" : "" %>
+                     class="form-control">
+              Application Server Port
+            </td>
+            <td>
+              <input type="number"
+                     name="appPort"
+                     value="<%= U::htmlize(ctrl.appPort()) %>"
+                     min="1"
+                     max="65535"
+                     class="form-control">
+            </td>
+          </tr>
+          <tr class="even">
             <td>Additional Forwarded TCP Ports</td>
             <td>
               <input type="text"

@@ -93,7 +93,7 @@ void CreateDevicePageController::processForm()
 		{
 			_deviceId = form().get("deviceId"s);
 			_name = form().get("deviceName"s);
-			_domain = form().get("domain"s);
+			_domain = form().get("deviceDomain"s);
 
 			if (!isValidId(_deviceId))
 			{

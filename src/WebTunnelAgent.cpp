@@ -135,22 +135,13 @@ void WebTunnelAgent::addProperties(Poco::Net::HTTPRequest& request, const std::m
 	{
 		request.add("X-PTTH-Set-Property"s, Poco::format("device;httpPath=%s"s, quoteString(_httpPath)));
 	}
-	if (_httpPort != 0)
-	{
-		request.add("X-PTTH-Set-Property"s, Poco::format("device;httpPort=%hu"s, _httpPort));
-	}
-	if (_sshPort != 0)
-	{
-		request.add("X-PTTH-Set-Property"s, Poco::format("device;sshPort=%hu"s, _sshPort));
-	}
-	if (_vncPort != 0)
-	{
-		request.add("X-PTTH-Set-Property"s, Poco::format("device;vncPort=%hu"s, _vncPort));
-	}
-	if (_rdpPort != 0)
-	{
-		request.add("X-PTTH-Set-Property"s, Poco::format("device;rdpPort=%hu"s, _rdpPort));
-	}
+
+	addPortProperty(request, "http"s, _httpPort);
+	addPortProperty(request, "ssh"s, _sshPort);
+	addPortProperty(request, "vnc"s, _vncPort);
+	addPortProperty(request, "rdp"s, _rdpPort);
+	addPortProperty(request, "app"s, _appPort);
+
 	if (!_deviceName.empty())
 	{
 		request.add("X-PTTH-Set-Property"s, Poco::format("device;name=%s"s, quoteString(_deviceName)));
@@ -168,6 +159,19 @@ void WebTunnelAgent::addProperties(Poco::Net::HTTPRequest& request, const std::m
 		}
 	}
 	request.set("User-Agent", _userAgent);
+}
+
+
+void WebTunnelAgent::addPortProperty(Poco::Net::HTTPRequest& request, const std::string& proto, Poco::UInt16 port)
+{
+	if (port != 0)
+	{
+		request.add("X-PTTH-Set-Property"s, Poco::format("device;%sPort=%hu"s, proto, port));
+	}
+	else
+	{
+		request.add("X-PTTH-Set-Property"s, Poco::format("device;%sPort="s, proto));
+	}
 }
 
 
@@ -487,10 +491,11 @@ void WebTunnelAgent::init()
 	_remoteTimeout = Poco::Timespan(_pConfig->getInt("webtunnel.remoteTimeout"s, 300), 0);
 	_propertiesUpdateInterval = Poco::Timespan(_pConfig->getInt("webtunnel.propertiesUpdateInterval"s, 0), 0);
 	_httpPath = _pConfig->getString("webtunnel.httpPath"s, ""s);
-	_httpPort = static_cast<Poco::UInt16>(_pConfig->getInt("webtunnel.httpPort"s, 0));
-	_sshPort = static_cast<Poco::UInt16>(_pConfig->getInt("webtunnel.sshPort"s, 0));
-	_vncPort = static_cast<Poco::UInt16>(_pConfig->getInt("webtunnel.vncPort"s, 0));
-	_rdpPort = static_cast<Poco::UInt16>(_pConfig->getInt("webtunnel.rdpPort"s, 0));
+	_httpPort = loadPort("http"s);
+	_sshPort = loadPort("ssh"s);
+	_vncPort = loadPort("vnc"s);
+	_rdpPort = loadPort("rdp"s);
+	_appPort = loadPort("app"s);
 	_userAgent = _pConfig->getString("webtunnel.userAgent"s, ""s);
 	_httpTimeout = Poco::Timespan(_pConfig->getInt("http.timeout"s, 30), 0);
 	_useProxy = _pConfig->getBool("http.proxy.enable"s, false);
@@ -523,6 +528,16 @@ void WebTunnelAgent::init()
 	}
 
 	_pTimer->schedule(new Poco::Util::TimerTaskAdapter<WebTunnelAgent>(*this, &WebTunnelAgent::reconnectTask), Poco::Clock());
+}
+
+
+Poco::UInt16 WebTunnelAgent::loadPort(const std::string& proto) const
+{
+	if (_pConfig->getBool(Poco::format("webtunnel.%sPort.enable"s, proto), true))
+	{
+		return static_cast<Poco::UInt16>(_pConfig->getUInt(Poco::format("webtunnel.%sPort"s, proto), 0));
+	}
+	else return 0;
 }
 
 

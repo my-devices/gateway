@@ -7,5 +7,8 @@
         </div>
       </div>
     </footer>
+    <script>
+      <%= pageTemplate.get("onload"s, ""s) %>
+    </script>
   </body>
 </html>

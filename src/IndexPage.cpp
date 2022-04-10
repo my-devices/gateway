@@ -1,7 +1,7 @@
 //
 // IndexPage.cpp
 //
-// This file has been generated from IndexPage.cpsp on 2022-03-06 10:57:18.
+// This file has been generated from IndexPage.cpsp on 2022-04-10 09:31:11.
 //
 
 
@@ -57,10 +57,10 @@ pageTemplate.set("title"s, "Gateway"s);
 	// end include html/template.inc
 	responseStream << "\n";
 	// begin include html/header.inc
-	responseStream << "<html>\n";
+	responseStream << "<html lang=\"en\">\n";
 	responseStream << "  <head>\n";
 	responseStream << "    <meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\">\n";
-	responseStream << "    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge,chrome=1\">\n";
+	responseStream << "    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n";
 	responseStream << "    <title>";
 #line 5 "/Users/guenter/ws/git/my-devices/gateway/html/header.inc"
 	responseStream << ( U::htmlize(pageTemplate["title"]) );
@@ -83,7 +83,7 @@ pageTemplate.set("title"s, "Gateway"s);
 	responseStream << "      <div class=\"content\">\n";
 	// end include html/header.inc
 	responseStream << "\n";
-	responseStream << "<script language=\"JavaScript\">\n";
+	responseStream << "<script>\n";
 	responseStream << "function addDevice()\n";
 	responseStream << "{\n";
 	responseStream << "  document.actionForm.action.value = \"add\";\n";
@@ -177,10 +177,10 @@ pageTemplate.set("title"s, "Gateway"s);
 #line 93 "/Users/guenter/ws/git/my-devices/gateway/src/IndexPage.cpsp"
 	responseStream << ( *it );
 	responseStream << "\">\n";
-	responseStream << "              ";
+	responseStream << "              <span class=\"deviceName\">";
 #line 94 "/Users/guenter/ws/git/my-devices/gateway/src/IndexPage.cpsp"
 	responseStream << ( U::htmlize(pDeviceConfig->getString("webtunnel.deviceName", "")) );
-	responseStream << "\n";
+	responseStream << "</span>\n";
 	responseStream << "            </a>\n";
 	responseStream << "          </td>\n";
 	responseStream << "          <td>\n";
@@ -269,6 +269,12 @@ pageTemplate.set("title"s, "Gateway"s);
 	responseStream << "        </div>\n";
 	responseStream << "      </div>\n";
 	responseStream << "    </footer>\n";
+	responseStream << "    <script>\n";
+	responseStream << "      ";
+#line 11 "/Users/guenter/ws/git/my-devices/gateway/html/footer.inc"
+	responseStream << ( pageTemplate.get("onload"s, ""s) );
+	responseStream << "\n";
+	responseStream << "    </script>\n";
 	responseStream << "  </body>\n";
 	responseStream << "</html>\n";
 	// end include html/footer.inc
