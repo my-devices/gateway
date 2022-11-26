@@ -180,7 +180,7 @@ Note that *Status* may initially show *disconnected* for your newly added device
 The status should refresh after a few seconds and change to *connected*.
 If the status shows *error*, click on the device to see the error message.
 
-The Gateway should now also be visible in your [macchina.io REMOTE Dashboard](https://reflector.my-devices.net).
+The Gateway should now also be visible in your [macchina.io REMOTE Dashboard](https://remote.macchina.io).
 
 You can now manage the Gateway remotely via macchina.io REMOTE, and you can also add other
 devices as well.

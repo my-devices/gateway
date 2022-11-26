@@ -1,7 +1,7 @@
 #
 # Makefile
 #
-# Makefile for my-devices Gateway
+# Makefile for macchina.io REMOTE Gateway
 #
 
 POCO_BASE = $(shell dirname `pwd`)/sdk
