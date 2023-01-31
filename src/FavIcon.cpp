@@ -1,7 +1,7 @@
 //
 // FavIcon.cpp
 //
-// This file has been generated from FavIcon.cpsp on 2022-04-10 09:31:12.
+// This file has been generated from FavIcon.cpsp on 2023-01-31 11:25:55.
 //
 
 
@@ -91,7 +91,7 @@ static const unsigned char data[] = {
 
 static bool checkModified(Poco::Net::HTTPServerRequest& request)
 {
-	Poco::DateTime modified(2021, 11, 27, 20, 14, 5);
+	Poco::DateTime modified(2022, 11, 26, 18, 45, 6);
 	request.response().setChunkedTransferEncoding(false);
 	request.response().set("Last-Modified", Poco::DateTimeFormatter::format(modified, Poco::DateTimeFormat::HTTP_FORMAT));
 	if (request.has("If-Modified-Since"))

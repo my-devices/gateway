@@ -1,7 +1,7 @@
 //
 // PlusIconX2.cpp
 //
-// This file has been generated from PlusIconX2.cpsp on 2022-04-10 09:31:12.
+// This file has been generated from PlusIconX2.cpsp on 2023-01-31 11:25:54.
 //
 
 
@@ -84,7 +84,7 @@ static const unsigned char data[] = {
 
 static bool checkModified(Poco::Net::HTTPServerRequest& request)
 {
-	Poco::DateTime modified(2018, 3, 9, 11, 48, 5);
+	Poco::DateTime modified(2022, 11, 26, 18, 45, 6);
 	request.response().setChunkedTransferEncoding(false);
 	request.response().set("Last-Modified", Poco::DateTimeFormatter::format(modified, Poco::DateTimeFormat::HTTP_FORMAT));
 	if (request.has("If-Modified-Since"))
