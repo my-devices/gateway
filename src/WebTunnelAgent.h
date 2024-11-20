@@ -25,6 +25,7 @@
 #include "Poco/Pipe.h"
 #include "Poco/PipeStream.h"
 #include "Poco/StreamCopier.h"
+#include "Poco/BasicEvent.h"
 #include "Poco/Random.h"
 #include "Poco/Mutex.h"
 #include "Poco/Logger.h"
@@ -51,6 +52,10 @@ public:
 		MIN_RETRY_DELAY = 1000,
 		MAX_RETRY_DELAY = 30000
 	};
+
+	Poco::BasicEvent<const std::string> connected;
+	Poco::BasicEvent<const std::string> disconnected;
+	Poco::BasicEvent<const std::string> error;
 
 	WebTunnelAgent(const std::string& deviceId, Poco::SharedPtr<Poco::Util::Timer> pTimer, Poco::SharedPtr<Poco::WebTunnel::SocketDispatcher> pDispatcher, Poco::AutoPtr<Poco::Util::AbstractConfiguration> pConfig, Poco::WebTunnel::SocketFactory::Ptr pSocketFactory);
 		/// Creates the WebTunnelAgent, using the given deviceId, Timer, SocketDispatcher and configuration.
@@ -90,12 +95,19 @@ protected:
 	void statusChanged(Status status, const std::string& error);
 	void scheduleReconnect();
 	void scheduleDisconnect();
+	void notifyConnected(const std::string&);
+	void notifyDisconnected(const std::string&);
+	void notifyError(const std::string& msg);
+	void notify(const Poco::Process::Args& args);
 	bool isStopping();
 	static std::string quoteString(const std::string& str);
 
 	static const std::string SEC_WEBSOCKET_PROTOCOL;
 	static const std::string WEBTUNNEL_PROTOCOL;
 	static const std::string WEBTUNNEL_AGENT;
+	static const std::string X_PTTH_SET_PROPERTY;
+	static const std::string X_PTTH_ERROR;
+	static const std::string X_WEBTUNNEL_KEEPALIVE;
 
 private:
 	std::string _id;
@@ -111,15 +123,15 @@ private:
 	std::string _tenant;
 	std::string _userAgent;
 	std::string _httpPath;
-	Poco::UInt16 _httpPort;
-	bool _httpsRequired;
-	Poco::UInt16 _sshPort;
-	Poco::UInt16 _vncPort;
-	Poco::UInt16 _rdpPort;
-	Poco::UInt16 _appPort;
-	bool _useProxy;
+	Poco::UInt16 _httpPort = 0;
+	bool _httpsRequired = false;
+	Poco::UInt16 _sshPort = 0;
+	Poco::UInt16 _vncPort = 0;
+	Poco::UInt16 _rdpPort = 0;
+	Poco::UInt16 _appPort = 0;
+	bool _useProxy = false;
 	std::string _proxyHost;
-	Poco::UInt16 _proxyPort;
+	Poco::UInt16 _proxyPort = 0;
 	std::string _proxyUsername;
 	std::string _proxyPassword;
 	Poco::Timespan _localTimeout;
@@ -127,7 +139,9 @@ private:
 	Poco::Timespan _remoteTimeout;
 	Poco::Timespan _httpTimeout;
 	Poco::Timespan _propertiesUpdateInterval;
-	int _retryDelay;
+	int _retryDelay = MIN_RETRY_DELAY;
+	std::string _notifyExec;
+	bool _notifyEnable = false;
 	Poco::SharedPtr<Poco::Util::Timer> _pTimer;
 	Poco::SharedPtr<Poco::WebTunnel::SocketDispatcher> _pDispatcher;
 	Poco::SharedPtr<Poco::WebTunnel::RemotePortForwarder> _pForwarder;
@@ -136,9 +150,9 @@ private:
 	Poco::Util::TimerTask::Ptr _pPropertiesUpdateTask;
 	Poco::Event _stopped;
 	Poco::Random _random;
-	Status _status;
+	Status _status = STATUS_DISCONNECTED;
 	std::string _lastError;
-	bool _stopping;
+	bool _stopping = false;
 	mutable Poco::FastMutex _mutex;
 	Poco::Logger& _logger;
 

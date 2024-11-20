@@ -409,7 +409,7 @@ pageTemplate.set("onload"s, "document.getElementById('deviceNameInput').focus();
 	responseStream << "          ";
 #line 6 "/Users/guenter/ws/git/my-devices/gateway/html/footer.inc"
 	responseStream << ( pageTemplate["softwareVersion"] );
-	responseStream << " | &copy; 2015-2023 by <a href=\"https://macchina.io\">Applied Informatics GmbH</a>\n";
+	responseStream << " | &copy; 2015-2024 by <a href=\"https://macchina.io\">Applied Informatics GmbH</a>\n";
 	responseStream << "        </div>\n";
 	responseStream << "      </div>\n";
 	responseStream << "    </footer>\n";

@@ -24,6 +24,9 @@
 #include "Poco/UUID.h"
 
 
+using namespace std::string_literals;
+
+
 namespace MyDevices {
 namespace Gateway {
 
@@ -44,20 +47,18 @@ public:
 	{
 	}
 
-	Poco::Net::StreamSocket createSocket(const Poco::Net::SocketAddress& addr, Poco::Timespan timeout)
+	Poco::Net::StreamSocket createSocket(const Poco::Net::SocketAddress& addr)
 	{
 		if (addr.port() == _tlsPort)
 		{
 			Poco::Net::SecureStreamSocket streamSocket(_pContext);
-			streamSocket.connect(addr, timeout);
-			streamSocket.setNoDelay(true);
+			streamSocket.connectNB(addr);
 			return streamSocket;
 		}
 		else
 		{
 			Poco::Net::StreamSocket streamSocket;
-			streamSocket.connect(addr, timeout);
-			streamSocket.setNoDelay(true);
+			streamSocket.connectNB(addr);
 			return streamSocket;
 		}
 	}
@@ -114,8 +115,8 @@ DeviceManager::DeviceManager(Poco::Util::AbstractConfiguration& config, Poco::Sh
 	_pConfig(&config, true),
 	_pTimer(pTimer),
 	_pContext(pContext),
-	_pDispatcher(new Poco::WebTunnel::SocketDispatcher(_pConfig->getInt("webtunnel.threads", 8))),
-	_logger(Poco::Logger::get("DeviceManager"))
+	_pDispatcher(new Poco::WebTunnel::SocketDispatcher),
+	_logger(Poco::Logger::get("DeviceManager"s))
 {
 	reconfigureAgents(5);
 }
@@ -127,8 +128,8 @@ DeviceManager::DeviceManager(Poco::Util::AbstractConfiguration& config, Poco::Sh
 DeviceManager::DeviceManager(Poco::Util::AbstractConfiguration& config, Poco::SharedPtr<Poco::Util::Timer> pTimer):
 	_pConfig(&config, true),
 	_pTimer(pTimer),
-	_pDispatcher(new Poco::WebTunnel::SocketDispatcher(_pConfig->getInt("webtunnel.threads", 8))),
-	_logger(Poco::Logger::get("DeviceManager"))
+	_pDispatcher(new Poco::WebTunnel::SocketDispatcher),
+	_logger(Poco::Logger::get("DeviceManager"s))
 {
 	reconfigureAgents(5);
 }
@@ -162,7 +163,7 @@ void DeviceManager::stopAgents()
 
 void DeviceManager::reconfigureAgents()
 {
-	_logger.debug("Reconfiguring agents...");
+	_logger.debug("Reconfiguring agents..."s);
 
 	std::set<std::string> activeAgents;
 	std::vector<std::string> devices(enumerateDevices());
@@ -178,7 +179,7 @@ void DeviceManager::reconfigureAgents()
 			{
 				if (ita->second.configHash != hash)
 				{
-					_logger.debug("Reconfiguring %s due to configuration change...", *it);
+					_logger.debug("Reconfiguring %s due to configuration change..."s, *it);
 					_pTimer->schedule(new StopTask(ita->second.pAgent), Poco::Clock());
 					ita->second.configHash = hash;
 					ita->second.pAgent = loadAgent(*it);
@@ -188,7 +189,7 @@ void DeviceManager::reconfigureAgents()
 					}
 					else
 					{
-						_logger.debug("Removing inactive agent %s", *it);
+						_logger.debug("Removing inactive agent %s"s, *it);
 						_agents.erase(ita);
 					}
 				}
@@ -199,7 +200,7 @@ void DeviceManager::reconfigureAgents()
 			}
 			else
 			{
-				_logger.debug("Creating new agent %s...", *it);
+				_logger.debug("Creating new agent %s..."s, *it);
 				AgentEntry entry;
 				entry.configHash = hash;
 				entry.pAgent = loadAgent(*it);
@@ -222,7 +223,7 @@ void DeviceManager::reconfigureAgents()
 	{
 		if (activeAgents.find(ita->first) == activeAgents.end())
 		{
-			_logger.debug("Removing deleted agent %s...", ita->first);
+			_logger.debug("Removing deleted agent %s..."s, ita->first);
 			_pTimer->schedule(new StopTask(ita->second.pAgent), Poco::Clock());
 			ita = _agents.erase(ita);
 		}
@@ -236,21 +237,22 @@ void DeviceManager::reconfigureAgents()
 
 WebTunnelAgent::Ptr DeviceManager::loadAgent(const std::string& id)
 {
-	_logger.debug("Loading agent %s...", id);
+	_logger.debug("Loading agent %s..."s, id);
 
 	Poco::AutoPtr<Poco::Util::LayeredConfiguration> pLayeredConfig = new Poco::Util::LayeredConfiguration;
 	pLayeredConfig->add(_pConfig, 1);
 	pLayeredConfig->add(deviceConfiguration(id), 0);
-	if (pLayeredConfig->getBool("webtunnel.enable", true))
+	if (pLayeredConfig->getBool("webtunnel.enable"s, true))
 	{
 		Poco::WebTunnel::SocketFactory::Ptr pSocketFactory;
 
-		Poco::UInt16 httpPort = static_cast<Poco::UInt16>(pLayeredConfig->getInt("webtunnel.httpPort", 0));
-		bool httpsRequired = pLayeredConfig->getBool("webtunnel.https.enable", false);
+		Poco::UInt16 httpPort = static_cast<Poco::UInt16>(pLayeredConfig->getInt("webtunnel.httpPort"s, 0));
+		bool httpsRequired = pLayeredConfig->getBool("webtunnel.https.enable"s, false);
 
 #if defined(WEBTUNNEL_ENABLE_TLS)
 		if (httpPort != 0 && httpsRequired)
 		{
+			_logger.debug("HTTPS enabled for agent %s."s, id);
 			pSocketFactory = new TLSSocketFactory(httpPort, _pContext);
 		}
 #endif
@@ -271,14 +273,14 @@ Poco::AutoPtr<Poco::Util::AbstractConfiguration> DeviceManager::createDevice(con
 	Poco::FastMutex::ScopedLock lock(_mutex);
 
 	Poco::AutoPtr<Poco::Util::PropertyFileConfiguration> pConfig = new Poco::Util::PropertyFileConfiguration;
-	pConfig->setString("webtunnel.deviceName", name);
-	pConfig->setString("webtunnel.deviceId", id);
-	pConfig->setString("webtunnel.domain", domain);
-	pConfig->setString("webtunnel.host", "127.0.0.1");
-	pConfig->setString("webtunnel.ports", "80");
-	pConfig->setString("webtunnel.httpPort", "80");
-	pConfig->setString("webtunnel.password", "");
-	pConfig->setBool("webtunnel.enable", false);
+	pConfig->setString("webtunnel.deviceName"s, name);
+	pConfig->setString("webtunnel.deviceId"s, id);
+	pConfig->setString("webtunnel.domain"s, domain);
+	pConfig->setString("webtunnel.host"s, "127.0.0.1"s);
+	pConfig->setString("webtunnel.ports"s, "80"s);
+	pConfig->setString("webtunnel.httpPort"s, "80"s);
+	pConfig->setString("webtunnel.password"s, ""s);
+	pConfig->setBool("webtunnel.enable"s, false);
 	pConfig->save(deviceConfigurationPath(id));
 
 	return pConfig;
@@ -289,8 +291,8 @@ void DeviceManager::updateDevice(Poco::AutoPtr<Poco::Util::AbstractConfiguration
 {
 	Poco::FastMutex::ScopedLock lock(_mutex);
 
-	std::string deviceId = pConfig->getString("webtunnel.deviceId");
-	pConfig->setBool("webtunnel.enable", true);
+	std::string deviceId = pConfig->getString("webtunnel.deviceId"s);
+	pConfig->setBool("webtunnel.enable"s, true);
 	Poco::AutoPtr<Poco::Util::PropertyFileConfiguration> pPropertyFileConfig = pConfig.cast<Poco::Util::PropertyFileConfiguration>();
 	pPropertyFileConfig->save(deviceConfigurationPath(deviceId));
 }
@@ -320,7 +322,7 @@ std::vector<std::string> DeviceManager::enumerateDevices() const
 	for (std::vector<std::string>::const_iterator it = files.begin(); it != files.end(); ++it)
 	{
 		Poco::Path p(*it);
-		if (p.getExtension() == "properties")
+		if (p.getExtension() == "properties"s)
 		{
 			devices.push_back(p.getBaseName());
 		}
@@ -339,7 +341,7 @@ std::string DeviceManager::deviceConfigurationPath(const std::string& deviceId) 
 {
 	std::string basePath(deviceRepositoryPath());
 	Poco::Path path(basePath, deviceId);
-	path.setExtension("properties");
+	path.setExtension("properties"s);
 	return path.toString();
 }
 
@@ -357,12 +359,12 @@ std::string DeviceManager::computeFileHash(const std::string& path) const
 
 std::string DeviceManager::deviceRepositoryPath() const
 {
-	std::string deviceConfigPath(_pConfig->getString("gateway.configDir", ""));
+	std::string deviceConfigPath(_pConfig->getString("gateway.configDir"s, ""s));
 	if (deviceConfigPath.empty())
 	{
-		Poco::Path p(_pConfig->getString("application.configDir"));
+		Poco::Path p(_pConfig->getString("application.configDir"s));
 		p.makeDirectory();
-		p.pushDirectory("devices");
+		p.pushDirectory("devices"s);
 		deviceConfigPath = p.toString();
 	}
 	Poco::File deviceConfigDir(deviceConfigPath);
