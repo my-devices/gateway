@@ -1,7 +1,7 @@
 //
 // AjaxCore.cpp
 //
-// This file has been generated from AjaxCore.cpsp on 2023-01-31 11:25:53.
+// This file has been generated from AjaxCore.cpsp on 2025-01-29 07:16:38.
 //
 
 
@@ -148,7 +148,7 @@ static const unsigned char data[] = {
 
 static bool checkModified(Poco::Net::HTTPServerRequest& request)
 {
-	Poco::DateTime modified(2022, 11, 26, 18, 45, 6);
+	Poco::DateTime modified(2020, 8, 8, 9, 29, 50);
 	request.response().setChunkedTransferEncoding(false);
 	request.response().set("Last-Modified", Poco::DateTimeFormatter::format(modified, Poco::DateTimeFormat::HTTP_FORMAT));
 	if (request.has("If-Modified-Since"))

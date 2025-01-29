@@ -1,7 +1,7 @@
 //
 // Stylesheet.cpp
 //
-// This file has been generated from Stylesheet.cpsp on 2023-01-31 11:25:55.
+// This file has been generated from Stylesheet.cpsp on 2025-01-29 07:16:40.
 //
 
 
@@ -701,7 +701,7 @@ static const unsigned char data[] = {
 
 static bool checkModified(Poco::Net::HTTPServerRequest& request)
 {
-	Poco::DateTime modified(2022, 11, 26, 18, 46, 54);
+	Poco::DateTime modified(2025, 1, 29, 7, 7, 41);
 	request.response().setChunkedTransferEncoding(false);
 	request.response().set("Last-Modified", Poco::DateTimeFormatter::format(modified, Poco::DateTimeFormat::HTTP_FORMAT));
 	if (request.has("If-Modified-Since"))
