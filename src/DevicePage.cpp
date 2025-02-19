@@ -1,7 +1,7 @@
 //
 // DevicePage.cpp
 //
-// This file has been generated from DevicePage.cpsp on 2025-01-29 07:16:41.
+// This file has been generated from DevicePage.cpsp on 2025-02-19 13:33:15.
 //
 
 
@@ -39,7 +39,7 @@ void DevicePage::handleRequest(Poco::Net::HTTPServerRequest& request, Poco::Net:
 #line 4 "/Users/guenter/ws/git/my-devices/gateway/html/template.inc"
 
 	Poco::Net::NameValueCollection pageTemplate;
-	pageTemplate.set("softwareVersion", Utility::versionString());
+	pageTemplate.set("softwareVersion"s, Utility::versionString());
 #line 13 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
 
 DevicePageController ctrl(context(), request, form);
@@ -48,11 +48,11 @@ if (ctrl.mustRedirect()) return;
 
 if (ctrl.deviceConfig())
 {
-	pageTemplate.set("title", "Gateway > " + ctrl.name());
+	pageTemplate.set("title"s, "Gateway > "s + ctrl.name());
 }
 else
 {
-	pageTemplate.set("title", "Gateway > Unknown Device");
+	pageTemplate.set("title"s, "Gateway > Unknown Device"s);
 }
 
 pageTemplate.set("onload"s, "document.getElementById('deviceNameInput').focus();"s);

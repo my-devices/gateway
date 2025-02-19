@@ -9,6 +9,7 @@
 
 
 #include "Poco/WebTunnel/RemotePortForwarder.h"
+#include "Poco/WebTunnel/Version.h"
 #include "Poco/Net/HTTPSessionFactory.h"
 #include "Poco/Net/HTTPSessionInstantiator.h"
 #include "Poco/Net/HTTPServer.h"
@@ -204,6 +205,12 @@ protected:
 				.callback(OptionCallback<GatewayServer>(this, &GatewayServer::handleHelp)));
 
 		options.addOption(
+			Option("version"s, "v"s, "Display version information and exit."s)
+				.required(false)
+				.repeatable(false)
+				.callback(OptionCallback<GatewayServer>(this, &GatewayServer::handleVersion)));
+		
+		options.addOption(
 			Option("config-file"s, "c"s, "Load configuration data from a file."s)
 				.required(false)
 				.repeatable(true)
@@ -222,6 +229,13 @@ protected:
 	{
 		_dontRun = true;
 		displayHelp();
+		stopOptionsProcessing();
+	}
+
+	void handleVersion(const std::string& name, const std::string& value)
+	{
+		_dontRun = true;
+		std::cout << Utility::versionString() << " (SDK " << Poco::WebTunnel::formatVersion(WEBTUNNEL_VERSION) << ")" << std::endl;
 		stopOptionsProcessing();
 	}
 
@@ -340,11 +354,12 @@ protected:
 			"    ooooooooo   oo   oo \n"
 			"      ooooooo   oo   oo \n"
 			"\n"
-			"    macchina.io REMOTE Gateway %s\n"
+			"    macchina.io REMOTE Gateway %s (SDK %s)\n"
 			"\n"
 			"    Copyright (c) 2015-2025 by Applied Informatics Software Engineering GmbH.\n"
 			"    All rights reserved.\n"s,
-			U::versionString()
+			U::versionString(),
+			Poco::WebTunnel::formatVersion(WEBTUNNEL_VERSION)
 		);
 
 #if defined(WEBTUNNEL_ENABLE_TLS)

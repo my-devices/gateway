@@ -10,6 +10,7 @@
 
 #include "WebTunnelAgent.h"
 #include "Utility.h"
+#include "Poco/WebTunnel/Version.h"
 #include "Poco/Util/TimerTaskAdapter.h"
 #include "Poco/Net/HTTPSessionFactory.h"
 #include "Poco/Net/HTTPSessionInstantiator.h"
@@ -247,7 +248,7 @@ void WebTunnelAgent::connect()
 	std::map<std::string, std::string> props;
 	collectProperties(props);
 	addProperties(request, props);
-	request.set("User-Agent", _userAgent);
+	request.set("User-Agent"s, _userAgent);
 
 	Poco::Net::HTTPResponse response;
 	bool reconnect = true;
@@ -565,11 +566,10 @@ void WebTunnelAgent::init()
 		_userAgent += Poco::Environment::osVersion();
 		_userAgent += "; ";
 		_userAgent += Poco::Environment::osArchitecture();
-		_userAgent += ") POCO/";
-		_userAgent += Poco::format("%d.%d.%d"s,
-			static_cast<int>(Poco::Environment::libraryVersion() >> 24),
-			static_cast<int>((Poco::Environment::libraryVersion() >> 16) & 0xFF),
-			static_cast<int>((Poco::Environment::libraryVersion() >> 8) & 0xFF));
+		_userAgent += ") SDK/";
+		_userAgent += Poco::WebTunnel::formatVersion(WEBTUNNEL_VERSION);
+		_userAgent += " POCO/";
+		_userAgent += Poco::WebTunnel::formatVersion(Poco::Environment::libraryVersion());
 	}
 
 	_notifyExec = _pConfig->getString("webtunnel.status.notify"s, ""s);

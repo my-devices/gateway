@@ -15,7 +15,7 @@ CreateDevicePageController ctrl(context(), request, form);
 if (response.sent()) return;
 if (ctrl.mustRedirect()) return;
 
-pageTemplate.set("title", "Gateway > Create Device");
+pageTemplate.set("title"s, "Gateway > Create Device");
 pageTemplate.set("onload"s, "document.getElementById('deviceNameInput').focus();"s);
 %>
 

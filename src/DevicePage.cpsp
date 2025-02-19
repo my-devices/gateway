@@ -17,11 +17,11 @@ if (ctrl.mustRedirect()) return;
 
 if (ctrl.deviceConfig())
 {
-	pageTemplate.set("title", "Gateway > " + ctrl.name());
+	pageTemplate.set("title"s, "Gateway > "s + ctrl.name());
 }
 else
 {
-	pageTemplate.set("title", "Gateway > Unknown Device");
+	pageTemplate.set("title"s, "Gateway > Unknown Device"s);
 }
 
 pageTemplate.set("onload"s, "document.getElementById('deviceNameInput').focus();"s);

@@ -1,7 +1,7 @@
 //
 // IndexPage.cpp
 //
-// This file has been generated from IndexPage.cpsp on 2025-01-29 07:16:41.
+// This file has been generated from IndexPage.cpsp on 2025-02-19 13:29:53.
 //
 
 
@@ -39,7 +39,7 @@ void IndexPage::handleRequest(Poco::Net::HTTPServerRequest& request, Poco::Net::
 #line 4 "/Users/guenter/ws/git/my-devices/gateway/html/template.inc"
 
 	Poco::Net::NameValueCollection pageTemplate;
-	pageTemplate.set("softwareVersion", Utility::versionString());
+	pageTemplate.set("softwareVersion"s, Utility::versionString());
 #line 12 "/Users/guenter/ws/git/my-devices/gateway/src/IndexPage.cpsp"
 
 IndexPageController ctrl(context(), request, form);

@@ -1,7 +1,7 @@
 //
 // LoginPage.cpp
 //
-// This file has been generated from LoginPage.cpsp on 2025-01-29 07:16:41.
+// This file has been generated from LoginPage.cpsp on 2025-02-19 13:29:53.
 //
 
 
@@ -39,13 +39,13 @@ void LoginPage::handleRequest(Poco::Net::HTTPServerRequest& request, Poco::Net::
 #line 4 "/Users/guenter/ws/git/my-devices/gateway/html/template.inc"
 
 	Poco::Net::NameValueCollection pageTemplate;
-	pageTemplate.set("softwareVersion", Utility::versionString());
+	pageTemplate.set("softwareVersion"s, Utility::versionString());
 #line 12 "/Users/guenter/ws/git/my-devices/gateway/src/LoginPage.cpsp"
 
 LoginPageController ctrl(context(), request, form);
 if (ctrl.mustRedirect()) return;
 
-pageTemplate.set("title", "Gateway");
+pageTemplate.set("title"s, "Gateway"s);
 	std::ostream& _responseStream = response.send();
 	Poco::DeflatingOutputStream _gzipStream(_responseStream, Poco::DeflatingStreamBuf::STREAM_GZIP, 1);
 	std::ostream& responseStream = _compressResponse ? _gzipStream : _responseStream;

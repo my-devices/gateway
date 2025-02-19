@@ -13,7 +13,7 @@
 LoginPageController ctrl(context(), request, form);
 if (ctrl.mustRedirect()) return;
 
-pageTemplate.set("title", "Gateway");
+pageTemplate.set("title"s, "Gateway"s);
 %>
 
 <%@ include file="../html/header.inc" %>

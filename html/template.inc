@@ -3,5 +3,5 @@
 
 <%%
 	Poco::Net::NameValueCollection pageTemplate;
-	pageTemplate.set("softwareVersion", Utility::versionString());
+	pageTemplate.set("softwareVersion"s, Utility::versionString());
 %>
