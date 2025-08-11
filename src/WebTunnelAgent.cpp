@@ -287,8 +287,8 @@ void WebTunnelAgent::connect()
 			}
 			else
 			{
-				statusChanged(STATUS_ERROR, Poco::format("The host at %s does not support the WebTunnel protocol."s, reflectorURI.toString()));
-				_logger.error(_lastError);
+				const std::string message(Poco::format("The host at %s does not support the WebTunnel protocol."s, reflectorURI.toString()));
+				statusChanged(STATUS_ERROR, message);
 
 				pWebSocket->shutdown(Poco::Net::WebSocket::WS_PROTOCOL_ERROR);
 				// receive final frame from peer; ignore if none is sent.
@@ -318,9 +318,9 @@ void WebTunnelAgent::connect()
 			}
 			else
 			{
-				std::string msg = response.get(X_PTTH_ERROR, exc.displayText());
-				statusChanged(STATUS_ERROR, Poco::format("Cannot connect to reflector at %s: %s"s, reflectorURI.toString(), msg));
-				_logger.error(_lastError);
+				const std::string error = response.get(X_PTTH_ERROR, exc.displayText());
+				const std::string message(Poco::format("Cannot connect to reflector at %s: %s"s, reflectorURI.toString(), error));
+				statusChanged(STATUS_ERROR, message);
 				if (_retryDelay < MAX_RETRY_DELAY)
 				{
 					_retryDelay *= 2;
@@ -330,8 +330,8 @@ void WebTunnelAgent::connect()
 		}
 		catch (Poco::Exception& exc)
 		{
-			statusChanged(STATUS_ERROR, Poco::format("Cannot connect device to reflector at %s: %s"s, reflectorURI.toString(), exc.displayText()));
-			_logger.error("Cannot connect device %s to reflector at %s: %s"s, _deviceName, reflectorURI.toString(), exc.displayText());
+			const std::string message(Poco::format("Cannot connect device to reflector at %s: %s"s, reflectorURI.toString(), exc.displayText()));
+			statusChanged(STATUS_ERROR, message);
 			if (_retryDelay < MAX_RETRY_DELAY)
 			{
 				_retryDelay *= 2;
@@ -709,6 +709,7 @@ void WebTunnelAgent::statusChanged(Status status, const std::string& message)
 			connected(message);
 			break;
 		case STATUS_ERROR:
+			_logger.error(message);
 			error(message);
 			break;
 		}
