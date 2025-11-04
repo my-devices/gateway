@@ -228,6 +228,25 @@ function cancelUpdateDevice(id)
           <tr class="odd">
             <td class="basicProperty">
               <input type="checkbox"
+                     name="vpnPortEnabled"
+                     value="true"
+                     <%= ctrl.vpnPortEnabled() ? "checked" : "" %>
+                     class="form-control">
+              VPN Server Port
+            </td>
+            <td>
+              <input type="number"
+                     name="vpnPort"
+                     value="<%= U::htmlize(ctrl.vpnPort()) %>"
+                     min="1"
+                     max="65535"
+                     placeholder="1194"
+                     class="form-control">
+            </td>
+          </tr>
+          <tr class="even">
+            <td class="basicProperty">
+              <input type="checkbox"
                      name="appPortEnabled"
                      value="true"
                      <%= ctrl.appPortEnabled() ? "checked" : "" %>
@@ -243,7 +262,7 @@ function cancelUpdateDevice(id)
                      class="form-control">
             </td>
           </tr>
-          <tr class="even">
+          <tr class="odd">
             <td>Additional Forwarded TCP Ports</td>
             <td>
               <input type="text"

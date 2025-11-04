@@ -79,6 +79,7 @@ std::string IndexPageController::formatPorts(Poco::AutoPtr<Poco::Util::AbstractC
 	const unsigned sshPort = pDeviceConfig->getUInt("webtunnel.sshPort"s, 0);
 	const unsigned vncPort = pDeviceConfig->getUInt("webtunnel.vncPort"s, 0);
 	const unsigned rdpPort = pDeviceConfig->getUInt("webtunnel.rdpPort"s, 0);
+	const unsigned vpnPort = pDeviceConfig->getUInt("webtunnel.vpnPort"s, 0);
 	const bool httpsEnable = pDeviceConfig->getBool("webtunnel.https.enable"s, false);
 	const std::string portsStr = pDeviceConfig->getString("webtunnel.ports"s, ""s);
 	Poco::StringTokenizer portsTok(portsStr, ",;"s, Poco::StringTokenizer::TOK_TRIM | Poco::StringTokenizer::TOK_IGNORE_EMPTY);
@@ -104,6 +105,8 @@ std::string IndexPageController::formatPorts(Poco::AutoPtr<Poco::Util::AbstractC
 			result += "/VNC";
 		else if (*it == rdpPort)
 			result += "/RDP";
+		else if (*it == vpnPort)
+			result += "/VPN";
 	}
 	return result;
 }

@@ -135,6 +135,7 @@ void WebTunnelAgent::addProperties(Poco::Net::HTTPRequest& request, const std::m
 	addPortProperty(request, "ssh"s, _sshPort);
 	addPortProperty(request, "vnc"s, _vncPort);
 	addPortProperty(request, "rdp"s, _rdpPort);
+	addPortProperty(request, "vpn"s, _vpnPort);
 	addPortProperty(request, "app"s, _appPort);
 
 	if (!_deviceName.empty())
@@ -541,6 +542,7 @@ void WebTunnelAgent::init()
 	_sshPort = loadPort("ssh"s);
 	_vncPort = loadPort("vnc"s);
 	_rdpPort = loadPort("rdp"s);
+	_vpnPort = loadPort("vpn"s);
 	_appPort = loadPort("app"s);
 	_userAgent = _pConfig->getString("webtunnel.userAgent"s, ""s);
 	_httpTimeout = Poco::Timespan(_pConfig->getInt("http.timeout"s, 30), 0);

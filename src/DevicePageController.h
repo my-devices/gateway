@@ -77,6 +77,11 @@ public:
 		return _rdpPortEnabled;
 	}
 
+	bool vpnPortEnabled() const
+	{
+		return _vpnPortEnabled;
+	}
+
 	bool appPortEnabled() const
 	{
 		return _appPortEnabled;
@@ -105,6 +110,11 @@ public:
 	const std::string rdpPort() const
 	{
 		return _rdpPort;
+	}
+
+	const std::string vpnPort() const
+	{
+		return _vpnPort;
 	}
 
 	const std::string appPort() const
@@ -147,12 +157,14 @@ private:
 	bool _sshPortEnabled = true;
 	bool _vncPortEnabled = true;
 	bool _rdpPortEnabled = true;
+	bool _vpnPortEnabled = true;
 	bool _appPortEnabled = true;
 	std::string _httpPort;
 	bool _httpsEnable;
 	std::string _sshPort;
 	std::string _vncPort;
 	std::string _rdpPort;
+	std::string _vpnPort;
 	std::string _appPort;
 	std::string _extraPorts;
 	Poco::AutoPtr<Poco::Util::AbstractConfiguration> _pDeviceConfig;

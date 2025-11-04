@@ -103,11 +103,13 @@ void DevicePageController::loadDevice()
 	_sshPort = deviceConfig()->getString("webtunnel.sshPort"s, ""s);
 	_vncPort = deviceConfig()->getString("webtunnel.vncPort"s, ""s);
 	_rdpPort = deviceConfig()->getString("webtunnel.rdpPort"s, ""s);
+	_vpnPort = deviceConfig()->getString("webtunnel.vpnPort"s, ""s);
 	_appPort = deviceConfig()->getString("webtunnel.appPort"s, ""s);
 	_httpPortEnabled = deviceConfig()->getBool("webtunnel.httpPort.enable"s, !_httpPort.empty() && _httpPort != "0");
 	_sshPortEnabled = deviceConfig()->getBool("webtunnel.sshPort.enable"s, !_sshPort.empty() && _sshPort != "0");
 	_vncPortEnabled = deviceConfig()->getBool("webtunnel.vncPort.enable"s, !_vncPort.empty() && _vncPort != "0");
 	_rdpPortEnabled = deviceConfig()->getBool("webtunnel.rdpPort.enable"s, !_rdpPort.empty() && _rdpPort != "0");
+	_vpnPortEnabled = deviceConfig()->getBool("webtunnel.vpnPort.enable"s, !_vpnPort.empty() && _vpnPort != "0");
 	_appPortEnabled = deviceConfig()->getBool("webtunnel.appPort.enable"s, !_appPort.empty() && _appPort != "0");
 	_httpsEnable = deviceConfig()->getBool("webtunnel.https.enable"s, false);
 	_extraPorts = loadExtraPorts();
@@ -115,6 +117,7 @@ void DevicePageController::loadDevice()
 	if (_sshPort.empty()) _sshPort = "22";
 	if (_vncPort.empty()) _vncPort = "5900";
 	if (_rdpPort.empty()) _rdpPort = "3389";
+	if (_vpnPort.empty()) _vpnPort = "1194";
 }
 
 
@@ -124,6 +127,7 @@ std::string DevicePageController::loadExtraPorts() const
 	const unsigned sshPort = loadPort("ssh"s);
 	const unsigned vncPort = loadPort("vnc"s);
 	const unsigned rdpPort = loadPort("rdp"s);
+	const unsigned vpnPort = loadPort("vpn"s);
 	const unsigned appPort = loadPort("app"s);
 	const std::string portsStr = deviceConfig()->getString("webtunnel.ports"s, ""s);
 	Poco::StringTokenizer portsTok(portsStr, ",;"s, Poco::StringTokenizer::TOK_TRIM | Poco::StringTokenizer::TOK_IGNORE_EMPTY);
@@ -133,7 +137,7 @@ std::string DevicePageController::loadExtraPorts() const
 		unsigned port;
 		if (Poco::NumberParser::tryParseUnsigned(*it, port))
 		{
-			if (port != httpPort && port != sshPort && port != vncPort && port != rdpPort && port != appPort)
+			if (port != httpPort && port != sshPort && port != vncPort && port != rdpPort && port != vpnPort && port != appPort)
 			{
 				ports.insert(port);
 			}
@@ -166,12 +170,14 @@ void DevicePageController::processForm()
 			_sshPortEnabled = form().get("sshPortEnabled"s, ""s) == "true";
 			_vncPortEnabled = form().get("vncPortEnabled"s, ""s) == "true";
 			_rdpPortEnabled = form().get("rdpPortEnabled"s, ""s) == "true";
+			_vpnPortEnabled = form().get("vpnPortEnabled"s, ""s) == "true";
 			_appPortEnabled = form().get("appPortEnabled"s, ""s) == "true";
 			_httpPort = form().get("httpPort"s);
 			_httpsEnable = form().get("httpsRequired"s, ""s) == "true";
 			_sshPort = form().get("sshPort"s);
 			_vncPort = form().get("vncPort"s);
 			_rdpPort = form().get("rdpPort"s);
+			_vpnPort = form().get("vpnPort"s);
 			_appPort = form().get("appPort"s);
 			_extraPorts = form().get("ports"s);
 
@@ -200,6 +206,7 @@ void DevicePageController::processForm()
 				deviceConfig()->setBool("webtunnel.sshPort.enable"s, _sshPortEnabled);
 				deviceConfig()->setBool("webtunnel.vncPort.enable"s, _vncPortEnabled);
 				deviceConfig()->setBool("webtunnel.rdpPort.enable"s, _rdpPortEnabled);
+				deviceConfig()->setBool("webtunnel.vpnPort.enable"s, _vpnPortEnabled);
 				deviceConfig()->setBool("webtunnel.appPort.enable"s, _appPortEnabled);
 
 				std::set<Poco::UInt16> ports;
@@ -238,6 +245,13 @@ void DevicePageController::processForm()
 				if (_rdpPortEnabled && rdpPort != 0)
 				{
 					ports.insert(rdpPort);
+				}
+
+				Poco::UInt16 vpnPort = validatePort(_vpnPort);
+				savePort("vpn"s, vpnPort);
+				if (_vpnPortEnabled && vpnPort != 0)
+				{
+					ports.insert(vpnPort);
 				}
 
 				Poco::UInt16 appPort = validatePort(_appPort);

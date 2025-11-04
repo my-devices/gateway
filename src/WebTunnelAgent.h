@@ -128,6 +128,7 @@ private:
 	Poco::UInt16 _sshPort = 0;
 	Poco::UInt16 _vncPort = 0;
 	Poco::UInt16 _rdpPort = 0;
+	Poco::UInt16 _vpnPort = 0;
 	Poco::UInt16 _appPort = 0;
 	bool _useProxy = false;
 	std::string _proxyHost;
