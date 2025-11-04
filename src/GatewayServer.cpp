@@ -45,6 +45,7 @@
 #include "DeviceManager.h"
 #include "Utility.h"
 #include "LoginPage.h"
+#include "TOTPPage.h"
 #include "IndexPage.h"
 #include "StatusJSON.h"
 #include "DevicePage.h"
@@ -121,6 +122,8 @@ public:
 
 		if (uri == "/")
 			return new LoginPage(_pDeviceManager);
+		else if (uri == "/totp")
+			return new TOTPPage(_pDeviceManager);
 		else if (uri == "/devices")
 			return new IndexPage(_pDeviceManager);
 		else if (uri == "/create")

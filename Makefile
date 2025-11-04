@@ -27,7 +27,7 @@ endif
 
 objects = GatewayServer WebTunnelAgent DeviceManager Utility PageController \
 	WebSession WebSessionManager \
-	LoginPage LoginPageController \
+	LoginPage TOTPPage LoginPageController \
 	IndexPage IndexPageController \
 	DevicePage DevicePageController \
 	CreateDevicePage CreateDevicePageController \

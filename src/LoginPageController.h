@@ -29,12 +29,17 @@ public:
 	~LoginPageController();
 		/// Destroys the PageController.
 
+	std::string totpUsername() const;
+
 protected:
-	void processForm();
+	void processLoginForm();
+	void processTOTPForm();
 	bool verifyDomainAccess(const Poco::URI& reflectorURI, const std::string& token, const std::string& domain);
 	std::string requestDefaultDomain(const Poco::URI& reflectorURI, const std::string& username, const std::string& token);
+	void setupSession(const Poco::URI& reflectorURI, const std::string& username, const std::string& token);
 
 private:
+	WebSession::Ptr _pWebSession;
 	Poco::Logger& _logger;
 };
 
