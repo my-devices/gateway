@@ -1,7 +1,7 @@
 //
 // GatewayServer.cpp
 //
-// Copyright (c) 2015-2025, Applied Informatics Software Engineering GmbH.
+// Copyright (c) 2015-2026, Applied Informatics Software Engineering GmbH.
 // All rights reserved.
 //
 // SPDX-License-Identifier:	BSL-1.0
@@ -212,7 +212,7 @@ protected:
 				.required(false)
 				.repeatable(false)
 				.callback(OptionCallback<GatewayServer>(this, &GatewayServer::handleVersion)));
-		
+
 		options.addOption(
 			Option("config-file"s, "c"s, "Load configuration data from a file."s)
 				.required(false)
@@ -259,7 +259,7 @@ protected:
 		helpFormatter.setUsage("OPTIONS"s);
 		helpFormatter.setHeader("\n"
 			"macchina.io REMOTE Gateway Server.\n\n"
-			"Copyright (c) 2015-2025 by Applied Informatics Software Engineering GmbH.\n"
+			"Copyright (c) 2015-2026 by Applied Informatics Software Engineering GmbH.\n"
 			"All rights reserved.\n\n"
 			"This application is used to connect device web servers in the local\n"
 			"network to the macchina.io REMOTE server in order to make them\n"
@@ -359,7 +359,7 @@ protected:
 			"\n"
 			"    macchina.io REMOTE Gateway %s (SDK %s)\n"
 			"\n"
-			"    Copyright (c) 2015-2025 by Applied Informatics Software Engineering GmbH.\n"
+			"    Copyright (c) 2015-2026 by Applied Informatics Software Engineering GmbH.\n"
 			"    All rights reserved.\n"s,
 			U::versionString(),
 			Poco::WebTunnel::formatVersion(WEBTUNNEL_VERSION)
