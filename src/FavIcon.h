@@ -1,10 +1,3 @@
-//
-// FavIcon.h
-//
-// This file has been generated from FavIcon.cpsp on 2025-02-19 13:29:52.
-//
-
-
 #ifndef FavIcon_INCLUDED
 #define FavIcon_INCLUDED
 

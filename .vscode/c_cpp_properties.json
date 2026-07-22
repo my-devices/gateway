@@ -16,8 +16,8 @@
   "configurations": [
     {
       "name": "Mac",
-      "intelliSenseMode": "clang-x64",
-      "includePath": ["${pocoIncludePath}", "${workspaceFolder}/src"],
+      "intelliSenseMode": "macos-clang-arm64",
+      "includePath": ["${pocoIncludePath}", "${workspaceFolder}/src", "/opt/homebrew/opt/openssl/include/"],
       "macFrameworkPath": ["/System/Library/Frameworks"],
       "defines": [
         "WEBTUNNEL_ENABLE_TLS=1"

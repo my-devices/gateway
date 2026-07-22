@@ -1,10 +1,3 @@
-//
-// PlusIcon.cpp
-//
-// This file has been generated from PlusIcon.cpsp on 2025-02-19 13:29:51.
-//
-
-
 #include "PlusIcon.h"
 #include "Poco/Net/HTTPServerRequest.h"
 #include "Poco/Net/HTTPServerResponse.h"
@@ -13,10 +6,10 @@
 #include "Poco/DateTimeParser.h"
 #include "Poco/DateTimeFormatter.h"
 #include "Poco/DateTimeFormat.h"
-#line 9 "/Users/guenter/ws/git/my-devices/gateway/src/PlusIcon.cpsp"
+#line 9 "/Users/guenter/ws/git/my-devices/gateway-build/generated/PlusIcon.cpsp"
 
 
-// res/PlusIcon.png
+// /Users/guenter/ws/git/my-devices/gateway/res/PlusIcon.png
 static const unsigned char data[] = {
 	0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A, 0x00, 0x00, 0x00, 0x0D, 0x49, 0x48, 0x44, 0x52, 0x00, 
 	0x00, 0x00, 0x14, 0x00, 0x00, 0x00, 0x14, 0x08, 0x03, 0x00, 0x00, 0x00, 0xBA, 0x57, 0xED, 0x3F, 0x00, 
@@ -39,7 +32,7 @@ static const unsigned char data[] = {
 
 static bool checkModified(Poco::Net::HTTPServerRequest& request)
 {
-	Poco::DateTime modified(2018, 3, 9, 11, 48, 5);
+	Poco::DateTime modified(2022, 11, 26, 18, 45, 6);
 	request.response().setChunkedTransferEncoding(false);
 	request.response().set("Last-Modified", Poco::DateTimeFormatter::format(modified, Poco::DateTimeFormat::HTTP_FORMAT));
 	if (request.has("If-Modified-Since"))
@@ -75,7 +68,7 @@ void PlusIcon::handleRequest(Poco::Net::HTTPServerRequest& request, Poco::Net::H
 	if (!(checkModified(request))) return;
 
 	std::ostream& responseStream = response.send();
-#line 53 "/Users/guenter/ws/git/my-devices/gateway/src/PlusIcon.cpsp"
+#line 53 "/Users/guenter/ws/git/my-devices/gateway-build/generated/PlusIcon.cpsp"
 
 	responseStream.write(reinterpret_cast<const char*>(data), sizeof(data));
 }

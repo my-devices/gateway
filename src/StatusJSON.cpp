@@ -1,10 +1,3 @@
-//
-// StatusJSON.cpp
-//
-// This file has been generated from StatusJSON.cpsp on 2025-02-19 13:29:52.
-//
-
-
 #include "StatusJSON.h"
 #include "Poco/Net/HTTPServerRequest.h"
 #include "Poco/Net/HTTPServerResponse.h"

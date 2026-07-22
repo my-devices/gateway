@@ -1,10 +1,3 @@
-//
-// MinusIconX2.h
-//
-// This file has been generated from MinusIconX2.cpsp on 2025-02-19 13:29:50.
-//
-
-
 #ifndef MinusIconX2_INCLUDED
 #define MinusIconX2_INCLUDED
 

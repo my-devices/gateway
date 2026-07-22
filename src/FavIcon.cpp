@@ -1,10 +1,3 @@
-//
-// FavIcon.cpp
-//
-// This file has been generated from FavIcon.cpsp on 2025-02-19 13:29:52.
-//
-
-
 #include "FavIcon.h"
 #include "Poco/Net/HTTPServerRequest.h"
 #include "Poco/Net/HTTPServerResponse.h"
@@ -13,10 +6,10 @@
 #include "Poco/DateTimeParser.h"
 #include "Poco/DateTimeFormatter.h"
 #include "Poco/DateTimeFormat.h"
-#line 9 "/Users/guenter/ws/git/my-devices/gateway/src/FavIcon.cpsp"
+#line 9 "/Users/guenter/ws/git/my-devices/gateway-build/generated/FavIcon.cpsp"
 
 
-// res/FavIcon.ico
+// /Users/guenter/ws/git/my-devices/gateway/res/FavIcon.ico
 static const unsigned char data[] = {
 	0x00, 0x00, 0x01, 0x00, 0x01, 0x00, 0x10, 0x10, 0x00, 0x00, 0x00, 0x00, 0x20, 0x00, 0x68, 0x04, 0x00, 
 	0x00, 0x16, 0x00, 0x00, 0x00, 0x28, 0x00, 0x00, 0x00, 0x10, 0x00, 0x00, 0x00, 0x20, 0x00, 0x00, 0x00, 
@@ -91,7 +84,7 @@ static const unsigned char data[] = {
 
 static bool checkModified(Poco::Net::HTTPServerRequest& request)
 {
-	Poco::DateTime modified(2021, 11, 27, 20, 14, 5);
+	Poco::DateTime modified(2022, 11, 26, 18, 45, 6);
 	request.response().setChunkedTransferEncoding(false);
 	request.response().set("Last-Modified", Poco::DateTimeFormatter::format(modified, Poco::DateTimeFormat::HTTP_FORMAT));
 	if (request.has("If-Modified-Since"))
@@ -127,7 +120,7 @@ void FavIcon::handleRequest(Poco::Net::HTTPServerRequest& request, Poco::Net::HT
 	if (!(checkModified(request))) return;
 
 	std::ostream& responseStream = response.send();
-#line 105 "/Users/guenter/ws/git/my-devices/gateway/src/FavIcon.cpsp"
+#line 105 "/Users/guenter/ws/git/my-devices/gateway-build/generated/FavIcon.cpsp"
 
 	responseStream.write(reinterpret_cast<const char*>(data), sizeof(data));
 }

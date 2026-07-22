@@ -159,6 +159,7 @@ function cancelUpdateDevice(id)
                      max="65535"
                      placeholder="80"
                      class="form-control">
+              &nbsp;
               <input type="checkbox"
                      id="httpsRequired"
                      name="httpsRequired"
@@ -166,6 +167,16 @@ function cancelUpdateDevice(id)
                      <%= ctrl.httpsEnable() ? "checked" : "" %>
                      class="form-control">
               <label for="httpsRequired">requires HTTPS</label>
+              <% if (ctrl.haveProxy()) { %>
+                &nbsp;
+                <input type="checkbox"
+                      id="proxyRequired"
+                      name="proxyRequired"
+                      value="true"
+                      <%= ctrl.proxyEnable() ? "checked" : "" %>
+                      class="form-control">
+                <label for="httpsRequired">use internal HTTP proxy</label>
+              <% } %>
             </td>
           </tr>
           <tr class="even">

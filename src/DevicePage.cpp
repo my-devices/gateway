@@ -1,10 +1,3 @@
-//
-// DevicePage.cpp
-//
-// This file has been generated from DevicePage.cpsp on 2025-11-04 07:45:20.
-//
-
-
 #include "DevicePage.h"
 #include "Poco/Net/HTTPServerRequest.h"
 #include "Poco/Net/HTTPServerResponse.h"
@@ -61,11 +54,11 @@ pageTemplate.set("onload"s, "document.getElementById('deviceNameInput').focus();
 	std::ostream& responseStream = _compressResponse ? _gzipStream : _responseStream;
 	responseStream << "<!DOCTYPE HTML>\n";
 	responseStream << "\n";
-	// begin include html/template.inc
+	// begin include /Users/guenter/ws/git/my-devices/gateway/html/template.inc
 	responseStream << "\n";
-	// end include html/template.inc
+	// end include /Users/guenter/ws/git/my-devices/gateway/html/template.inc
 	responseStream << "\n";
-	// begin include html/header.inc
+	// begin include /Users/guenter/ws/git/my-devices/gateway/html/header.inc
 	responseStream << "<html lang=\"en\">\n";
 	responseStream << "  <head>\n";
 	responseStream << "    <meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\">\n";
@@ -90,7 +83,7 @@ pageTemplate.set("onload"s, "document.getElementById('deviceNameInput').focus();
 	responseStream << "    </header>\n";
 	responseStream << "    <div class=\"contentcontainer\">\n";
 	responseStream << "      <div class=\"content\">\n";
-	// end include html/header.inc
+	// end include /Users/guenter/ws/git/my-devices/gateway/html/header.inc
 	responseStream << "\n";
 	responseStream << "<script>\n";
 	responseStream << "function cancelUpdateDevice(id)\n";
@@ -260,16 +253,34 @@ pageTemplate.set("onload"s, "document.getElementById('deviceNameInput').focus();
 	responseStream << "                     max=\"65535\"\n";
 	responseStream << "                     placeholder=\"80\"\n";
 	responseStream << "                     class=\"form-control\">\n";
+	responseStream << "              &nbsp;\n";
 	responseStream << "              <input type=\"checkbox\"\n";
 	responseStream << "                     id=\"httpsRequired\"\n";
 	responseStream << "                     name=\"httpsRequired\"\n";
 	responseStream << "                     value=\"true\"\n";
 	responseStream << "                     ";
-#line 166 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
+#line 167 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
 	responseStream << ( ctrl.httpsEnable() ? "checked" : "" );
 	responseStream << "\n";
 	responseStream << "                     class=\"form-control\">\n";
 	responseStream << "              <label for=\"httpsRequired\">requires HTTPS</label>\n";
+	responseStream << "              ";
+#line 170 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
+ if (ctrl.haveProxy()) { 	responseStream << "\n";
+	responseStream << "                &nbsp;\n";
+	responseStream << "                <input type=\"checkbox\"\n";
+	responseStream << "                      id=\"proxyRequired\"\n";
+	responseStream << "                      name=\"proxyRequired\"\n";
+	responseStream << "                      value=\"true\"\n";
+	responseStream << "                      ";
+#line 176 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
+	responseStream << ( ctrl.proxyEnable() ? "checked" : "" );
+	responseStream << "\n";
+	responseStream << "                      class=\"form-control\">\n";
+	responseStream << "                <label for=\"httpsRequired\">use internal HTTP proxy</label>\n";
+	responseStream << "              ";
+#line 179 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
+ } 	responseStream << "\n";
 	responseStream << "            </td>\n";
 	responseStream << "          </tr>\n";
 	responseStream << "          <tr class=\"even\">\n";
@@ -278,7 +289,7 @@ pageTemplate.set("onload"s, "document.getElementById('deviceNameInput').focus();
 	responseStream << "                     name=\"sshPortEnabled\"\n";
 	responseStream << "                     value=\"true\"\n";
 	responseStream << "                     ";
-#line 176 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
+#line 187 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
 	responseStream << ( ctrl.sshPortEnabled() ? "checked" : "" );
 	responseStream << "\n";
 	responseStream << "                     class=\"form-control\">\n";
@@ -288,7 +299,7 @@ pageTemplate.set("onload"s, "document.getElementById('deviceNameInput').focus();
 	responseStream << "              <input type=\"number\"\n";
 	responseStream << "                     name=\"sshPort\"\n";
 	responseStream << "                     value=\"";
-#line 183 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
+#line 194 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
 	responseStream << ( U::htmlize(ctrl.sshPort()) );
 	responseStream << "\"\n";
 	responseStream << "                     min=\"1\"\n";
@@ -303,7 +314,7 @@ pageTemplate.set("onload"s, "document.getElementById('deviceNameInput').focus();
 	responseStream << "                     name=\"vncPortEnabled\"\n";
 	responseStream << "                     value=\"true\"\n";
 	responseStream << "                     ";
-#line 195 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
+#line 206 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
 	responseStream << ( ctrl.vncPortEnabled() ? "checked" : "" );
 	responseStream << "\n";
 	responseStream << "                     class=\"form-control\">\n";
@@ -313,7 +324,7 @@ pageTemplate.set("onload"s, "document.getElementById('deviceNameInput').focus();
 	responseStream << "              <input type=\"number\"\n";
 	responseStream << "                     name=\"vncPort\"\n";
 	responseStream << "                     value=\"";
-#line 202 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
+#line 213 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
 	responseStream << ( U::htmlize(ctrl.vncPort()) );
 	responseStream << "\"\n";
 	responseStream << "                     min=\"1\"\n";
@@ -328,7 +339,7 @@ pageTemplate.set("onload"s, "document.getElementById('deviceNameInput').focus();
 	responseStream << "                     name=\"rdpPortEnabled\"\n";
 	responseStream << "                     value=\"true\"\n";
 	responseStream << "                     ";
-#line 214 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
+#line 225 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
 	responseStream << ( ctrl.rdpPortEnabled() ? "checked" : "" );
 	responseStream << "\n";
 	responseStream << "                     class=\"form-control\">\n";
@@ -338,7 +349,7 @@ pageTemplate.set("onload"s, "document.getElementById('deviceNameInput').focus();
 	responseStream << "              <input type=\"number\"\n";
 	responseStream << "                     name=\"rdpPort\"\n";
 	responseStream << "                     value=\"";
-#line 221 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
+#line 232 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
 	responseStream << ( U::htmlize(ctrl.rdpPort()) );
 	responseStream << "\"\n";
 	responseStream << "                     min=\"1\"\n";
@@ -353,7 +364,7 @@ pageTemplate.set("onload"s, "document.getElementById('deviceNameInput').focus();
 	responseStream << "                     name=\"vpnPortEnabled\"\n";
 	responseStream << "                     value=\"true\"\n";
 	responseStream << "                     ";
-#line 233 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
+#line 244 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
 	responseStream << ( ctrl.vpnPortEnabled() ? "checked" : "" );
 	responseStream << "\n";
 	responseStream << "                     class=\"form-control\">\n";
@@ -363,7 +374,7 @@ pageTemplate.set("onload"s, "document.getElementById('deviceNameInput').focus();
 	responseStream << "              <input type=\"number\"\n";
 	responseStream << "                     name=\"vpnPort\"\n";
 	responseStream << "                     value=\"";
-#line 240 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
+#line 251 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
 	responseStream << ( U::htmlize(ctrl.vpnPort()) );
 	responseStream << "\"\n";
 	responseStream << "                     min=\"1\"\n";
@@ -378,7 +389,7 @@ pageTemplate.set("onload"s, "document.getElementById('deviceNameInput').focus();
 	responseStream << "                     name=\"appPortEnabled\"\n";
 	responseStream << "                     value=\"true\"\n";
 	responseStream << "                     ";
-#line 252 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
+#line 263 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
 	responseStream << ( ctrl.appPortEnabled() ? "checked" : "" );
 	responseStream << "\n";
 	responseStream << "                     class=\"form-control\">\n";
@@ -388,7 +399,7 @@ pageTemplate.set("onload"s, "document.getElementById('deviceNameInput').focus();
 	responseStream << "              <input type=\"number\"\n";
 	responseStream << "                     name=\"appPort\"\n";
 	responseStream << "                     value=\"";
-#line 259 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
+#line 270 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
 	responseStream << ( U::htmlize(ctrl.appPort()) );
 	responseStream << "\"\n";
 	responseStream << "                     min=\"1\"\n";
@@ -402,7 +413,7 @@ pageTemplate.set("onload"s, "document.getElementById('deviceNameInput').focus();
 	responseStream << "              <input type=\"text\"\n";
 	responseStream << "                     name=\"ports\"\n";
 	responseStream << "                     value=\"";
-#line 270 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
+#line 281 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
 	responseStream << ( ctrl.extraPorts() );
 	responseStream << "\"\n";
 	responseStream << "                     size=\"40\"\n";
@@ -422,10 +433,10 @@ pageTemplate.set("onload"s, "document.getElementById('deviceNameInput').focus();
 	responseStream << "      </table>\n";
 	responseStream << "    </form>\n";
 	responseStream << "  </div>\n";
-#line 288 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
+#line 299 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
  } 	responseStream << " ";
 	responseStream << "\n";
-	// begin include html/footer.inc
+	// begin include /Users/guenter/ws/git/my-devices/gateway/html/footer.inc
 	responseStream << "      </div>\n";
 	responseStream << "    </div>\n";
 	responseStream << "    <footer>\n";
@@ -446,7 +457,7 @@ pageTemplate.set("onload"s, "document.getElementById('deviceNameInput').focus();
 	responseStream << "    </script>\n";
 	responseStream << "  </body>\n";
 	responseStream << "</html>\n";
-	// end include html/footer.inc
+	// end include /Users/guenter/ws/git/my-devices/gateway/html/footer.inc
 	responseStream << "\n";
 	if (_compressResponse) _gzipStream.close();
 }

@@ -1,10 +1,3 @@
-//
-// TOTPPage.cpp
-//
-// This file has been generated from TOTPPage.cpsp on 2025-11-04 19:08:46.
-//
-
-
 #include "TOTPPage.h"
 #include "Poco/Net/HTTPServerRequest.h"
 #include "Poco/Net/HTTPServerResponse.h"
@@ -51,11 +44,11 @@ pageTemplate.set("title"s, "Gateway"s);
 	std::ostream& responseStream = _compressResponse ? _gzipStream : _responseStream;
 	responseStream << "<!DOCTYPE HTML>\n";
 	responseStream << "\n";
-	// begin include html/template.inc
+	// begin include /Users/guenter/ws/git/my-devices/gateway/html/template.inc
 	responseStream << "\n";
-	// end include html/template.inc
+	// end include /Users/guenter/ws/git/my-devices/gateway/html/template.inc
 	responseStream << "\n";
-	// begin include html/header.inc
+	// begin include /Users/guenter/ws/git/my-devices/gateway/html/header.inc
 	responseStream << "<html lang=\"en\">\n";
 	responseStream << "  <head>\n";
 	responseStream << "    <meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\">\n";
@@ -80,7 +73,7 @@ pageTemplate.set("title"s, "Gateway"s);
 	responseStream << "    </header>\n";
 	responseStream << "    <div class=\"contentcontainer\">\n";
 	responseStream << "      <div class=\"content\">\n";
-	// end include html/header.inc
+	// end include /Users/guenter/ws/git/my-devices/gateway/html/header.inc
 	responseStream << "\n";
 #line 21 "/Users/guenter/ws/git/my-devices/gateway/src/TOTPPage.cpsp"
  if (!ctrl.message().empty()) { 	responseStream << "\n";
@@ -125,7 +118,7 @@ pageTemplate.set("title"s, "Gateway"s);
 	responseStream << "  </form>\n";
 	responseStream << "</div>\n";
 	responseStream << "\n";
-	// begin include html/footer.inc
+	// begin include /Users/guenter/ws/git/my-devices/gateway/html/footer.inc
 	responseStream << "      </div>\n";
 	responseStream << "    </div>\n";
 	responseStream << "    <footer>\n";
@@ -146,7 +139,7 @@ pageTemplate.set("title"s, "Gateway"s);
 	responseStream << "    </script>\n";
 	responseStream << "  </body>\n";
 	responseStream << "</html>\n";
-	// end include html/footer.inc
+	// end include /Users/guenter/ws/git/my-devices/gateway/html/footer.inc
 	responseStream << "\n";
 	if (_compressResponse) _gzipStream.close();
 }

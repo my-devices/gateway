@@ -1,10 +1,3 @@
-//
-// CreateDevicePage.cpp
-//
-// This file has been generated from CreateDevicePage.cpsp on 2025-02-19 13:33:15.
-//
-
-
 #include "CreateDevicePage.h"
 #include "Poco/Net/HTTPServerRequest.h"
 #include "Poco/Net/HTTPServerResponse.h"
@@ -53,11 +46,11 @@ pageTemplate.set("onload"s, "document.getElementById('deviceNameInput').focus();
 	std::ostream& responseStream = _compressResponse ? _gzipStream : _responseStream;
 	responseStream << "<!DOCTYPE HTML>\n";
 	responseStream << "\n";
-	// begin include html/template.inc
+	// begin include /Users/guenter/ws/git/my-devices/gateway/html/template.inc
 	responseStream << "\n";
-	// end include html/template.inc
+	// end include /Users/guenter/ws/git/my-devices/gateway/html/template.inc
 	responseStream << "\n";
-	// begin include html/header.inc
+	// begin include /Users/guenter/ws/git/my-devices/gateway/html/header.inc
 	responseStream << "<html lang=\"en\">\n";
 	responseStream << "  <head>\n";
 	responseStream << "    <meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\">\n";
@@ -82,7 +75,7 @@ pageTemplate.set("onload"s, "document.getElementById('deviceNameInput').focus();
 	responseStream << "    </header>\n";
 	responseStream << "    <div class=\"contentcontainer\">\n";
 	responseStream << "      <div class=\"content\">\n";
-	// end include html/header.inc
+	// end include /Users/guenter/ws/git/my-devices/gateway/html/header.inc
 	responseStream << "\n";
 	responseStream << "<script>\n";
 	responseStream << "function cancelUpdateDevice(id)\n";
@@ -189,7 +182,7 @@ pageTemplate.set("onload"s, "document.getElementById('deviceNameInput').focus();
 	responseStream << "  </form>\n";
 	responseStream << "</div>\n";
 	responseStream << "\n";
-	// begin include html/footer.inc
+	// begin include /Users/guenter/ws/git/my-devices/gateway/html/footer.inc
 	responseStream << "      </div>\n";
 	responseStream << "    </div>\n";
 	responseStream << "    <footer>\n";
@@ -210,7 +203,7 @@ pageTemplate.set("onload"s, "document.getElementById('deviceNameInput').focus();
 	responseStream << "    </script>\n";
 	responseStream << "  </body>\n";
 	responseStream << "</html>\n";
-	// end include html/footer.inc
+	// end include /Users/guenter/ws/git/my-devices/gateway/html/footer.inc
 	responseStream << "\n";
 	if (_compressResponse) _gzipStream.close();
 }

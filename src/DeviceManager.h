@@ -88,6 +88,9 @@ public:
 	WebSessionManager& webSessionManager();
 		/// Returns the WebSessionManager.
 
+	Poco::Net::SocketAddress proxyAddress() const;
+		/// Returns the HTTP proxy address, if configured.
+
 protected:
 	void reconfigureAgents();
 	WebTunnelAgent::Ptr loadAgent(const std::string& id);

@@ -97,6 +97,16 @@ public:
 		return _httpsEnable;
 	}
 
+	bool proxyEnable() const
+	{
+		return _proxyEnable;
+	}
+
+	bool haveProxy() const
+	{
+		return _haveProxy;
+	}
+
 	const std::string sshPort() const
 	{
 		return _sshPort;
@@ -160,7 +170,9 @@ private:
 	bool _vpnPortEnabled = true;
 	bool _appPortEnabled = true;
 	std::string _httpPort;
-	bool _httpsEnable;
+	bool _httpsEnable = false;
+	bool _proxyEnable = false;
+	bool _haveProxy = false;
 	std::string _sshPort;
 	std::string _vncPort;
 	std::string _rdpPort;

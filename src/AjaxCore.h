@@ -1,10 +1,3 @@
-//
-// AjaxCore.h
-//
-// This file has been generated from AjaxCore.cpsp on 2025-02-19 13:29:50.
-//
-
-
 #ifndef AjaxCore_INCLUDED
 #define AjaxCore_INCLUDED
 

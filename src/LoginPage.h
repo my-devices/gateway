@@ -1,10 +1,3 @@
-//
-// LoginPage.h
-//
-// This file has been generated from LoginPage.cpsp on 2025-02-19 13:29:53.
-//
-
-
 #ifndef LoginPage_INCLUDED
 #define LoginPage_INCLUDED
 

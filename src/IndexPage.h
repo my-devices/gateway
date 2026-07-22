@@ -1,10 +1,3 @@
-//
-// IndexPage.h
-//
-// This file has been generated from IndexPage.cpsp on 2025-02-19 13:29:53.
-//
-
-
 #ifndef IndexPage_INCLUDED
 #define IndexPage_INCLUDED
 

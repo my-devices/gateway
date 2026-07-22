@@ -1,10 +1,3 @@
-//
-// StatusJSON.h
-//
-// This file has been generated from StatusJSON.cpsp on 2025-02-19 13:29:52.
-//
-
-
 #ifndef StatusJSON_INCLUDED
 #define StatusJSON_INCLUDED
 

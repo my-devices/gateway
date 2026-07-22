@@ -76,6 +76,7 @@ DevicePageController::DevicePageController(DeviceManager::Ptr pDeviceManager, co
 		Poco::Path p(request.getURI());
 		_deviceId = p.getFileName();
 		_pDeviceConfig = deviceManager()->deviceConfiguration(_deviceId);
+		_haveProxy = deviceManager()->config()->getBool("gateway.httpProxy.enable"s, false);
 		_pAgent = deviceManager()->agentForDevice(_deviceId);
 		message(deviceError());
 		loadDevice();
@@ -112,6 +113,7 @@ void DevicePageController::loadDevice()
 	_vpnPortEnabled = deviceConfig()->getBool("webtunnel.vpnPort.enable"s, !_vpnPort.empty() && _vpnPort != "0");
 	_appPortEnabled = deviceConfig()->getBool("webtunnel.appPort.enable"s, !_appPort.empty() && _appPort != "0");
 	_httpsEnable = deviceConfig()->getBool("webtunnel.https.enable"s, false);
+	_proxyEnable = deviceConfig()->getBool("webtunnel.httpProxy.enable"s, false);
 	_extraPorts = loadExtraPorts();
 
 	if (_sshPort.empty()) _sshPort = "22";
@@ -174,6 +176,7 @@ void DevicePageController::processForm()
 			_appPortEnabled = form().get("appPortEnabled"s, ""s) == "true";
 			_httpPort = form().get("httpPort"s);
 			_httpsEnable = form().get("httpsRequired"s, ""s) == "true";
+			_proxyEnable = form().get("proxyRequired"s, ""s) == "true";
 			_sshPort = form().get("sshPort"s);
 			_vncPort = form().get("vncPort"s);
 			_rdpPort = form().get("rdpPort"s);
@@ -224,6 +227,15 @@ void DevicePageController::processForm()
 				else
 				{
 					deviceConfig()->remove("webtunnel.https.enable"s);
+				}
+
+				if (_proxyEnable)
+				{
+					deviceConfig()->setBool("webtunnel.httpProxy.enable"s, true);
+				}
+				else
+				{
+					deviceConfig()->remove("webtunnel.httpProxy.enable"s);
 				}
 
 				Poco::UInt16 sshPort = validatePort(_sshPort);

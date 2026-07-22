@@ -1,10 +1,3 @@
-//
-// CreateDevicePage.h
-//
-// This file has been generated from CreateDevicePage.cpsp on 2025-02-19 13:33:15.
-//
-
-
 #ifndef CreateDevicePage_INCLUDED
 #define CreateDevicePage_INCLUDED
 

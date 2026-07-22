@@ -1,10 +1,3 @@
-//
-// AjaxCore.cpp
-//
-// This file has been generated from AjaxCore.cpsp on 2025-02-19 13:29:50.
-//
-
-
 #include "AjaxCore.h"
 #include "Poco/Net/HTTPServerRequest.h"
 #include "Poco/Net/HTTPServerResponse.h"
@@ -13,10 +6,10 @@
 #include "Poco/DateTimeParser.h"
 #include "Poco/DateTimeFormatter.h"
 #include "Poco/DateTimeFormat.h"
-#line 9 "/Users/guenter/ws/git/my-devices/gateway/src/AjaxCore.cpsp"
+#line 9 "/Users/guenter/ws/git/my-devices/gateway-build/generated/AjaxCore.cpsp"
 
 
-// res/AjaxCore.js
+// /Users/guenter/ws/git/my-devices/gateway/res/AjaxCore.js
 static const unsigned char data[] = {
 	0x2F, 0x2F, 0x0A, 0x2F, 0x2F, 0x20, 0x41, 0x6A, 0x61, 0x78, 0x43, 0x6F, 0x72, 0x65, 0x2E, 0x6A, 0x73, 
 	0x0A, 0x2F, 0x2F, 0x0A, 0x2F, 0x2F, 0x20, 0x43, 0x6F, 0x70, 0x79, 0x72, 0x69, 0x67, 0x68, 0x74, 0x20, 
@@ -148,7 +141,7 @@ static const unsigned char data[] = {
 
 static bool checkModified(Poco::Net::HTTPServerRequest& request)
 {
-	Poco::DateTime modified(2020, 8, 8, 9, 29, 50);
+	Poco::DateTime modified(2022, 11, 26, 18, 45, 6);
 	request.response().setChunkedTransferEncoding(false);
 	request.response().set("Last-Modified", Poco::DateTimeFormatter::format(modified, Poco::DateTimeFormat::HTTP_FORMAT));
 	if (request.has("If-Modified-Since"))
@@ -184,7 +177,7 @@ void AjaxCore::handleRequest(Poco::Net::HTTPServerRequest& request, Poco::Net::H
 	if (!(checkModified(request))) return;
 
 	std::ostream& responseStream = response.send();
-#line 162 "/Users/guenter/ws/git/my-devices/gateway/src/AjaxCore.cpsp"
+#line 162 "/Users/guenter/ws/git/my-devices/gateway-build/generated/AjaxCore.cpsp"
 
 	responseStream.write(reinterpret_cast<const char*>(data), sizeof(data));
 }

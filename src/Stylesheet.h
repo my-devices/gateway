@@ -1,10 +1,3 @@
-//
-// Stylesheet.h
-//
-// This file has been generated from Stylesheet.cpsp on 2025-11-04 11:46:14.
-//
-
-
 #ifndef Stylesheet_INCLUDED
 #define Stylesheet_INCLUDED
 

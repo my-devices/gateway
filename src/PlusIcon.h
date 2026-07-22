@@ -1,10 +1,3 @@
-//
-// PlusIcon.h
-//
-// This file has been generated from PlusIcon.cpsp on 2025-02-19 13:29:51.
-//
-
-
 #ifndef PlusIcon_INCLUDED
 #define PlusIcon_INCLUDED
 

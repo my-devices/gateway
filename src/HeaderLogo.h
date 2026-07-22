@@ -1,10 +1,3 @@
-//
-// HeaderLogo.h
-//
-// This file has been generated from HeaderLogo.cpsp on 2025-02-19 13:29:51.
-//
-
-
 #ifndef HeaderLogo_INCLUDED
 #define HeaderLogo_INCLUDED
 

@@ -1,10 +1,3 @@
-//
-// HeaderLogoX2.h
-//
-// This file has been generated from HeaderLogoX2.cpsp on 2025-02-19 13:29:51.
-//
-
-
 #ifndef HeaderLogoX2_INCLUDED
 #define HeaderLogoX2_INCLUDED
 

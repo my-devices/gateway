@@ -1,10 +1,3 @@
-//
-// HeaderLogoX2.cpp
-//
-// This file has been generated from HeaderLogoX2.cpsp on 2025-02-19 13:29:51.
-//
-
-
 #include "HeaderLogoX2.h"
 #include "Poco/Net/HTTPServerRequest.h"
 #include "Poco/Net/HTTPServerResponse.h"
@@ -13,10 +6,10 @@
 #include "Poco/DateTimeParser.h"
 #include "Poco/DateTimeFormatter.h"
 #include "Poco/DateTimeFormat.h"
-#line 9 "/Users/guenter/ws/git/my-devices/gateway/src/HeaderLogoX2.cpsp"
+#line 9 "/Users/guenter/ws/git/my-devices/gateway-build/generated/HeaderLogoX2.cpsp"
 
 
-// res/HeaderLogoX2.png
+// /Users/guenter/ws/git/my-devices/gateway/res/HeaderLogoX2.png
 static const unsigned char data[] = {
 	0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A, 0x00, 0x00, 0x00, 0x0D, 0x49, 0x48, 0x44, 0x52, 0x00, 
 	0x00, 0x00, 0xB4, 0x00, 0x00, 0x00, 0x28, 0x08, 0x06, 0x00, 0x00, 0x00, 0x57, 0x69, 0xD0, 0x0A, 0x00, 
@@ -356,7 +349,7 @@ static const unsigned char data[] = {
 
 static bool checkModified(Poco::Net::HTTPServerRequest& request)
 {
-	Poco::DateTime modified(2018, 9, 21, 7, 25, 46);
+	Poco::DateTime modified(2022, 11, 26, 18, 45, 6);
 	request.response().setChunkedTransferEncoding(false);
 	request.response().set("Last-Modified", Poco::DateTimeFormatter::format(modified, Poco::DateTimeFormat::HTTP_FORMAT));
 	if (request.has("If-Modified-Since"))
@@ -392,7 +385,7 @@ void HeaderLogoX2::handleRequest(Poco::Net::HTTPServerRequest& request, Poco::Ne
 	if (!(checkModified(request))) return;
 
 	std::ostream& responseStream = response.send();
-#line 370 "/Users/guenter/ws/git/my-devices/gateway/src/HeaderLogoX2.cpsp"
+#line 370 "/Users/guenter/ws/git/my-devices/gateway-build/generated/HeaderLogoX2.cpsp"
 
 	responseStream.write(reinterpret_cast<const char*>(data), sizeof(data));
 }

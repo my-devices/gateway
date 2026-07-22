@@ -31,6 +31,37 @@ namespace MyDevices {
 namespace Gateway {
 
 
+class ProxySocketFactory: public Poco::WebTunnel::SocketFactory
+{
+public:
+	ProxySocketFactory(Poco::UInt16 httpPort, const Poco::Net::SocketAddress& proxyAddr):
+		_httpPort(httpPort),
+		_proxyAddr(proxyAddr)
+	{
+	}
+
+	Poco::Net::StreamSocket createSocket(const Poco::Net::SocketAddress& addr)
+	{
+		if (addr.port() == _httpPort)
+		{
+			Poco::Net::StreamSocket streamSocket;
+			streamSocket.connectNB(_proxyAddr);
+			return streamSocket;
+		}
+		else
+		{
+			Poco::Net::StreamSocket streamSocket;
+			streamSocket.connectNB(addr);
+			return streamSocket;
+		}
+	}
+
+private:
+	Poco::UInt16 _httpPort;
+	Poco::Net::SocketAddress _proxyAddr;
+};
+
+
 #if defined(WEBTUNNEL_ENABLE_TLS)
 
 
@@ -246,18 +277,23 @@ WebTunnelAgent::Ptr DeviceManager::loadAgent(const std::string& id)
 	{
 		Poco::WebTunnel::SocketFactory::Ptr pSocketFactory;
 
-		Poco::UInt16 httpPort = static_cast<Poco::UInt16>(pLayeredConfig->getInt("webtunnel.httpPort"s, 0));
+		Poco::UInt16 httpPort = pLayeredConfig->getUInt16("webtunnel.httpPort"s, 0);
 		bool httpsRequired = pLayeredConfig->getBool("webtunnel.https.enable"s, false);
+		bool proxyRequired = pLayeredConfig->getBool("webtunnel.httpProxy.enable"s, false) && _pConfig->getBool("gateway.httpProxy.enable"s, false);
 
 #if defined(WEBTUNNEL_ENABLE_TLS)
-		if (httpPort != 0 && httpsRequired)
+		if (httpPort != 0 && httpsRequired && !proxyRequired)
 		{
 			_logger.debug("HTTPS enabled for agent %s."s, id);
 			pSocketFactory = new TLSSocketFactory(httpPort, _pContext);
 		}
 #endif
 
-		if (!pSocketFactory)
+		if (proxyRequired)
+		{
+			pSocketFactory = new ProxySocketFactory(httpPort, proxyAddress());
+		}
+		else if (!pSocketFactory)
 		{
 			pSocketFactory = new Poco::WebTunnel::SocketFactory;
 		}
@@ -376,6 +412,14 @@ std::string DeviceManager::deviceRepositoryPath() const
 Poco::AutoPtr<Poco::Util::AbstractConfiguration> DeviceManager::config() const
 {
 	return _pConfig;
+}
+
+
+Poco::Net::SocketAddress DeviceManager::proxyAddress() const
+{
+	std::string proxyHost = config().getString("gateway.httpProxy.host"s, "127.10.0.1"s);
+	Poco::UInt16 proxyPort = config().getUInt16("gateway.httpProxy.port"s, 8888);
+	return Poco::Net::SocketAddress(proxyHost, proxyPort);
 }
 
 

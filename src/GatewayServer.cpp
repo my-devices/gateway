@@ -116,7 +116,6 @@ public:
 
 	HTTPRequestHandler* createRequestHandler(const HTTPServerRequest& request)
 	{
-
 		const std::string& uri = request.getURI();
 		_logger.debug("%s %s %s"s, request.getMethod(), uri, request.getVersion());
 
@@ -152,6 +151,29 @@ public:
 			return new AjaxCore;
 		else
 			return 0;
+	}
+
+private:
+	DeviceManager::Ptr _pDeviceManager;
+	Poco::Logger& _logger;
+};
+
+
+class ProxyRequestHandlerFactory: public HTTPRequestHandlerFactory
+{
+public:
+	ProxyRequestHandlerFactory(DeviceManager::Ptr pDeviceManager):
+		_pDeviceManager(pDeviceManager),
+		_logger(Poco::Logger::get("ProxyRequestHandlerFactory"s))
+	{
+	}
+
+	HTTPRequestHandler* createRequestHandler(const HTTPServerRequest& request)
+	{
+		const std::string& uri = request.getURI();
+		_logger.debug("%s %s %s"s, request.getMethod(), uri, request.getVersion());
+
+		return new ProxyRequestHandler(_pDeviceManager);
 	}
 
 private:
@@ -391,7 +413,7 @@ protected:
 			_pDirectoryWatcher->itemModified += delegate(this, &GatewayServer::onItemChanged);
 		}
 
-		Poco::UInt16 port = static_cast<Poco::UInt16>(config().getInt("gateway.http.port"s, 8080));
+		Poco::UInt16 port = config().getUInt16("gateway.http.port"s, 8080);
 		if (port != 0)
 		{
 			ServerSocket svs(port);
@@ -400,12 +422,27 @@ protected:
 			logger().information("Web server started on port %hu."s, port);
 		}
 
+		bool enableProxy = config().getBool("gateway.httpProxy.enable"s, false);
+		if (enableProxy)
+		{
+			ServerSocket svs(_pDeviceManager->proxyAddress());
+			_pProxyServer = new HTTPServer(new ProxyRequestHandlerFactory(_pDeviceManager), svs, new HTTPServerParams);
+			_pProxyServer->start();
+			logger().information("Internal proxy server started on port %hu."s, proxyPort);
+		}
+
 		waitForTerminationRequest();
 
 		if (_pHTTPServer)
 		{
 			_pHTTPServer->stopAll(true);
 			_pHTTPServer.reset();
+		}
+
+		if (_pProxyServer)
+		{
+			_pProxyServer->stopAll(true);
+			_pProxyServer.reset();
 		}
 
 		if (_pDirectoryWatcher)
@@ -427,6 +464,7 @@ private:
 	SSLInitializer _sslInitializer;
 	Poco::SharedPtr<Poco::Util::Timer> _pTimer;
 	Poco::SharedPtr<HTTPServer> _pHTTPServer;
+	Poco::SharedPtr<HTTPServer> _pProxyServer;
 	Poco::SharedPtr<DirectoryWatcher> _pDirectoryWatcher;
 	DeviceManager::Ptr _pDeviceManager;
 };
