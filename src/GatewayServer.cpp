@@ -173,9 +173,10 @@ public:
 
 	HTTPRequestHandler* createRequestHandler(const HTTPServerRequest& request)
 	{
-		const std::string& uri = request.getURI();
-		_logger.debug("%s %s %s"s, request.getMethod(), uri, request.getVersion());
-
+		if (_logger.debug())
+		{
+			_logger.debug("%s %s %s"s, request.getMethod(), request.getURI(), request.getVersion());
+		}
 		return new ProxyRequestHandler(_pDeviceManager, _sessionPool);
 	}
 

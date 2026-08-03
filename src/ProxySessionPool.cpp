@@ -87,9 +87,9 @@ Poco::SharedPtr<Poco::Net::HTTPClientSession> ProxySession::createSession(const 
 
 void ProxySession::init()
 {
-	auto pDeviceProps = _deviceManager.deviceConfiguration(_deviceId);
-	_requestTimeout = Poco::Timespan(pDeviceProps->getUInt32("webtunnel.httpProxy.requestTimeout"s, 60), 0);
-	_keepAliveTimeout = Poco::Timespan(pDeviceProps->getUInt32("webtunnel.httpProxy.keepAliveTimeout"s, 60), 0);
+	auto pConfig = _deviceManager.config();
+	_requestTimeout = Poco::Timespan(pConfig->getUInt32("gateway.httpProxy.requestTimeout"s, 60), 0);
+	_keepAliveTimeout = Poco::Timespan(pConfig->getUInt32("gateway.httpProxy.keepAliveTimeout"s, 60), 0);
 }
 
 
@@ -116,7 +116,7 @@ ProxySession::Ptr ProxySessionPool::borrowSession(const std::string& deviceId)
 		auto it = _pools.find(deviceId);
 		if (it == _pools.end())
 		{
-			std::size_t maxConcurrentSessions = _deviceManager.config()->getUInt32("webtunnel.httpProxy.maxConcurrentSessions"s, 4);
+			std::size_t maxConcurrentSessions = _deviceManager.config()->getUInt32("gateway.httpProxy.maxConcurrentSessions"s, 4);
 
 #if defined(WEBTUNNEL_ENABLE_TLS)
 			ProxySessionFactory factory(_deviceManager, _pContext, deviceId);
@@ -132,7 +132,7 @@ ProxySession::Ptr ProxySessionPool::borrowSession(const std::string& deviceId)
 		}
 	}
 
-	long borrowTimeout = _deviceManager.config()->getInt("webtunnel.httpProxy.borrowSessionTimeout"s, 30000);
+	long borrowTimeout = _deviceManager.config()->getInt("gateway.httpProxy.borrowSessionTimeout"s, 30000);
 	return pPool->borrowObject(borrowTimeout);
 }
 
