@@ -175,7 +175,7 @@ function cancelUpdateDevice(id)
                       value="true"
                       <%= ctrl.proxyEnable() ? "checked" : "" %>
                       class="form-control">
-                <label for="httpsRequired">use internal HTTP proxy</label>
+                <label for="proxyRequired">use internal HTTP proxy</label>
               <% } %>
             </td>
           </tr>

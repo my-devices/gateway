@@ -91,6 +91,10 @@ public:
 	Poco::Net::SocketAddress proxyAddress() const;
 		/// Returns the HTTP proxy address, if configured.
 
+#if defined(WEBTUNNEL_ENABLE_TLS)
+	Poco::Net::Context::Ptr context() const;
+#endif
+
 protected:
 	void reconfigureAgents();
 	WebTunnelAgent::Ptr loadAgent(const std::string& id);
@@ -128,6 +132,14 @@ inline WebSessionManager& DeviceManager::webSessionManager()
 {
 	return _webSessionManager;
 }
+
+
+#if defined(WEBTUNNEL_ENABLE_TLS)
+inline Poco::Net::Context::Ptr DeviceManager::context() const
+{
+	return _pContext;
+}
+#endif
 
 
 } } // namespace MyDevices::Gateway

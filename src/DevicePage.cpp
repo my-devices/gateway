@@ -277,7 +277,7 @@ pageTemplate.set("onload"s, "document.getElementById('deviceNameInput').focus();
 	responseStream << ( ctrl.proxyEnable() ? "checked" : "" );
 	responseStream << "\n";
 	responseStream << "                      class=\"form-control\">\n";
-	responseStream << "                <label for=\"httpsRequired\">use internal HTTP proxy</label>\n";
+	responseStream << "                <label for=\"proxyRequired\">use internal HTTP proxy</label>\n";
 	responseStream << "              ";
 #line 179 "/Users/guenter/ws/git/my-devices/gateway/src/DevicePage.cpsp"
  } 	responseStream << "\n";

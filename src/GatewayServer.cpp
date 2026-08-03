@@ -43,6 +43,8 @@
 #include "Poco/Delegate.h"
 #include "WebTunnelAgent.h"
 #include "DeviceManager.h"
+#include "ProxySessionPool.h"
+#include "ProxyRequestHandler.h"
 #include "Utility.h"
 #include "LoginPage.h"
 #include "TOTPPage.h"
@@ -164,6 +166,7 @@ class ProxyRequestHandlerFactory: public HTTPRequestHandlerFactory
 public:
 	ProxyRequestHandlerFactory(DeviceManager::Ptr pDeviceManager):
 		_pDeviceManager(pDeviceManager),
+		_sessionPool(*pDeviceManager),
 		_logger(Poco::Logger::get("ProxyRequestHandlerFactory"s))
 	{
 	}
@@ -173,11 +176,12 @@ public:
 		const std::string& uri = request.getURI();
 		_logger.debug("%s %s %s"s, request.getMethod(), uri, request.getVersion());
 
-		return new ProxyRequestHandler(_pDeviceManager);
+		return new ProxyRequestHandler(_pDeviceManager, _sessionPool);
 	}
 
 private:
 	DeviceManager::Ptr _pDeviceManager;
+	ProxySessionPool _sessionPool;
 	Poco::Logger& _logger;
 };
 
@@ -428,7 +432,7 @@ protected:
 			ServerSocket svs(_pDeviceManager->proxyAddress());
 			_pProxyServer = new HTTPServer(new ProxyRequestHandlerFactory(_pDeviceManager), svs, new HTTPServerParams);
 			_pProxyServer->start();
-			logger().information("Internal proxy server started on port %hu."s, proxyPort);
+			logger().information("Internal proxy server started on %s."s, svs.address().toString());
 		}
 
 		waitForTerminationRequest();

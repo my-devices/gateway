@@ -417,8 +417,8 @@ Poco::AutoPtr<Poco::Util::AbstractConfiguration> DeviceManager::config() const
 
 Poco::Net::SocketAddress DeviceManager::proxyAddress() const
 {
-	std::string proxyHost = config().getString("gateway.httpProxy.host"s, "127.10.0.1"s);
-	Poco::UInt16 proxyPort = config().getUInt16("gateway.httpProxy.port"s, 8888);
+	std::string proxyHost = config()->getString("gateway.httpProxy.host"s, "127.0.0.1"s);
+	Poco::UInt16 proxyPort = config()->getUInt16("gateway.httpProxy.port"s, 8888);
 	return Poco::Net::SocketAddress(proxyHost, proxyPort);
 }
 

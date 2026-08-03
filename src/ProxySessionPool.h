@@ -26,29 +26,75 @@ namespace MyDevices {
 namespace Gateway {
 
 
+class ProxySession: public Poco::RefCountedObject
+{
+public:
+	using Ptr = Poco::AutoPtr<ProxySession>;
+
+	ProxySession(DeviceManager& deviceManager, const std::string& deviceId);
+
+#if defined(WEBTUNNEL_ENABLE_TLS)
+	ProxySession(DeviceManager& deviceManager, Poco::Net::Context::Ptr pContext, const std::string& deviceId);
+#endif
+
+	~ProxySession() = default;
+
+	Poco::SharedPtr<Poco::Net::HTTPClientSession> session();
+
+	const std::string& deviceId() const
+	{
+		return _deviceId;
+	}
+
+	void markUsed()
+	{
+		_lastUsed.update();
+	}
+
+protected:
+	Poco::SharedPtr<Poco::Net::HTTPClientSession> createSession(const std::string& host, Poco::UInt16 port, bool secure);
+	void init();
+
+private:
+	DeviceManager& _deviceManager;
+#if defined(WEBTUNNEL_ENABLE_TLS)
+	Poco::Net::Context::Ptr _pContext;
+#endif
+	std::string _deviceId;
+	Poco::Timespan _requestTimeout;
+	Poco::Timespan _keepAliveTimeout;
+	Poco::SharedPtr<Poco::Net::HTTPClientSession> _pSession;
+	Poco::Timestamp _lastUsed;
+};
+
+
 class ProxySessionFactory
 	/// A PoolableObjectFactory implementation for HTTPClientSession.
 {
 public:
-	ProxySessionFactory(const Poco::Net::SocketAddress& addr):
-		_addr(addr)
+	ProxySessionFactory(DeviceManager& deviceManager, const std::string& deviceId):
+		_pDeviceManager(&deviceManager),
+		_deviceId(deviceId)
 	{
 	}
 
 #if defined(WEBTUNNEL_ENABLE_TLS)
-	ProxySessionFactory(const Poco::Net::SocketAddress& addr, Poco::Net::Context::Ptr pContext):
-		_addr(addr),
-		_pContext(pContext)
+	ProxySessionFactory(DeviceManager& deviceManager, Poco::Net::Context::Ptr pContext, const std::string& deviceId):
+		_pDeviceManager(&deviceManager),
+		_pContext(pContext),
+		_deviceId(deviceId)
 	{
 	}
 #endif
 
 	ProxySessionFactory(const ProxySessionFactory& other):
-		_addr(other._addr)
+		_pDeviceManager(other._pDeviceManager)
 #if defined(WEBTUNNEL_ENABLE_TLS)
 		,
 		_pContext(other._pContext)
 #endif
+		,
+		_deviceId(other._deviceId)
 	{
 	}
 
@@ -56,54 +102,47 @@ public:
 	{
 		if (this != &other)
 		{
-			_addr = other._addr;
+			_pDeviceManager = other._pDeviceManager;
 #if defined(WEBTUNNEL_ENABLE_TLS)
 			_pContext = other._pContext;
 #endif
 		}
+		_deviceId = other._deviceId;
 		return *this;
 	}
 
-	Poco::SharedPtr<Poco::Net::HTTPClientSession> createObject()
+	ProxySession::Ptr createObject()
 	{
-		Poco::SharedPtr<Poco::Net::HTTPClientSession> pClientSession;
 #if defined(WEBTUNNEL_ENABLE_TLS)
-		if (_pContext)
-		{
-			pClientSession = new Poco::Net::HTTPSClientSession(_addr.host().toString(), _addr.port(), _pContext);
-		}
-		else
+		return Poco::makeAuto<ProxySession>(*_pDeviceManager, _pContext, _deviceId);
+#else
+		return Poco::makeAuto<ProxySession>(*_pDeviceManager, _deviceId);
 #endif
-		{
-			pClientSession = new Poco::Net::HTTPClientSession(_addr);
-		}
-		return pClientSession;
 	}
 
-	bool validateObject(Poco::SharedPtr<Poco::Net::HTTPClientSession> pClientSession)
+	bool validateObject(ProxySession::Ptr pProxySession)
 	{
-		return pClientSession->connected();
+		return true;
 	}
 
-	void activateObject(Poco::SharedPtr<Poco::Net::HTTPClientSession> pClientSession)
-	{
-		pClientSession->setKeepAlive(true);
-		pClientSession->setKeepAliveTimeout(Poco::Timespan(60, 0));
-	}
-
-	void deactivateObject(Poco::SharedPtr<Poco::Net::HTTPClientSession> pClientSession)
+	void activateObject(ProxySession::Ptr pProxySession)
 	{
 	}
 
-	void destroyObject(Poco::SharedPtr<Poco::Net::HTTPClientSession> pClientSession)
+	void deactivateObject(ProxySession::Ptr pProxySession)
+	{
+	}
+
+	void destroyObject(ProxySession::Ptr pProxySession)
 	{
 	}
 
 private:
-	Poco::Net::SocketAddress _addr;
+	DeviceManager* _pDeviceManager;
 #if defined(WEBTUNNEL_ENABLE_TLS)
 	Poco::Net::Context::Ptr _pContext;
 #endif
+	std::string _deviceId;
 };
 
 
@@ -111,17 +150,20 @@ class ProxySessionPool
 	/// A pool of HTTPClientSession objects for use by the reverse proxy server.
 {
 public:
-	using ObjectPool = Poco::ObjectPool<Poco::SharedPtr<Poco::Net::HTTPClientSession>, ProxySessionFactory>;
-	using ObjectPoolPtr = std::unique_ptr<ObjectPool>;
+	using ObjectPool = Poco::ObjectPool<ProxySession, ProxySession::Ptr, ProxySessionFactory>;
+	using ObjectPoolPtr = Poco::SharedPtr<ObjectPool>;
 
 	ProxySessionPool(DeviceManager& deviceManager);
 
-	Poco::SharedPtr<Poco::Net::HTTPClientSession> borrowSession(const std::string& deviceId);
+	ProxySession::Ptr borrowSession(const std::string& deviceId);
 
-	void returnSession(const std::string& deviceId, Poco::SharedPtr<Poco::Net::HTTPClientSession> pSession);
+	void returnSession(ProxySession::Ptr pSession);
 
 private:
 	DeviceManager& _deviceManager;
+#if defined(WEBTUNNEL_ENABLE_TLS)
+	Poco::Net::Context::Ptr _pContext;
+#endif
 	std::map<std::string, ObjectPoolPtr> _pools;
 	mutable Poco::FastMutex _mutex;
 };
