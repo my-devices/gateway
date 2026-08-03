@@ -98,7 +98,10 @@ void ProxyRequestHandler::handleRequest(Poco::Net::HTTPServerRequest& request, P
 		int retries = 2;
 		while (retries > 0)
 		{
-			_logger.debug("Sending request to target %s:%hu..."s, session.getHost(), session.getPort());
+			if (_logger.debug())
+			{
+				_logger.debug("Sending request to target %s:%hu..."s, session.getHost(), session.getPort());
+			}
 			std::ostream* pRequestStream = nullptr;
 			try
 			{
